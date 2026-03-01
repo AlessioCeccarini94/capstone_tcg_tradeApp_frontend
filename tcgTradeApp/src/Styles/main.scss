@@ -4,6 +4,14 @@ $primary: $accent-primary;
 $success: $success;
 $danger: $danger;
 
+$offcanvas-bg-color: $bg-card;
+$offcanvas-color: $text-primary;
+
+$dropdown-bg: $bg-secondary;
+$dropdown-link-color: $text-secondary;
+$dropdown-link-hover-bg: $bg-card;
+$dropdown-link-hover-color: $accent-primary;
+
 @import "bootstrap/scss/bootstrap";
 @import "./navbar";
 @import "./buttons";

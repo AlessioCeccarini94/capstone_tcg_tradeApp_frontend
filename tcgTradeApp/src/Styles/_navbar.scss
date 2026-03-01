@@ -18,3 +18,11 @@
     font-weight: 600;
   }
 }
+.offcanvas-dropdown .dropdown-item {
+  color: $text-primary;
+
+  &:hover {
+    color: $accent-primary;
+    background-color: $bg-card;
+  }
+}
