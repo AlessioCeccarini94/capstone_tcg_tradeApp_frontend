@@ -36,7 +36,9 @@ const NavbarComponent = () => {
           </Offcanvas.Header>
           <Offcanvas.Body className="custom-offcanvas">
             <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
             </Nav>
             <Nav className="justify-content-end flex-grow-1 pe-3 d-md-none">
               <Nav.Link as={Link} to="/login">
@@ -49,14 +51,18 @@ const NavbarComponent = () => {
                 id="offcanvasNavbarDropdown"
                 className="offcanvas-dropdown"
               >
-                <NavDropdown.Item href="/collection">
+                <NavDropdown.Item as={Link} to="/collection">
                   My Collection
                 </NavDropdown.Item>
-                <NavDropdown.Item href="/trades">Trades</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/trades">
+                  Trades
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
             <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link href="/login">Profile</Nav.Link>
+              <Nav.Link as={Link} to="/profile">
+                Profile
+              </Nav.Link>
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>

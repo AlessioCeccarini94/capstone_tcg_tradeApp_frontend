@@ -1,6 +1,7 @@
 @import "./variables";
 
 $primary: $accent-primary;
+$secondary: $accent-secondary;
 $success: $success;
 $danger: $danger;
 
@@ -16,6 +17,7 @@ $dropdown-link-hover-color: $accent-primary;
 @import "./navbar";
 @import "./buttons";
 @import "./offcanvas";
+@import "./stat-card";
 
 body {
   background-color: $bg-primary;
