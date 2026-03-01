@@ -1,0 +1,17 @@
+@import "./variables";
+
+$primary: $accent-primary;
+$success: $success;
+$danger: $danger;
+
+@import "bootstrap/scss/bootstrap";
+@import "./navbar";
+@import "./buttons";
+@import "./offcanvas";
+
+body {
+  background-color: $bg-primary;
+  color: $text-primary;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}

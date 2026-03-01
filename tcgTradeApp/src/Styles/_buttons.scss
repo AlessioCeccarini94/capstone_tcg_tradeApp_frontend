@@ -1,0 +1,14 @@
+@import "./variables";
+
+.btn-primary-custom {
+  background-color: $accent-primary;
+  border: none;
+  color: #000;
+  font-weight: 600;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: $accent-secondary;
+    box-shadow: 0 0 10px $accent-glow;
+  }
+}

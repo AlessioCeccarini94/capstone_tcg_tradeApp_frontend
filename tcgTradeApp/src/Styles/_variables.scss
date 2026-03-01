@@ -1,0 +1,173 @@
+// Background
+$bg-primary: #0f172a;
+$bg-secondary: #1e293b;
+$bg-card: #16213e;
+
+// Accent
+$accent-primary: #00d4ff;
+$accent-secondary: #00a8cc;
+$accent-glow: #00f5ff;
+
+// Status
+$success: #22c55e;
+$warning: #f59e0b;
+$danger: #ef4444;
+
+// Text
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+$text-muted: #64748b;
+
+// Shadow
+$shadow-primary: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow-secondary:
+  0 4px 6px -1px rgb(0 0 0 / 0.1),
+  0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+// Spacing
+$spacing-0: 0;
+$spacing-1: 0.25rem;
+$spacing-2: 0.5rem;
+$spacing-3: 0.75rem;
+$spacing-4: 1rem;
+$spacing-5: 1.25rem;
+$spacing-6: 1.5rem;
+$spacing-7: 1.75rem;
+$spacing-8: 2rem;
+$spacing-9: 2.25rem;
+$spacing-10: 2.5rem;
+$spacing-11: 2.75rem;
+$spacing-12: 3rem;
+
+// Font sizes
+$font-size-1: 0.75rem;
+$font-size-2: 0.875rem;
+$font-size-3: 1rem;
+$font-size-4: 1.125rem;
+$font-size-5: 1.25rem;
+$font-size-6: 1.5rem;
+$font-size-7: 1.875rem;
+$font-size-8: 2.25rem;
+$font-size-9: 3rem;
+$font-size-10: 3.75rem;
+$font-size-11: 4.5rem;
+$font-size-12: 6rem;
+
+// Font weights
+$font-weight-1: 100;
+$font-weight-2: 200;
+$font-weight-3: 300;
+$font-weight-4: 400;
+$font-weight-5: 500;
+$font-weight-6: 600;
+$font-weight-7: 700;
+$font-weight-8: 800;
+$font-weight-9: 900;
+
+// Line heights
+$line-height-1: 1;
+$line-height-2: 1.25;
+$line-height-3: 1.5;
+$line-height-4: 1.75;
+$line-height-5: 2;
+$line-height-6: 2.25;
+$line-height-7: 2.5;
+$line-height-8: 2.75;
+$line-height-9: 3;
+$line-height-10: 3.25;
+$line-height-11: 3.5;
+$line-height-12: 3.75;
+$line-height-13: 4;
+$line-height-14: 4.5;
+$line-height-15: 5;
+
+// Border radius
+$border-radius-1: 0.25rem;
+$border-radius-2: 0.5rem;
+$border-radius-3: 0.75rem;
+$border-radius-4: 1rem;
+$border-radius-5: 1.5rem;
+$border-radius-6: 2rem;
+$border-radius-7: 3rem;
+$border-radius-8: 4rem;
+$border-radius-9: 5rem;
+$border-radius-10: 6rem;
+
+// Border widths
+$border-width-1: 1px;
+$border-width-2: 2px;
+$border-width-3: 3px;
+$border-width-4: 4px;
+$border-width-5: 5px;
+$border-width-6: 6px;
+$border-width-7: 7px;
+$border-width-8: 8px;
+$border-width-9: 9px;
+$border-width-10: 10px;
+
+// Z-index
+$z-index-1: 10;
+$z-index-2: 20;
+$z-index-3: 30;
+$z-index-4: 40;
+$z-index-5: 50;
+$z-index-6: 60;
+$z-index-7: 70;
+$z-index-8: 80;
+$z-index-9: 90;
+$z-index-10: 100;
+
+// Opacity
+$opacity-1: 0.1;
+$opacity-2: 0.2;
+$opacity-3: 0.3;
+$opacity-4: 0.4;
+$opacity-5: 0.5;
+$opacity-6: 0.6;
+$opacity-7: 0.7;
+$opacity-8: 0.8;
+$opacity-9: 0.9;
+$opacity-10: 1;
+
+// Transitions
+$transition-1: all 0.1s ease-in-out;
+$transition-2: all 0.2s ease-in-out;
+$transition-3: all 0.3s ease-in-out;
+$transition-4: all 0.4s ease-in-out;
+$transition-5: all 0.5s ease-in-out;
+$transition-6: all 0.6s ease-in-out;
+$transition-7: all 0.7s ease-in-out;
+$transition-8: all 0.8s ease-in-out;
+$transition-9: all 0.9s ease-in-out;
+$transition-10: all 1s ease-in-out;
+
+// Animations
+$animation-1: all 0.1s ease-in-out;
+$animation-2: all 0.2s ease-in-out;
+$animation-3: all 0.3s ease-in-out;
+$animation-4: all 0.4s ease-in-out;
+$animation-5: all 0.5s ease-in-out;
+$animation-6: all 0.6s ease-in-out;
+$animation-7: all 0.7s ease-in-out;
+$animation-8: all 0.8s ease-in-out;
+$animation-9: all 0.9s ease-in-out;
+$animation-10: all 1s ease-in-out;
+
+// Transforms
+$transform-1: translateX(0);
+$transform-2: translateX(10px);
+$transform-3: translateX(20px);
+$transform-4: translateX(30px);
+$transform-5: translateX(40px);
+$transform-6: translateX(50px);
+$transform-7: translateX(60px);
+$transform-8: translateX(70px);
+$transform-9: translateX(80px);
+$transform-10: translateX(90px);
