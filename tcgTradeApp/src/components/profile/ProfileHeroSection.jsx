@@ -15,11 +15,14 @@ const ProfileHero = () => {
             <Col className="d-flex flex-wrap">
               {/* {Card.map((card) => ( */}
               <Card className="stat-card">
-                <Card.Img variant="top" src="holder.js/100px180" />
+                <Card.Img
+                  variant="top"
+                  src="https://www.placebear.com/200/200"
+                />
                 <Card.Body>
-                  <Card.Title>Card Title</Card.Title>
-                  <Button variant="primary me-2">Go somewhere</Button>
-                  <Button variant="primary">Go somewhere</Button>
+                  <Card.Title className="text-secondary">Card Title</Card.Title>
+                  <Button variant="primary me-2">Trade</Button>
+                  <Button variant="primary">Remove</Button>
                 </Card.Body>
               </Card>
               {/* ))} */}
@@ -38,8 +41,7 @@ const ProfileHero = () => {
                 <Card.Img variant="top" src="holder.js/100px180" />
                 <Card.Body>
                   <Card.Title>Card Title</Card.Title>
-                  <Button variant="primary me-2">Go somewhere</Button>
-                  <Button variant="primary">Go somewhere</Button>
+                  <Button variant="primary me-2">Remove from trading</Button>
                 </Card.Body>
               </Card>
               {/* ))} */}
