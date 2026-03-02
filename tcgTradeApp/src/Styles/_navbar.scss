@@ -9,7 +9,7 @@
     transition: 0.3s;
 
     &:hover {
-      color: $accent-primary;
+      color: $accent-secondary;
     }
   }
 
@@ -22,7 +22,7 @@
   color: $text-primary;
 
   &:hover {
-    color: $accent-primary;
+    color: $accent-secondary;
     background-color: $bg-card;
   }
 }

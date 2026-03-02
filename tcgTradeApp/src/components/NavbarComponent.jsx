@@ -46,20 +46,6 @@ const NavbarComponent = () => {
               </Nav.Link>
             </Nav>
             <Nav className="justify-content-end flex-grow-1 pe-3">
-              <NavDropdown
-                title="Cards"
-                id="offcanvasNavbarDropdown"
-                className="offcanvas-dropdown"
-              >
-                <NavDropdown.Item as={Link} to="/collection">
-                  My Collection
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/trades">
-                  Trades
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-            <Nav className="justify-content-end flex-grow-1 pe-3">
               <Nav.Link as={Link} to="/profile">
                 Profile
               </Nav.Link>

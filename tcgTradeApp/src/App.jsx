@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import "./App.css"
 import NavbarComponent from "./components/NavbarComponent"
-import ProfileComponent from "./components/ProfileComponent"
+import ProfileComponent from "./components/profile/ProfileComponent"
 
 function App() {
   return (
