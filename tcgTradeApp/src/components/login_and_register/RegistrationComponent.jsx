@@ -23,7 +23,7 @@ const Registration = () => {
       noValidate
       validated={validated}
       onSubmit={handleSubmit}
-      className="mt-5 px-5 d-lg-flex flex-column justify-content-between w-50 mx-auto"
+      className="mt-5 px-5 d-lg-flex flex-column justify-content-between w-50 mx-auto border border-2 border-secondary py-5"
     >
       <Row className="mb-3">
         <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -84,7 +84,7 @@ const Registration = () => {
         />
       </Form.Group>
       <Button variant="secondary" type="submit">
-        Submit form
+        Join
       </Button>
     </Form>
   )

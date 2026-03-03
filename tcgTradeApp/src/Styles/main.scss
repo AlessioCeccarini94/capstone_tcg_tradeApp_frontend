@@ -25,4 +25,13 @@ body {
   color: $text-primary;
   margin: 0;
   font-family: "Inter", sans-serif;
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  html {
+    height: 100%;
+  }
 }

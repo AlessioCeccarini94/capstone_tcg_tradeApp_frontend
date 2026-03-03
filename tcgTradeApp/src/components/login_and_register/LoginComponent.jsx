@@ -6,7 +6,10 @@ import { Link } from "react-router-dom"
 const LoginForm = () => {
   return (
     <>
-      <Container fluid className="d-flex justify-content-center">
+      <Container
+        fluid
+        className="d-flex justify-content-center border border-2 border-secondary w-50 mx-auto py-5"
+      >
         <Form className="mt-5">
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
