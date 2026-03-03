@@ -40,14 +40,14 @@ const NavbarComponent = () => {
                 Home
               </Nav.Link>
             </Nav>
-            <Nav className="justify-content-end flex-grow-1 pe-3 d-md-none">
-              <Nav.Link as={Link} to="/login">
-                Login
-              </Nav.Link>
-            </Nav>
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <Nav.Link as={Link} to="/profile">
                 Profile
+              </Nav.Link>
+            </Nav>
+            <Nav className="justify-content-end flex-grow-1 pe-3 d-md-none">
+              <Nav.Link as={Link} to="/login">
+                Login
               </Nav.Link>
             </Nav>
           </Offcanvas.Body>
@@ -69,7 +69,7 @@ const NavbarComponent = () => {
             className="me-2"
           />
           <Button className="text-secondary">Search</Button>
-          <Nav className="justify-content-end flex-grow-1 pe-3 d-sm-none d-lg-flex ps-3">
+          <Nav className="justify-content-end flex-grow-1 pe-3 d-none d-lg-flex">
             <Nav.Link as={Link} to="/login">
               Login
             </Nav.Link>
