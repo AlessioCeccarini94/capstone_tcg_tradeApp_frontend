@@ -1,6 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap"
 import Card from "react-bootstrap/Card"
 import Button from "react-bootstrap/Button"
+import { Link } from "react-router-dom"
 
 const ProfileHero = () => {
   return (
@@ -10,7 +11,13 @@ const ProfileHero = () => {
           <Col className="my-3">
             <div className="d-flex justify-content-between border-bottom border-3 border-secondary mb-3">
               <h5>My Collection</h5>
-              <a>view all</a>
+              <Button
+                as={Link}
+                to="/collection"
+                className="text-secondary align-text-top"
+              >
+                view all
+              </Button>
             </div>
             <Col className="d-flex flex-wrap">
               {/* {Card.map((card) => ( */}
@@ -33,7 +40,13 @@ const ProfileHero = () => {
           <Col className="my-3">
             <div className="d-flex justify-content-between border-bottom border-3 border-secondary mb-3">
               <h5>My Trades</h5>
-              <a>view all</a>
+              <Button
+                as={Link}
+                to="/trades"
+                className="text-secondary align-text-top"
+              >
+                view all
+              </Button>
             </div>
             <Col className="d-flex flex-wrap">
               {/* {Card.map((card) => ( */}
