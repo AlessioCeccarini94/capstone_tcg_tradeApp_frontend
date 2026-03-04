@@ -1,4 +1,7 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { addUser } from "../../redux/actions/userActions"
+
 import Button from "react-bootstrap/Button"
 import Col from "react-bootstrap/Col"
 import Form from "react-bootstrap/Form"
@@ -6,18 +9,43 @@ import InputGroup from "react-bootstrap/InputGroup"
 import Row from "react-bootstrap/Row"
 
 const Registration = () => {
+  const [cities, setCities] = useState([])
+  useEffect(() => {
+    fetch("http://localhost:3023/cities")
+      .then((res) => res.json())
+      .then((data) => setCities(data))
+  }, [])
+
+  const dispatch = useDispatch()
   const [validated, setValidated] = useState(false)
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    password: "",
+    cityId: "",
+  })
+
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    })
+  }
 
   const handleSubmit = (event) => {
+    event.preventDefault()
+
     const form = event.currentTarget
     if (form.checkValidity() === false) {
       event.preventDefault()
       event.stopPropagation()
+    } else {
+      dispatch(addUser(formData))
     }
-
     setValidated(true)
   }
-
   return (
     <Form
       noValidate
@@ -28,14 +56,31 @@ const Registration = () => {
       <Row className="mb-3">
         <Form.Group as={Col} md="4" controlId="validationCustom01">
           <Form.Label>First name</Form.Label>
-          <Form.Control required type="text" placeholder="First name" />
+
+          <Form.Control
+            required
+            type="text"
+            placeholder="First name"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
+
         <Form.Group as={Col} md="4" controlId="validationCustom02">
           <Form.Label>Last name</Form.Label>
-          <Form.Control required type="text" placeholder="Last name" />
+          <Form.Control
+            required
+            type="text"
+            placeholder="Last name"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+          />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
+
         <Form.Group as={Col} md="4" controlId="validationCustomUsername">
           <Form.Label>Username</Form.Label>
           <InputGroup hasValidation>
@@ -44,6 +89,9 @@ const Registration = () => {
               type="text"
               placeholder="Username"
               aria-describedby="inputGroupPrepend"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
               required
             />
             <Form.Control.Feedback type="invalid">
@@ -51,28 +99,57 @@ const Registration = () => {
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
-      </Row>
-      <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId="validationCustom03">
+        <Form.Group
+          as={Col}
+          md="8 mx-auto mt-3"
+          controlId="validationCustomEmail"
+        >
+          <Form.Label>Email</Form.Label>
+          <InputGroup hasValidation>
+            <InputGroup.Text id="inputGroupPrepend"></InputGroup.Text>
+            <Form.Control
+              type="text"
+              placeholder="Email"
+              aria-describedby="inputGroupPrepend"
+              required
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <Form.Control.Feedback type="invalid">
+              Please choose a username.
+            </Form.Control.Feedback>
+          </InputGroup>
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="6">
           <Form.Label>City</Form.Label>
-          <Form.Control type="text" placeholder="City" required />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid city.
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group as={Col} md="3" controlId="validationCustom04">
-          <Form.Label>State</Form.Label>
-          <Form.Control type="text" placeholder="State" required />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid state.
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group as={Col} md="3" controlId="validationCustom05">
-          <Form.Label>Zip</Form.Label>
-          <Form.Control type="text" placeholder="Zip" required />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid zip.
-          </Form.Control.Feedback>
+
+          <Form.Select
+            name="cityId"
+            value={formData.cityId}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Choose city</option>
+
+            {cities?.map((city) => (
+              <option key={city.id} value={city.id}>
+                {city.cityName}
+              </option>
+            ))}
+          </Form.Select>
         </Form.Group>
       </Row>
       <Form.Group className="mb-3">
@@ -89,5 +166,4 @@ const Registration = () => {
     </Form>
   )
 }
-
 export default Registration

@@ -18,7 +18,7 @@ function App() {
           <Route path="/profile" element={<ProfileComponent />} />
           <Route path="/add-card" element={<AddCardForm />} />
           <Route path="/login" element={<LoginComponent />} />
-          <Route path="/register" element={<RegistrationComponent />} />
+          <Route path="/auth/register" element={<RegistrationComponent />} />
         </Routes>
       </div>
       <Footer />

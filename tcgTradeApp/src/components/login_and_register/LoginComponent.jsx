@@ -25,7 +25,7 @@ const LoginForm = () => {
           </Form.Group>
           <Form.Group
             as={Link}
-            to="/register"
+            to="/auth/register"
             className="mb-3 text-decoration-none text-secondary"
           >
             <p>Don't have an account? sing-ip here</p>
