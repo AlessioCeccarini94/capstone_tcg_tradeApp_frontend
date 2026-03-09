@@ -8,8 +8,18 @@ import Offcanvas from "react-bootstrap/Offcanvas"
 import Dropdown from "react-bootstrap/Dropdown"
 import logo from "../assets/images/logo.png"
 import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { addGameList } from "../redux/actions/gameActions"
 
 const NavbarComponent = () => {
+  const games = useSelector((state) => state.game.games)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(addGameList())
+  }, [dispatch])
+
   return (
     <Navbar expand="lg" className=" custom-navbar mb-3">
       <Container fluid>
@@ -46,7 +56,7 @@ const NavbarComponent = () => {
               </Nav.Link>
             </Nav>
             <Nav className="justify-content-end flex-grow-1 pe-3 d-md-none">
-              <Nav.Link as={Link} to="/login">
+              <Nav.Link as={Link} to="/auth/login">
                 Login
               </Nav.Link>
             </Nav>
@@ -58,9 +68,15 @@ const NavbarComponent = () => {
               <i className="bi bi-filter-left"></i>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {/* {games.map((game) => (
-                <Dropdown.Item key={game}onClick={() => handleFilter(game)}>{game}</Dropdown.Item>
-              ))} */}
+              {games.map((game) => (
+                <Dropdown.Item
+                  as={Link}
+                  to={`/games/${game.id}/cards`}
+                  key={game.id}
+                >
+                  {game.name}
+                </Dropdown.Item>
+              ))}
             </Dropdown.Menu>
           </Dropdown>
           <Form.Control
@@ -70,7 +86,7 @@ const NavbarComponent = () => {
           />
           <Button className="text-secondary">Search</Button>
           <Nav className="justify-content-end flex-grow-1 pe-3 d-none d-lg-flex">
-            <Nav.Link as={Link} to="/login">
+            <Nav.Link as={Link} to="/auth/login">
               Login
             </Nav.Link>
           </Nav>

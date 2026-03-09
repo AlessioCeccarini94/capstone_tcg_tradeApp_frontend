@@ -10,8 +10,6 @@ export const addUser = (userData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NzI2MjQzMTEsImV4cCI6MTc3NTIxNjMxMSwic3ViIjoiYTk1MTkxODQtZThhYS00OTA0LWJkYjQtNjZmMDZiZTU0MTg0In0.cGkQ2D94gae4SXbUw2XXQw8eq4Qq1Wn-UGEZfGiiDag",
       },
       body: JSON.stringify(userData),
     })
@@ -30,6 +28,7 @@ export const addUser = (userData) => {
 }
 
 //------------------------------> LOGIN USER <-----------------------------------
+
 export const loginUser = (userData) => {
   return (dispatch, getState) => {
     const URL = "http://localhost:3023/auth/login"

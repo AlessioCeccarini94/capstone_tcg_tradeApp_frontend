@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { addUser } from "../../redux/actions/userActions"
+import { useNavigate } from "react-router"
 
 import Button from "react-bootstrap/Button"
 import Col from "react-bootstrap/Col"
@@ -9,6 +10,7 @@ import InputGroup from "react-bootstrap/InputGroup"
 import Row from "react-bootstrap/Row"
 
 const Registration = () => {
+  const navigate = useNavigate()
   const [cities, setCities] = useState([])
   useEffect(() => {
     fetch("http://localhost:3023/cities")
@@ -43,6 +45,7 @@ const Registration = () => {
       event.stopPropagation()
     } else {
       dispatch(addUser(formData))
+      navigate("/")
     }
     setValidated(true)
   }

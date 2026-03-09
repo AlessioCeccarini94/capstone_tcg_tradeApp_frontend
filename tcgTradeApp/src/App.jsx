@@ -7,6 +7,7 @@ import AddCardForm from "./components/profile/AddCardForm"
 import LoginComponent from "./components/login_and_register/LoginComponent"
 import Footer from "./components/FooterComponent"
 import RegistrationComponent from "./components/login_and_register/RegistrationComponent"
+import PageOfCardsByGame from "./components/cards/PageOfCardsByGame"
 
 function App() {
   return (
@@ -17,8 +18,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<ProfileComponent />} />
           <Route path="/add-card" element={<AddCardForm />} />
-          <Route path="/login" element={<LoginComponent />} />
+          <Route path="/auth/login" element={<LoginComponent />} />
           <Route path="/auth/register" element={<RegistrationComponent />} />
+          <Route path="/games/:id/cards" element={<PageOfCardsByGame />} />
         </Routes>
       </div>
       <Footer />
