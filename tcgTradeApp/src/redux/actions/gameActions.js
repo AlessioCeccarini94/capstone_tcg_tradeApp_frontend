@@ -5,11 +5,11 @@ export const ADD_CARD_LIST = "ADD_CARD_LIST"
 
 export const addGameList = () => {
   return (dispatch) => {
-    const URL = "http://localhost:3023/games"
-    fetch(URL, {
-      method: "GET",
-    })
-      .then((res) => res.json())
+    fetch("http://localhost:3023/games")
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status)
+        return res.json()
+      })
       .then((data) => {
         dispatch({
           type: ADD_GAME_LIST,
@@ -18,7 +18,7 @@ export const addGameList = () => {
         console.log(data)
       })
       .catch((err) => {
-        console.log(err)
+        console.log("FETCH GAMES ERROR:", err)
       })
   }
 }

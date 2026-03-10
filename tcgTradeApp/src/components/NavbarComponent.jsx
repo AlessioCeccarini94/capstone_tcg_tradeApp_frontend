@@ -14,6 +14,7 @@ import { addGameList } from "../redux/actions/gameActions"
 
 const NavbarComponent = () => {
   const games = useSelector((state) => state.game.games)
+  console.log(games)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -68,7 +69,7 @@ const NavbarComponent = () => {
               <i className="bi bi-filter-left"></i>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {games.map((game) => (
+              {games?.map((game) => (
                 <Dropdown.Item
                   as={Link}
                   to={`/games/${game.id}/cards`}

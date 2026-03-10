@@ -2,13 +2,29 @@ import { Container, Row, Col } from "react-bootstrap"
 import Card from "react-bootstrap/Card"
 import Button from "react-bootstrap/Button"
 import { Link } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
+import { useEffect } from "react"
+import { userCardList } from "../../redux/actions/cardsAction"
 
 const ProfileHero = () => {
+  const dispatch = useDispatch()
+  const collection = useSelector((state) => state.card.collection)
+  const loading = useSelector((state) => state.card.loading)
+
+  useEffect(() => {
+    dispatch(userCardList())
+  }, [dispatch])
+
   return (
     <>
       <Container className="my-3 border-1 border-secondary">
-        <Row>
-          <Col className="my-3">
+        {loading && (
+          <div className="text-center">
+            <Spinner animation="border" variant="primary" />
+          </div>
+        )}
+        {!loading && (
+          <Row>
             <div className="d-flex justify-content-between border-bottom border-3 border-secondary mb-3">
               <h5>My Collection</h5>
               <Button
@@ -19,23 +35,28 @@ const ProfileHero = () => {
                 view all
               </Button>
             </div>
-            <Col className="d-flex flex-wrap">
-              {/* {Card.map((card) => ( */}
-              <Card className="stat-card">
-                <Card.Img
-                  variant="top"
-                  src="https://www.placebear.com/200/200"
-                />
-                <Card.Body>
-                  <Card.Title className="text-secondary">Card Title</Card.Title>
-                  <Button variant="primary me-2">Trade</Button>
-                  <Button variant="primary">Remove</Button>
-                </Card.Body>
-              </Card>
-              {/* ))} */}
-            </Col>
-          </Col>
-        </Row>
+            {collection.map((card) => (
+              <Col
+                xs={6}
+                md={4}
+                lg={3}
+                key={card.card.id}
+                className="d-flex flex-wrap"
+              >
+                <Card className="stat-card">
+                  <Card.Img variant="top" src={card.card.image} />
+                  <Card.Body>
+                    <Card.Title className="text-secondary">
+                      {card.card.name}
+                    </Card.Title>
+                    <Button variant="primary me-2">Trade</Button>
+                    <Button variant="primary">Remove</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
         <Row>
           <Col className="my-3">
             <div className="d-flex justify-content-between border-bottom border-3 border-secondary mb-3">

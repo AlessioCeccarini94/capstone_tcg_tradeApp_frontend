@@ -31,3 +31,18 @@
   font-weight: 400;
   cursor: pointer;
 }
+
+.card-text:hover {
+  color: $accent-secondary;
+}
+
+.card-link {
+  color: $accent-secondary;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.stat-card img {
+  cursor: pointer;
+}

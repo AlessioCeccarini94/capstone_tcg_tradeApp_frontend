@@ -4,7 +4,7 @@ export const LOG_USER = "LOG_USER"
 //---------------------> ADDING NEW USER <------------------------------
 
 export const addUser = (userData) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const URL = "http://localhost:3023/auth/register"
     fetch(URL, {
       method: "POST",
