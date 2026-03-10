@@ -1,4 +1,3 @@
-import AddCardComponent from "./AddCardComponen"
 import ProfileHeader from "./ProfileComponentHeader"
 import ProfileHero from "./ProfileHeroSection"
 
@@ -7,7 +6,6 @@ const Profile = () => {
     <>
       <ProfileHeader />
       <ProfileHero />
-      <AddCardComponent />
     </>
   )
 }

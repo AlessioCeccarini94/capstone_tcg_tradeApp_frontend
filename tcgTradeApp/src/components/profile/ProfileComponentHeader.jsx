@@ -26,7 +26,7 @@ const ProfileHeader = () => {
             <Card className=" stat-card">
               <Card.Body className="flex-grow-1">
                 <FaExchangeAlt size={28} className="stat-icon" />
-                <h3 className="mt-3 text-secondary">{collection.length}</h3>
+                <h3 className="mt-3 text-secondary">10</h3>
                 <p className="text-secondary">Cards for Trade</p>
               </Card.Body>
             </Card>
@@ -35,7 +35,7 @@ const ProfileHeader = () => {
             <Card className="stat-card">
               <Card.Body>
                 <FaLayerGroup size={28} className="stat-icon" />
-                <h3 className="mt-3 text-secondary">124</h3>
+                <h3 className="mt-3 text-secondary">{collection.length}</h3>
                 <p className="text-secondary">Total Cards</p>
               </Card.Body>
             </Card>

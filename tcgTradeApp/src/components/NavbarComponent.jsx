@@ -9,8 +9,9 @@ import Dropdown from "react-bootstrap/Dropdown"
 import logo from "../assets/images/logo.png"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { addGameList } from "../redux/actions/gameActions"
+import SearchCard from "./profile/SearchCardComponent"
 
 const NavbarComponent = () => {
   const games = useSelector((state) => state.game.games)
@@ -80,12 +81,7 @@ const NavbarComponent = () => {
               ))}
             </Dropdown.Menu>
           </Dropdown>
-          <Form.Control
-            type="search"
-            placeholder="Search cards"
-            className="me-2"
-          />
-          <Button className="text-secondary">Search</Button>
+          <SearchCard />
           <Nav className="justify-content-end flex-grow-1 pe-3 d-none d-lg-flex">
             <Nav.Link as={Link} to="/auth/login">
               Login

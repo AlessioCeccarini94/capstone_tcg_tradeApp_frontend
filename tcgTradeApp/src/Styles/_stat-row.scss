@@ -1,0 +1,13 @@
+.stat-row {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 10px;
+
+  scrollbar-width: none;
+}
+
+.card-wrapper {
+  min-width: 220px;
+  flex-shrink: 0;
+}

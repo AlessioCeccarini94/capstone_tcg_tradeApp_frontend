@@ -8,6 +8,7 @@ import LoginComponent from "./components/login_and_register/LoginComponent"
 import Footer from "./components/FooterComponent"
 import RegistrationComponent from "./components/login_and_register/RegistrationComponent"
 import PageOfCardsByGame from "./components/cards/PageOfCardsByGame"
+import SearchPage from "./components/cards/SearchPage"
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/auth/login" element={<LoginComponent />} />
           <Route path="/auth/register" element={<RegistrationComponent />} />
           <Route path="/games/:id/cards" element={<PageOfCardsByGame />} />
+          <Route path="/search" element={<SearchPage />} />
         </Routes>
       </div>
       <Footer />
