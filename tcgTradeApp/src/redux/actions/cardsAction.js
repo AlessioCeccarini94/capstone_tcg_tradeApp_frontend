@@ -1,6 +1,7 @@
 export const ADD_CARD_LIST = "ADD_CARD_LIST"
 export const ADD_CARD_FROM_ID = "ADD_CARD_FROM_ID"
 export const GET_COLLECTION = "GET_COLLECTION"
+export const REMOVE_CARD_FROM_ID = "REMOVE_CARD_FROM_ID"
 
 //---------------------> ADDING CARD LIST FOR GAME PAGE <------------------------------
 
@@ -92,13 +93,15 @@ export const removeFromCollection = (id) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
-      .then((res) => res.json())
-      .then((data) => {
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Delete failed")
+        }
+
         dispatch({
           type: REMOVE_CARD_FROM_ID,
-          payload: data,
+          payload: id,
         })
-        console.log(data)
       })
       .catch((err) => {
         console.log(err)

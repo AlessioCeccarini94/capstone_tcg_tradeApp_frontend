@@ -29,7 +29,9 @@ export const cardReducer = (state = initialState, action) => {
     case REMOVE_CARD_FROM_ID:
       return {
         ...state,
-        collection: [...state.collection, action.payload],
+        collection: state.collection.filter(
+          (item) => item.card.blueprintId !== action.payload,
+        ),
       }
     default:
       return state

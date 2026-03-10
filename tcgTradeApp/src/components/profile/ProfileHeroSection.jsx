@@ -4,7 +4,10 @@ import Button from "react-bootstrap/Button"
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { userCardList } from "../../redux/actions/cardsAction"
+import {
+  removeFromCollection,
+  userCardList,
+} from "../../redux/actions/cardsAction"
 
 const ProfileHero = () => {
   const dispatch = useDispatch()
@@ -40,17 +43,24 @@ const ProfileHero = () => {
                 xs={6}
                 md={4}
                 lg={3}
-                key={card.card.id}
+                key={card.card.blueprintId}
                 className="d-flex flex-wrap"
               >
                 <Card className="stat-card">
                   <Card.Img variant="top" src={card.card.image} />
                   <Card.Body>
                     <Card.Title className="text-secondary">
-                      {card.card.name}
+                      {card.card.cardName}
                     </Card.Title>
                     <Button variant="primary me-2">Trade</Button>
-                    <Button variant="primary">Remove</Button>
+                    <Button
+                      onClick={() =>
+                        dispatch(removeFromCollection(card.card.blueprintId))
+                      }
+                      variant="primary"
+                    >
+                      Remove
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
