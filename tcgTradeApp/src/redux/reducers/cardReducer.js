@@ -3,6 +3,7 @@ export const GET_COLLECTION = "GET_COLLECTION"
 export const ADD_CARD_FROM_ID = "ADD_CARD_FROM_ID"
 export const REMOVE_CARD_FROM_ID = "REMOVE_CARD_FROM_ID"
 export const SEARCH_CARD = "SEARCH_CARD"
+export const CARDS_BY_EXPANSION = "CARDS_BY_EXPANSION"
 
 const initialState = {
   cards: [],
@@ -35,6 +36,11 @@ export const cardReducer = (state = initialState, action) => {
         ),
       }
     case SEARCH_CARD:
+      return {
+        ...state,
+        cards: action.payload,
+      }
+    case CARDS_BY_EXPANSION:
       return {
         ...state,
         cards: action.payload,

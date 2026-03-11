@@ -3,6 +3,7 @@ export const ADD_CARD_FROM_ID = "ADD_CARD_FROM_ID"
 export const GET_COLLECTION = "GET_COLLECTION"
 export const REMOVE_CARD_FROM_ID = "REMOVE_CARD_FROM_ID"
 export const SEARCH_CARD = "SEARCH_CARD"
+export const CARDS_BY_EXPANSION = "CARDS_BY_EXPANSION"
 
 //---------------------> ADDING CARD LIST FOR GAME PAGE <------------------------------
 
@@ -126,6 +127,28 @@ export const searchCard = (query) => {
         dispatch({
           type: SEARCH_CARD,
           payload: data,
+        })
+      })
+      .catch((err) => console.log(err))
+  }
+}
+
+//----------------------------> SEARCH CARD BY EXPANSION <-----------------------------------------
+
+export const getCardsByExpansion = (id) => {
+  return (dispatch) => {
+    const URL = `http://localhost:3023/cards/expansions/${id}`
+    fetch(URL, {
+      method: "GET",
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status)
+        return res.json()
+      })
+      .then((data) => {
+        dispatch({
+          type: CARDS_BY_EXPANSION,
+          payload: data.content,
         })
       })
       .catch((err) => console.log(err))
