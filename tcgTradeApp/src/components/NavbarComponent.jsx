@@ -9,17 +9,24 @@ import {
 import Offcanvas from "react-bootstrap/Offcanvas"
 import logo from "../assets/images/logo.png"
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { addGameList } from "../redux/actions/gameActions"
-import SearchCard from "./cards/SearchCardComponent"
+import { logoutUser } from "../redux/actions/userActions"
 import { getUser } from "../redux/actions/userActions"
+import SearchCard from "./cards/SearchCardComponent"
 
 const NavbarComponent = () => {
   const user = useSelector((state) => state.user.users)
   const games = useSelector((state) => state.game.games)
-  console.log(games)
+  const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch(logoutUser())
+    navigate("/")
+  }
 
   useEffect(() => {
     dispatch(addGameList(), dispatch(getUser()))
@@ -103,9 +110,7 @@ const NavbarComponent = () => {
               <NavDropdown.Item as={Link} to="/collection">
                 Collection
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/auth/logout">
-                Logout
-              </NavDropdown.Item>
+              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           )}
         </Form>

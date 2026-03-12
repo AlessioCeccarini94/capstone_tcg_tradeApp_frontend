@@ -1,6 +1,7 @@
 export const ADD_USER = "ADD_USER"
 export const LOG_USER = "LOG_USER"
 export const SET_USER = "SET_USER"
+export const LOGOUT_USER = "LOGOUT_USER"
 
 //---------------------> ADDING NEW USER <------------------------------
 
@@ -78,6 +79,41 @@ export const loginUser = (userData) => {
   }
 }
 
+//------------------------------> LOGOUT USER <-----------------------------------
+
+export const logoutUser = () => {
+  return (dispatch) => {
+    localStorage.removeItem("token")
+    dispatch({
+      type: LOGOUT_USER,
+      payload: {},
+    })
+  }
+}
+
+//----------------------------------> EDIT USER <--------------------------------------
+
+export const editUser = (userData, userId) => {
+  return (dispatch) => {
+    const URL = `http://localhost:3023/users/${userId}`
+    fetch(URL, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        dispatch(getUser())
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+}
+
 //------------------------------> IMAGE PATCH USER <-----------------------------------
 
 export const imagePatch = (image, userId) => {
@@ -92,8 +128,8 @@ export const imagePatch = (image, userId) => {
     body: formData,
   })
     .then((res) => res.json())
-    .then((data) => {
-      console.log(data)
+    .then(() => {
+      dispatch(getUser())
     })
     .catch((err) => {
       console.log(err)

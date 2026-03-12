@@ -41,12 +41,14 @@ const PageOfCards = () => {
                       {card.cardName}
                     </Card.Title>
                     <Card.Text>
-                      {card.avgPrice ? `€${card.avgPrice}` : "-"}
+                      {card.avgPrice
+                        ? `lowest sell price: €${card.avgPrice}`
+                        : "-"}
                     </Card.Text>
                     <Card.Text
+                      className="card-text"
                       as={Link}
                       to={`/expansions/${card.expansion.cardTraderId}`}
-                      className="text-secondary fs-6 d-none d-md-block text-decoration-none my-2"
                     >
                       {card.expansion.name}
                     </Card.Text>

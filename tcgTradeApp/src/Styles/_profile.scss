@@ -1,0 +1,17 @@
+@import "./variables";
+
+.profile-img img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.email-input {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .email-input {
+    width: 50%;
+  }
+}
