@@ -4,22 +4,20 @@ import { FaLayerGroup, FaExchangeAlt, FaClock } from "react-icons/fa"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import { userCardList } from "../../redux/actions/cardsAction"
+import { getUser } from "../../redux/actions/userActions"
 
 const ProfileHeader = () => {
   const dispatch = useDispatch()
   const collection = useSelector((state) => state.card.collection)
-  const loading = useSelector((state) => state.card.loading)
-  const username = collection[0]?.user?.username
+  const user = useSelector((state) => state.user.users)
 
   useEffect(() => {
-    dispatch(userCardList())
+    dispatch(userCardList(), dispatch(getUser()))
   }, [dispatch])
 
   return (
     <>
-      <h1 className="text-center mb-4">
-        Welcome {collection[0]?.user?.username}
-      </h1>
+      <h1 className="text-center mb-4">Welcome {user?.username} !</h1>
       <Container fluid className="d-flex justify-content-center">
         <Row className="w-100 border border-5 border-secondary h-75">
           <Col md={4} className="p-0 h-100">

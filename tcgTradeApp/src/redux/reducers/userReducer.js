@@ -1,25 +1,19 @@
-import { ADD_USER, LOG_USER } from "../actions/userActions"
+import { ADD_USER, LOG_USER, SET_USER } from "../actions/userActions"
 
 const initialState = {
-  users: {},
+  users: null,
   loading: false,
 }
 
 export const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_USER:
+    case SET_USER:
       return {
         ...state,
-        users: [...state.users, action.payload],
-      }
-    case LOG_USER:
-      return {
-        ...state,
-        users: [...state.users, action.payload],
+        users: action.payload,
       }
     default:
       return state
   }
 }
-
 export default userReducer

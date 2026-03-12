@@ -42,12 +42,10 @@ const ProfileHero = () => {
         {!loading &&
           Object.entries(groupedByGame).map(([game, cards]) => {
             const visibleCards = show[game] ? cards : cards.slice(0, 4)
-
             return (
               <div key={game}>
                 <div className="d-flex justify-content-between border-bottom border-3 border-secondary mb-3 w-100">
                   <h5 className="mt-3">{game}</h5>
-
                   <Button
                     className="text-secondary align-text-top"
                     onClick={() =>
@@ -57,7 +55,6 @@ const ProfileHero = () => {
                     {show[game] ? "show less" : "view all"}
                   </Button>
                 </div>
-
                 <Row className="stat-row">
                   {visibleCards.map((card) => (
                     <Col
@@ -73,25 +70,21 @@ const ProfileHero = () => {
                           src={card.card.image}
                           onClick={() => setClickedCard(card.card)}
                         />
-
                         <Card.Body className="d-flex flex-column justify-content-around">
                           <Card.Title className="text-secondary">
                             {card.card.cardName}
                           </Card.Title>
-
                           <Card.Text>
                             {card.card.avgPrice
                               ? `€${card.card.avgPrice}`
                               : "-"}
                           </Card.Text>
-
                           <Card.Text
                             as={Link}
                             to={`/expansions/${card.card.expansion.cardTraderId}`}
                           >
                             {card.card.expansion.name}
                           </Card.Text>
-
                           <Button
                             className="text-center my-2"
                             onClick={() =>

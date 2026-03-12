@@ -1,26 +1,28 @@
-import Button from "react-bootstrap/Button"
-import Container from "react-bootstrap/Container"
-import Form from "react-bootstrap/Form"
-import Nav from "react-bootstrap/Nav"
-import Navbar from "react-bootstrap/Navbar"
-import NavDropdown from "react-bootstrap/NavDropdown"
+import {
+  Container,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Form,
+  Dropdown,
+} from "react-bootstrap"
 import Offcanvas from "react-bootstrap/Offcanvas"
-import Dropdown from "react-bootstrap/Dropdown"
 import logo from "../assets/images/logo.png"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { addGameList } from "../redux/actions/gameActions"
 import SearchCard from "./cards/SearchCardComponent"
-import { PersonCircle } from "react-bootstrap-icons"
+import { getUser } from "../redux/actions/userActions"
 
 const NavbarComponent = () => {
+  const user = useSelector((state) => state.user.users)
   const games = useSelector((state) => state.game.games)
   console.log(games)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(addGameList())
+    dispatch(addGameList(), dispatch(getUser()))
   }, [dispatch])
 
   const token = localStorage.getItem("token")
@@ -62,21 +64,6 @@ const NavbarComponent = () => {
                 </Nav.Link>
               </Nav>
             )}
-            {token && (
-              <NavDropdown
-                title={<PersonCircle size={24} />}
-                align="end"
-                id="user-menu"
-              >
-                <NavDropdown.Item as={Link} to="/profile">
-                  Profile
-                </NavDropdown.Item>
-
-                <NavDropdown.Item as={Link} to="/collection">
-                  My Collection
-                </NavDropdown.Item>
-              </NavDropdown>
-            )}
           </Offcanvas.Body>
         </Navbar.Offcanvas>
         <Form className="d-flex w-100 mt-2">
@@ -97,11 +84,30 @@ const NavbarComponent = () => {
             </Dropdown.Menu>
           </Dropdown>
           <SearchCard />
-          <Nav className="justify-content-end flex-grow-1 pe-3 d-none d-lg-flex">
-            <Nav.Link as={Link} to="/auth/login">
-              Login
-            </Nav.Link>
-          </Nav>
+          {!token && (
+            <Nav className="justify-content-end flex-grow-1 pe-3 d-none d-lg-flex">
+              <Nav.Link as={Link} to="/auth/login">
+                Login
+              </Nav.Link>
+            </Nav>
+          )}
+          {token && (
+            <NavDropdown
+              align="end"
+              className="custom-dropdown"
+              title={<img src={user?.image} />}
+            >
+              <NavDropdown.Item as={Link} to="/profile">
+                Profile
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/collection">
+                Collection
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/auth/logout">
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
+          )}
         </Form>
       </Container>
     </Navbar>
