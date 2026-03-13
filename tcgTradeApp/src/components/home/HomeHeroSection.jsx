@@ -1,133 +1,94 @@
-import { Container, Row, Col } from "react-bootstrap"
+import { Container, Row, Col, Spinner, Button } from "react-bootstrap"
 import Card from "react-bootstrap/Card"
-import Button from "react-bootstrap/Button"
+import { useEffect, useState } from "react"
+import { orderCardByPrice } from "../../redux/actions/cardsAction"
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import Carousel from "react-bootstrap/Carousel"
-import { useState } from "react"
 
 const HomeBody = () => {
-  const [index, setIndex] = useState(0)
-  const handleSelect = (selectedIndex) => {
-    setIndex(selectedIndex)
-  }
+  const dispatch = useDispatch()
+
+  const cards = useSelector((state) => state.card.cards) || []
+  const collection = useSelector((state) => state.card.collection)
+  const loading = useSelector((state) => state.card.loading)
+  const [show, setShow] = useState({})
+  const game = useSelector((state) => state.card.game)
+  const groupedByGame = cards.reduce((acc, card) => {
+    const game = card.expansion.game.name
+
+    if (!acc[game]) {
+      acc[game] = []
+    }
+
+    acc[game].push(card)
+    return acc
+  }, {})
+
+  useEffect(() => {
+    dispatch(orderCardByPrice())
+  }, [dispatch])
+
   return (
-    <>
-      <Container fluid>
-        <Row>
-          <div className="d-flex justify-content-between mt-3">
-            <h6 className="text-center">Best Seller:</h6>
-            <p>view all</p>
-          </div>
-          <Col
-            xs={12}
-            md={6}
-            className="mb-4 d-flex overflow-auto gap-3 horizontal-scroll"
-          >
-            <div className="d-flex flex-wrap mt-3">
-              {/* {Card.map((card) => ( */}
-              <Card className="stat-card flex-shrink-0">
-                <Card.Img
-                  // onClick= {() => setModalShow(true)} TODO: add card zoom
-                  variant="top"
-                  src="https://www.placebear.com/200/200"
-                />
-                <Card.Body>
-                  <div>
-                    <Card.Title
-                      as={Link}
-                      to={"/card"}
-                      className="text-secondary text-decoration-none py-2"
-                    >
-                      Card Title
-                    </Card.Title>
-                  </div>
-                  <Button variant="primary" className="me-2 mt-2">
-                    Trade
-                  </Button>
-                  <Button variant="primary" className="mt-2">
-                    Remove
-                  </Button>
-                </Card.Body>
-              </Card>
-              {/* ))} */}
-            </div>
-          </Col>
-          <div className="d-flex justify-content-between">
-            <h6 className="text-center">Top Rated:</h6>
-            <p>view all</p>
-          </div>
-          <Col
-            xs={12}
-            md={6}
-            className="mt-3 d-flex overflow-auto gap-3 horizontal-scroll"
-          >
-            {/* {Card.map((card) => ( */}
-            <Card className="stat-card flex-shrink-0">
-              <Card.Img
-                // onClick= {() => setModalShow(true)} TODO: add card zoom
-                variant="top"
-                src="https://www.placebear.com/200/200"
-              />
-              <Card.Body>
-                <div>
-                  <Card.Title
-                    as={Link}
-                    to="/card"
-                    className="text-secondary text-decoration-none py-2"
+    <Container fluid>
+      <h3 className="border-bottom border-3 border-secondary mt-3 mb-5">
+        Most expensive cards in :
+      </h3>
+      {loading && (
+        <div className="text-center">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      )}
+
+      {!loading &&
+        Object.entries(groupedByGame).map(([game, cards]) => {
+          const visibleCards = show[game] ? cards : cards.slice(0, 4)
+
+          return (
+            <div key={game}>
+              <Row className="mt-3">
+                <Col className="d-flex justify-content-between align-items-center">
+                  <h4>{game}</h4>
+
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      setShow((prev) => ({
+                        ...prev,
+                        [game]: !prev[game],
+                      }))
+                    }
                   >
-                    Card Title
-                  </Card.Title>
-                </div>
-                <Button variant="primary" className="mt-2 me-2">
-                  Trade
-                </Button>
-                <Button variant="primary" className="mt-2">
-                  Remove
-                </Button>
-              </Card.Body>
-            </Card>
-            {/* ))} */}
-          </Col>
-        </Row>
-        <Container>
-          <Row>
-            <Col className="my-4">
-              <h4 className="text-center">News & Events:</h4>
-              <Carousel activeIndex={index} onSelect={handleSelect}>
-                <Carousel.Item>
-                  <img src="https://placecats.com/1300/500" alt="" />
-                  <Carousel.Caption>
-                    <h3>First slide label</h3>
-                    <p>
-                      Nulla vitae elit libero, a pharetra augue mollis interdum.
-                    </p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img src="https://placecats.com/1300/500" alt="" />
-                  <Carousel.Caption>
-                    <h3>Second slide label</h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img src="https://placecats.com/1300/500" alt="" />
-                  <Carousel.Caption>
-                    <h3>Third slide label</h3>
-                    <p>
-                      Praesent commodo cursus magna, vel scelerisque nisl
-                      consectetur.
-                    </p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-              </Carousel>
-            </Col>
-          </Row>
-        </Container>
-      </Container>
-    </>
+                    {show[game] ? "Show Less" : "View All"}
+                  </Button>
+                </Col>
+              </Row>
+
+              <Row>
+                {visibleCards.map((card) => (
+                  <Col md={3} className="my-3" key={card.blueprintId}>
+                    <Card className="stat-card">
+                      <Card.Img src={card.image} />
+                      <Card.Body>
+                        <Card.Title>{card.cardName}</Card.Title>
+                        <Card.Text>
+                          {card.avgPrice ? `${card.avgPrice} €` : "-"}
+                        </Card.Text>
+                        <Card.Text
+                          className="card-text"
+                          as={Link}
+                          to={`/expansions/${card.expansion.cardTraderId}`}
+                        >
+                          {card.expansion.name}
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          )
+        })}
+    </Container>
   )
 }
 

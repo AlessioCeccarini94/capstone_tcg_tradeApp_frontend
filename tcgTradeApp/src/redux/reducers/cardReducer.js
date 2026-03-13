@@ -1,3 +1,5 @@
+import { SET_CARDS, SET_LOADING } from "../actions/cardsAction"
+
 export const ADD_CARD_LIST = "ADD_CARD_LIST"
 export const GET_COLLECTION = "GET_COLLECTION"
 export const ADD_CARD_FROM_ID = "ADD_CARD_FROM_ID"
@@ -44,6 +46,17 @@ export const cardReducer = (state = initialState, action) => {
       return {
         ...state,
         cards: action.payload,
+      }
+    case SET_CARDS:
+      return {
+        ...state,
+        cards: action.payload,
+        loading: false,
+      }
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: true,
       }
     default:
       return state

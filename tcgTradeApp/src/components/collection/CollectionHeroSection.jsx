@@ -76,7 +76,7 @@ const ProfileHero = () => {
                           </Card.Title>
                           <Card.Text>
                             {card.card.avgPrice
-                              ? `€${card.card.avgPrice}`
+                              ? `lowest sell price: €${card.card.avgPrice}`
                               : "-"}
                           </Card.Text>
                           <Card.Text

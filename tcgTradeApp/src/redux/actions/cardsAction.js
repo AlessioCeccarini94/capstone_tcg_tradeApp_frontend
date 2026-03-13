@@ -4,6 +4,8 @@ export const GET_COLLECTION = "GET_COLLECTION"
 export const REMOVE_CARD_FROM_ID = "REMOVE_CARD_FROM_ID"
 export const SEARCH_CARD = "SEARCH_CARD"
 export const CARDS_BY_EXPANSION = "CARDS_BY_EXPANSION"
+export const SET_CARDS = "SET_CARDS"
+export const SET_LOADING = "SET_LOADING"
 
 //---------------------> ADDING CARD LIST FOR GAME PAGE <------------------------------
 
@@ -152,5 +154,31 @@ export const getCardsByExpansion = (id) => {
         })
       })
       .catch((err) => console.log(err))
+  }
+}
+
+//-------------------------------> ORDER CARD BY PRICE <----------------------------------------------
+
+export const orderCardByPrice = () => {
+  return (dispatch) => {
+    dispatch({ type: SET_LOADING })
+    const URL = "http://localhost:3023/cards/top"
+    fetch(URL, {
+      method: "GET",
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status)
+        return res.json()
+      })
+      .then((data) => {
+        dispatch({
+          type: SET_CARDS,
+          payload: data.content,
+        })
+        console.log(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 }
