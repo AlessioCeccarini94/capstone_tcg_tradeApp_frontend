@@ -2,17 +2,33 @@ import { Container, Row, Col, Spinner, Button } from "react-bootstrap"
 import { useSelector, useDispatch } from "react-redux"
 import Card from "react-bootstrap/Card"
 import { Link } from "react-router-dom"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Modal from "react-bootstrap/Modal"
 import { addToCollection } from "../../redux/actions/cardsAction"
 
 const PageOfCards = () => {
   const dispatch = useDispatch()
-  const cards = useSelector((state) => state.card.cards) || []
+  const cards = useSelector((state) => state.card.cardsByGame) || []
+  const [owners, setOwners] = useState([])
   const loading = useSelector((state) => state.card.loading)
   const collection = useSelector((state) => state.card.collection) || []
 
   const [clickedCard, setClickedCard] = useState(null)
+  useEffect(() => {
+    if (!clickedCard?.blueprintId) return
+
+    fetch(`http://localhost:3023/cards/${clickedCard.blueprintId}/owners`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status)
+        return res.json()
+      })
+      .then((data) => setOwners(data))
+      .catch((err) => console.log(err))
+  }, [clickedCard])
   return (
     <Container>
       {loading && (
@@ -81,12 +97,24 @@ const PageOfCards = () => {
             {clickedCard?.cardName}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="d-flex justify-content-center bg-primary m-0">
+        <Modal.Body className="d-flex flex-column justify-content-center bg-primary m-0">
           <img
             src={clickedCard?.image ? clickedCard.image : "/no-image.png"}
             alt={clickedCard?.name}
             className="img-fluid mx-auto"
           />
+          <h5 className="text-secondary fw-bold mt-3"> Owners:</h5>
+          {owners.map((owner) => (
+            <div key={owner.userId}>
+              <Link
+                as={Link}
+                to={`/profile/${owner.userId}/user/collection`}
+                className="text-secondary text-decoration-none"
+              >
+                {owner.username}
+              </Link>
+            </div>
+          ))}
         </Modal.Body>
       </Modal>
     </Container>

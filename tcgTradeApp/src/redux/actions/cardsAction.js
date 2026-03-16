@@ -5,6 +5,7 @@ export const REMOVE_CARD_FROM_ID = "REMOVE_CARD_FROM_ID"
 export const SEARCH_CARD = "SEARCH_CARD"
 export const CARDS_BY_EXPANSION = "CARDS_BY_EXPANSION"
 export const SET_CARDS = "SET_CARDS"
+export const SET_TOP_CARDS = "SET_TOP_CARDS"
 export const SET_LOADING = "SET_LOADING"
 
 //---------------------> ADDING CARD LIST FOR GAME PAGE <------------------------------
@@ -16,7 +17,10 @@ export const addCardList = (id) => {
     fetch(URL, {
       method: "GET",
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status)
+        return res.json()
+      })
       .then((data) => {
         dispatch({
           type: ADD_CARD_LIST,
@@ -172,7 +176,7 @@ export const orderCardByPrice = () => {
       })
       .then((data) => {
         dispatch({
-          type: SET_CARDS,
+          type: SET_TOP_CARDS,
           payload: data.content,
         })
         console.log(data)

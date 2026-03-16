@@ -3,6 +3,7 @@ import { Container, Row, Col, Button, Badge, Form } from "react-bootstrap"
 import { useSelector, useDispatch } from "react-redux"
 import { GoPencil } from "react-icons/go"
 import { getUser, imagePatch, editUser } from "../../redux/actions/userActions"
+import { useParams } from "react-router"
 
 const ProfileComponent = () => {
   const dispatch = useDispatch()

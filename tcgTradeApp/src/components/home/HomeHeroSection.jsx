@@ -8,8 +8,7 @@ import { Link } from "react-router-dom"
 const HomeBody = () => {
   const dispatch = useDispatch()
 
-  const cards = useSelector((state) => state.card.cards) || []
-  const collection = useSelector((state) => state.card.collection)
+  const cards = useSelector((state) => state.card.topCards) || []
   const loading = useSelector((state) => state.card.loading)
   const [show, setShow] = useState({})
   const game = useSelector((state) => state.card.game)

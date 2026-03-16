@@ -1,14 +1,16 @@
-import { SET_CARDS, SET_LOADING } from "../actions/cardsAction"
-
 export const ADD_CARD_LIST = "ADD_CARD_LIST"
 export const GET_COLLECTION = "GET_COLLECTION"
 export const ADD_CARD_FROM_ID = "ADD_CARD_FROM_ID"
 export const REMOVE_CARD_FROM_ID = "REMOVE_CARD_FROM_ID"
 export const SEARCH_CARD = "SEARCH_CARD"
 export const CARDS_BY_EXPANSION = "CARDS_BY_EXPANSION"
+export const SET_CARDS = "SET_CARDS"
+export const SET_TOP_CARDS = "SET_TOP_CARDS"
+export const SET_LOADING = "SET_LOADING"
 
 const initialState = {
-  cards: [],
+  cardsByGame: [],
+  topCards: [],
   collection: [],
   loading: false,
 }
@@ -18,7 +20,7 @@ export const cardReducer = (state = initialState, action) => {
     case ADD_CARD_LIST:
       return {
         ...state,
-        cards: action.payload,
+        cardsByGame: action.payload,
       }
     case GET_COLLECTION:
       return {
@@ -40,17 +42,23 @@ export const cardReducer = (state = initialState, action) => {
     case SEARCH_CARD:
       return {
         ...state,
-        cards: action.payload,
+        cardsByGame: action.payload,
       }
     case CARDS_BY_EXPANSION:
       return {
         ...state,
-        cards: action.payload,
+        cardsByGame: action.payload,
       }
     case SET_CARDS:
       return {
         ...state,
-        cards: action.payload,
+        cardsByGame: action.payload,
+        loading: false,
+      }
+    case SET_TOP_CARDS:
+      return {
+        ...state,
+        topCards: action.payload,
         loading: false,
       }
     case SET_LOADING:

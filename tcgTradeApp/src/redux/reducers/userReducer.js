@@ -3,10 +3,12 @@ import {
   LOG_USER,
   SET_USER,
   LOGOUT_USER,
+  SET_POFILE_USER,
 } from "../actions/userActions"
 
 const initialState = {
-  users: null,
+  loggedUser: null,
+  profileUser: null,
   loading: false,
 }
 
@@ -22,6 +24,11 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         users: action.payload,
       }
+    case SET_POFILE_USER:
+      return {
+        ...state,
+        profileUser: action.payload,
+      }
     case ADD_USER:
       return {
         ...state,
@@ -31,6 +38,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         users: null,
+        collection: [],
       }
 
     default:

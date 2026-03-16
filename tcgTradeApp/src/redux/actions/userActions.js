@@ -2,6 +2,7 @@ export const ADD_USER = "ADD_USER"
 export const LOG_USER = "LOG_USER"
 export const SET_USER = "SET_USER"
 export const LOGOUT_USER = "LOGOUT_USER"
+export const SET_POFILE_USER = "SET_POFILE_USER"
 
 //---------------------> ADDING NEW USER <------------------------------
 
@@ -52,6 +53,25 @@ export const getUser = () => {
   }
 }
 
+export const getUserById = (id) => {
+  return (dispatch) => {
+    const URL = `http://localhost:3023/users/${id}`
+    fetch(URL, {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        dispatch({
+          type: SET_POFILE_USER,
+          payload: data,
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+}
 //------------------------------> LOGIN USER <-----------------------------------
 
 export const loginUser = (userData) => {

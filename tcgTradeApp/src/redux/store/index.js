@@ -8,7 +8,6 @@ const store = configureStore({
     user: userReducer,
     game: gameReducer,
     card: cardReducer,
-    collection: cardReducer,
   },
 })
 
