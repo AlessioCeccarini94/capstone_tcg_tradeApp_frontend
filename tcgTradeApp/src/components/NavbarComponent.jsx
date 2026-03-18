@@ -13,8 +13,7 @@ import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { addGameList } from "../redux/actions/gameActions"
-import { logoutUser } from "../redux/actions/userActions"
-import { getUser } from "../redux/actions/userActions"
+import { logoutUser, getUser } from "../redux/actions/userActions"
 import SearchCard from "./cards/SearchCardComponent"
 
 const NavbarComponent = () => {
@@ -64,6 +63,13 @@ const NavbarComponent = () => {
                 Home
               </Nav.Link>
             </Nav>
+            {user?.role === "ADMIN" && (
+              <Nav className="justify-content-end flex-grow-1 pe-3">
+                <Nav.Link as={Link} to="/admin">
+                  Admin
+                </Nav.Link>
+              </Nav>
+            )}
             {!token && (
               <Nav className="justify-content-end flex-grow-1 pe-3 d-md-none">
                 <Nav.Link as={Link} to="/auth/login">
@@ -106,6 +112,9 @@ const NavbarComponent = () => {
             >
               <NavDropdown.Item as={Link} to="/profile">
                 Profile
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/favorites">
+                Favorites
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/collection">
                 Collection

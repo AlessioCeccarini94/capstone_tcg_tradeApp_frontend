@@ -4,6 +4,7 @@ import {
   SET_USER,
   LOGOUT_USER,
   SET_POFILE_USER,
+  GET_USER,
 } from "../actions/userActions"
 
 const initialState = {
@@ -14,6 +15,11 @@ const initialState = {
 
 export const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_USER:
+      return {
+        ...state,
+        users: action.payload,
+      }
     case SET_USER:
       return {
         ...state,

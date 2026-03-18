@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
 import { useEffect } from "react"
-import { addCardList, addToCollection } from "../../redux/actions/cardsAction"
+import { addCardList } from "../../redux/actions/cardsActions"
 import PageOfCards from "./PageOfCards"
 
 const PageOfCardsByGame = () => {

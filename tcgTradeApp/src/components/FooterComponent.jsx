@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap"
 import { BsInstagram, BsPinterest, BsTwitterX } from "react-icons/bs"
+import { Link } from "react-router-dom"
 
 const Footer = () => {
   return (
@@ -7,7 +8,12 @@ const Footer = () => {
       <Container fluid>
         <Row className="my-5 w-50 mx-auto">
           <Col className="d-flex justify-content-evenly">
-            <BsInstagram />
+            <BsInstagram
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                window.open("https://www.instagram.com/tcg_tradeapp/")
+              }}
+            />
             <BsTwitterX />
             <BsPinterest />
           </Col>

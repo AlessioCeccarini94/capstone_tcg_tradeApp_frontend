@@ -3,6 +3,7 @@ export const LOG_USER = "LOG_USER"
 export const SET_USER = "SET_USER"
 export const LOGOUT_USER = "LOGOUT_USER"
 export const SET_POFILE_USER = "SET_POFILE_USER"
+export const GET_USER = "GET_USER"
 
 //---------------------> ADDING NEW USER <------------------------------
 
@@ -30,7 +31,7 @@ export const addUser = (userData) => {
   }
 }
 
-//------------------------------> GET USER <-----------------------------------
+//------------------------------> GET LOGGED USER <-----------------------------------
 
 export const getUser = () => {
   return (dispatch) => {
@@ -43,7 +44,7 @@ export const getUser = () => {
       .then((data) => {
         console.log(data)
         dispatch({
-          type: SET_USER,
+          type: GET_USER,
           payload: data,
         })
       })
@@ -52,6 +53,8 @@ export const getUser = () => {
       })
   }
 }
+
+//------------------------------> GET USER BY ID <-----------------------------------
 
 export const getUserById = (id) => {
   return (dispatch) => {
@@ -72,7 +75,8 @@ export const getUserById = (id) => {
       })
   }
 }
-//------------------------------> LOGIN USER <-----------------------------------
+
+//-----------------------------------> LOGIN USER <--------------------------------------
 
 export const loginUser = (userData) => {
   return (dispatch, getState) => {

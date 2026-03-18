@@ -11,6 +11,8 @@ import PageOfCardsByGame from "./components/cards/PageOfCardsByGame"
 import SearchPage from "./components/cards/SearchPage"
 import ExpansioCardsPage from "./components/cards/ExpansionCardsPage"
 import UserProfileComponent from "./components/profile/UserProfileComponent"
+import FavoritesPage from "./components/cards/FavoritesPage"
+import AdminPage from "./components/AdminPage"
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/expansions/:id" element={<ExpansioCardsPage />} />
           <Route path="/profile" element={<ProfileComponent />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/admin" element={<AdminPage />} />
 
           <Route
             path="/profile/:id/user/collection"

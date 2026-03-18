@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap"
 import { FaLayerGroup, FaExchangeAlt, FaClock } from "react-icons/fa"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { userCardList } from "../../redux/actions/cardsAction"
+import { userCardList } from "../../redux/actions/cardsActions"
 import { getUser } from "../../redux/actions/userActions"
 
 const ProfileHeader = () => {

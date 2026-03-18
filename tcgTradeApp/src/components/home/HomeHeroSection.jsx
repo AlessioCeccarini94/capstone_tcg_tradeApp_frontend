@@ -1,7 +1,7 @@
 import { Container, Row, Col, Spinner, Button } from "react-bootstrap"
 import Card from "react-bootstrap/Card"
 import { useEffect, useState } from "react"
-import { orderCardByPrice } from "../../redux/actions/cardsAction"
+import { orderCardByPrice } from "../../redux/actions/cardsActions"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
@@ -64,10 +64,10 @@ const HomeBody = () => {
 
               <Row>
                 {visibleCards.map((card) => (
-                  <Col md={3} className="my-3" key={card.blueprintId}>
+                  <Col xs={6} md={3} className="my-3" key={card.blueprintId}>
                     <Card className="stat-card">
                       <Card.Img src={card.image} />
-                      <Card.Body>
+                      <Card.Body className="d-flex flex-column justify-content-end">
                         <Card.Title>{card.cardName}</Card.Title>
                         <Card.Text>
                           {card.avgPrice ? `${card.avgPrice} €` : "-"}

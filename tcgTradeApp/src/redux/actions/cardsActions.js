@@ -1,5 +1,7 @@
 export const ADD_CARD_LIST = "ADD_CARD_LIST"
 export const ADD_CARD_FROM_ID = "ADD_CARD_FROM_ID"
+export const ADD_FAVORITES = "ADD_FAVORITES"
+export const GET_FAVORITES = "GET_FAVORITES"
 export const GET_COLLECTION = "GET_COLLECTION"
 export const REMOVE_CARD_FROM_ID = "REMOVE_CARD_FROM_ID"
 export const SEARCH_CARD = "SEARCH_CARD"
@@ -34,6 +36,30 @@ export const addCardList = (id) => {
   }
 }
 
+//----------------------> ADDING CARD TO FAVORITES <-----------------------------------
+
+export const addToFavorites = (id) => {
+  return (dispatch) => {
+    const URL = `http://localhost:3023/cards/favorites/${id}`
+    fetch(URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch({
+          type: ADD_FAVORITES,
+          payload: data,
+        })
+        console.log(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+}
 //----------------------------> CARD FROM ID <-----------------------------------------
 
 export const addToCollection = (id) => {
@@ -90,6 +116,36 @@ export const userCardList = () => {
   }
 }
 
+//---------------------------------> USER FAV LIST CARD <---------------------------------------------
+
+export const userFavList = () => {
+  return (dispatch) => {
+    const URL = `http://localhost:3023/cards/favorites`
+    fetch(URL, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status)
+        return res.json()
+      })
+      .then((data) => {
+        dispatch({
+          type: GET_FAVORITES,
+          payload: data,
+        })
+
+        console.log(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+}
+
 //----------------------------> REMOVE CARD FROM COLLECTION <-----------------------------------------
 
 export const removeFromCollection = (id) => {
@@ -114,6 +170,26 @@ export const removeFromCollection = (id) => {
       .catch((err) => {
         console.log(err)
       })
+  }
+}
+
+//----------------------------> REMOVE CARD FROM FAVORITES <-----------------------------------------
+
+export const REMOVE_FAVORITE = "REMOVE_FAVORITE"
+
+export const removeFavorite = (id) => {
+  return (dispatch) => {
+    fetch(`http://localhost:3023/cards/favorites/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }).then(() => {
+      dispatch({
+        type: REMOVE_FAVORITE,
+        payload: id,
+      })
+    })
   }
 }
 

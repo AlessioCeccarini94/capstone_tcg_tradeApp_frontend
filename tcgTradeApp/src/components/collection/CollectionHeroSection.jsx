@@ -8,7 +8,7 @@ import { useEffect } from "react"
 import {
   removeFromCollection,
   userCardList,
-} from "../../redux/actions/cardsAction"
+} from "../../redux/actions/cardsActions"
 import { useState } from "react"
 
 const ProfileHero = () => {

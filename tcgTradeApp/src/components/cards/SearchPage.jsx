@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { useSearchParams } from "react-router-dom"
-import { searchCard } from "../../redux/actions/cardsAction"
+import { searchCard } from "../../redux/actions/cardsActions"
 import PageOfCards from "./PageOfCards"
 
 const SearchPage = () => {

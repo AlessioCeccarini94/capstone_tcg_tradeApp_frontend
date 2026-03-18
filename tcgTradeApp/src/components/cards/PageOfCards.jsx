@@ -4,7 +4,12 @@ import Card from "react-bootstrap/Card"
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import Modal from "react-bootstrap/Modal"
-import { addToCollection } from "../../redux/actions/cardsAction"
+import {
+  addToCollection,
+  addToFavorites,
+  userFavList,
+} from "../../redux/actions/cardsActions"
+import { FaRegHeart } from "react-icons/fa"
 
 const PageOfCards = () => {
   const dispatch = useDispatch()
@@ -12,11 +17,14 @@ const PageOfCards = () => {
   const [owners, setOwners] = useState([])
   const loading = useSelector((state) => state.card.loading)
   const collection = useSelector((state) => state.card.collection) || []
+  const favorites = useSelector((state) => state.card.favorites) || []
 
   const [clickedCard, setClickedCard] = useState(null)
   useEffect(() => {
+    dispatch(userFavList())
+  }, [dispatch])
+  useEffect(() => {
     if (!clickedCard?.blueprintId) return
-
     fetch(`http://localhost:3023/cards/${clickedCard.blueprintId}/owners`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -40,6 +48,9 @@ const PageOfCards = () => {
         <Row>
           {cards.map((card) => {
             const isInCollection = collection.some(
+              (item) => item.card.blueprintId === card.blueprintId,
+            )
+            const isInFavorites = favorites.some(
               (item) => item.card.blueprintId === card.blueprintId,
             )
 
@@ -68,17 +79,33 @@ const PageOfCards = () => {
                     >
                       {card.expansion.name}
                     </Card.Text>
-
-                    <Button
-                      variant={isInCollection ? "secondary" : "primary"}
-                      disabled={isInCollection}
-                      onClick={() =>
-                        dispatch(addToCollection(card.blueprintId))
-                      }
-                      className="d-flex justify-content-center align-items-center"
-                    >
-                      {isInCollection ? "In Collection" : "Add to Collection"}
-                    </Button>
+                    <Row>
+                      <Col xs={9}>
+                        <Button
+                          variant={isInCollection ? "secondary" : "primary"}
+                          disabled={isInCollection}
+                          onClick={() =>
+                            dispatch(addToCollection(card.blueprintId))
+                          }
+                          className="d-flex justify-content-center align-items-center w-100"
+                        >
+                          {isInCollection
+                            ? "In Collection"
+                            : "Add to Collection"}
+                        </Button>
+                      </Col>
+                      <Col xs={3}>
+                        <Button
+                          variant={isInFavorites ? "secondary" : "primary"}
+                          disabled={isInFavorites}
+                          onClick={() =>
+                            dispatch(addToFavorites(card.blueprintId))
+                          }
+                        >
+                          <FaRegHeart />
+                        </Button>
+                      </Col>
+                    </Row>
                   </Card.Body>
                 </Card>
               </Col>
