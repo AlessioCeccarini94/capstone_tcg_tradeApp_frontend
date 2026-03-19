@@ -19,6 +19,22 @@ const PageOfCards = () => {
   const collection = useSelector((state) => state.card.collection) || []
   const favorites = useSelector((state) => state.card.favorites) || []
 
+  const excludeWords = [
+    "booster box",
+    "booster",
+    "playmat",
+    "deck",
+    "sleeves",
+    "gift box",
+    "art series",
+    "intro pack",
+  ]
+
+  const filteredCards = cards.filter((card) => {
+    const name = card.cardName.toLowerCase()
+    return !excludeWords.some((word) => name.includes(word))
+  })
+
   const [clickedCard, setClickedCard] = useState(null)
   useEffect(() => {
     dispatch(userFavList())
@@ -46,7 +62,7 @@ const PageOfCards = () => {
       )}
       {!loading && (
         <Row>
-          {cards.map((card) => {
+          {filteredCards.map((card) => {
             const isInCollection = collection.some(
               (item) => item.card.blueprintId === card.blueprintId,
             )
@@ -63,7 +79,7 @@ const PageOfCards = () => {
                     onClick={() => setClickedCard(card)}
                   />
 
-                  <Card.Body className="d-flex flex-column justify-content-around">
+                  <Card.Body className="d-flex flex-column justify-content-between">
                     <Card.Title className="text-secondary fw-bold card-title">
                       {card.cardName}
                     </Card.Title>
@@ -73,13 +89,12 @@ const PageOfCards = () => {
                         : "-"}
                     </Card.Text>
                     <Card.Text
-                      className="card-text"
                       as={Link}
                       to={`/expansions/${card.expansion.cardTraderId}`}
                     >
                       {card.expansion.name}
                     </Card.Text>
-                    <Row>
+                    <Row className="d-flex justify-content-center mt-2">
                       <Col xs={9}>
                         <Button
                           variant={isInCollection ? "secondary" : "primary"}
@@ -94,7 +109,7 @@ const PageOfCards = () => {
                             : "Add to Collection"}
                         </Button>
                       </Col>
-                      <Col xs={3}>
+                      <Col xs={2}>
                         <Button
                           variant={isInFavorites ? "secondary" : "primary"}
                           disabled={isInFavorites}

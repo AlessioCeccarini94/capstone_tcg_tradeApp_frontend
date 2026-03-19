@@ -12,7 +12,25 @@ const HomeBody = () => {
   const loading = useSelector((state) => state.card.loading)
   const [show, setShow] = useState({})
   const game = useSelector((state) => state.card.game)
-  const groupedByGame = cards.reduce((acc, card) => {
+
+  const excludeWords = [
+    "booster box",
+    "booster",
+    "playmat",
+    "deck",
+    "sleeves",
+    "gift box",
+    "art series",
+    "intro pack",
+    "battle set",
+    "tin",
+    "vivid potrayals set",
+  ]
+  const filteredCards = cards.filter((card) => {
+    const name = card.cardName.toLowerCase()
+    return !excludeWords.some((word) => name.includes(word))
+  })
+  const groupedByGame = filteredCards.reduce((acc, card) => {
     const game = card.expansion.game.name
 
     if (!acc[game]) {
@@ -49,7 +67,7 @@ const HomeBody = () => {
                   <h4>{game}</h4>
 
                   <Button
-                    variant="secondary"
+                    className="text-secondary align-text-top"
                     onClick={() =>
                       setShow((prev) => ({
                         ...prev,

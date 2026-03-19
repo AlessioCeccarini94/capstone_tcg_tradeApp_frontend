@@ -13,14 +13,14 @@ import { userFavList, removeFavorite } from "../../redux/actions/cardsActions"
 import { Link } from "react-router-dom"
 
 const FavoritesPage = () => {
+  //--------- CONST ------------
+
   const dispatch = useDispatch()
   const favorites = useSelector((state) => state.card.favorites)
   const loading = useSelector((state) => state.card.loading)
   const [show, setShow] = useState({})
   const [owners, setOwners] = useState([])
-
   const [clickedCard, setClickedCard] = useState(null)
-
   const groupedByGame = favorites.reduce((acc, card) => {
     const game = card.card.expansion.game.name
     if (!acc[game]) {
@@ -30,10 +30,11 @@ const FavoritesPage = () => {
     return acc
   }, {})
 
+  //--------- HOOK ------------
+
   useEffect(() => {
     dispatch(userFavList())
   }, [dispatch])
-
   useEffect(() => {
     if (!clickedCard?.blueprintId) return
     fetch(`http://localhost:3023/cards/${clickedCard.blueprintId}/owners`, {

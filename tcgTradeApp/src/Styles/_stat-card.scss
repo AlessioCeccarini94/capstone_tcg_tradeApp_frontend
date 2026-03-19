@@ -18,8 +18,8 @@
 .card-title {
   color: $text-secondary;
   font-weight: 600;
+  cursor: default;
   text-decoration: none;
-  cursor: pointer;
 }
 
 .card-title:hover {
@@ -29,7 +29,6 @@
 .card-text {
   color: $text-secondary;
   font-weight: 400;
-  cursor: pointer;
   text-decoration: none;
 }
 

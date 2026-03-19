@@ -10,23 +10,36 @@ export const GET_USER = "GET_USER"
 export const addUser = (userData) => {
   return (dispatch) => {
     const URL = "http://localhost:3023/auth/register"
-    fetch(URL, {
+    return fetch(URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(userData),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        return res.json().then((data) => {
+          if (!res.ok) {
+            throw new Error(
+              data.message || data.errors?.[0] || "Something went wrong",
+            )
+          }
+          return data
+        })
+      })
       .then((data) => {
         console.log(data)
         dispatch({
           type: ADD_USER,
           payload: data,
         })
+        return { success: true }
       })
       .catch((err) => {
-        console.log(err)
+        return {
+          success: false,
+          message: err.message || err.errors?.[0] || "Something went wrong",
+        }
       })
   }
 }

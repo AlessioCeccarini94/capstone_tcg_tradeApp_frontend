@@ -3,16 +3,19 @@ import { Container, Row, Col } from "react-bootstrap"
 import { FaLayerGroup, FaExchangeAlt, FaClock } from "react-icons/fa"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { userCardList } from "../../redux/actions/cardsActions"
+import { userCardList, userFavList } from "../../redux/actions/cardsActions"
 import { getUser } from "../../redux/actions/userActions"
+import { useNavigate } from "react-router-dom"
 
 const ProfileHeader = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const collection = useSelector((state) => state.card.collection)
+  const favorites = useSelector((state) => state.card.favorites)
   const user = useSelector((state) => state.user.users)
 
   useEffect(() => {
-    dispatch(userCardList(), dispatch(getUser()))
+    dispatch(userCardList(), userFavList(), dispatch(getUser()))
   }, [dispatch])
 
   return (
@@ -31,9 +34,12 @@ const ProfileHeader = () => {
           </Col>
           <Col md={6} className="p-0">
             <Card className="stat-card">
-              <Card.Body>
+              <Card.Body
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate("/favorites")}
+              >
                 <FaClock size={28} className="stat-icon" />
-                <h3 className="mt-3 text-secondary">5</h3>
+                <h3 className="mt-3 text-secondary">{favorites.length}</h3>
                 <p className="text-secondary">Wanted cards</p>
               </Card.Body>
             </Card>

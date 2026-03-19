@@ -21,31 +21,35 @@ const AdminPage = () => {
           {Array.isArray(users) &&
             users?.map((user) => (
               <div key={user.id} className="border border-5 border-secondary">
-                <ListGroup.Item className="d-flex justify-content-between">
-                  {user.firstName} <Button>Update</Button>
+                <p className="text-secondary text-center p-1 align-middle d-flex justify-content-between align-items-center mx-3">
+                  USER:
+                  <Button>Delete User</Button>
+                </p>
+                <ListGroup.Item className="d-flex justify-content-between bg-primary text-secondary border-secondary">
+                  First name: <br /> {user.firstName} <Button>Update</Button>
                 </ListGroup.Item>
-                <ListGroup.Item className="d-flex justify-content-between">
-                  {user.lastName}
+                <ListGroup.Item className="d-flex justify-content-between bg-primary text-secondary border-secondary">
+                  Last name: <br /> {user.lastName}
                   <Button>Update</Button>{" "}
                 </ListGroup.Item>
-                <ListGroup.Item className="d-flex justify-content-between">
-                  {user.username}
+                <ListGroup.Item className="d-flex justify-content-between bg-primary text-secondary border-secondary">
+                  Username: <br /> {user.username}
                   <Button>Update</Button>
                 </ListGroup.Item>
-                <ListGroup.Item className="d-flex justify-content-between">
-                  {user.email}
+                <ListGroup.Item className="d-flex justify-content-between bg-primary text-secondary border-secondary">
+                  Email: <br /> {user.email}
                   <Button>Update</Button>
                 </ListGroup.Item>
-                <ListGroup.Item className="d-flex justify-content-between">
-                  {user.city.cityName}
+                <ListGroup.Item className="d-flex justify-content-between bg-primary text-secondary border-secondary">
+                  City: <br /> {user.city.cityName}
                   <Button>Update</Button>
                 </ListGroup.Item>
-                <ListGroup.Item className="d-flex justify-content-between">
-                  {user.role}
+                <ListGroup.Item className="d-flex justify-content-between bg-primary text-secondary border-secondary">
+                  Role: <br /> {user.role}
                   <Button>Update</Button>
                 </ListGroup.Item>
-                <ListGroup.Item className="d-flex justify-content-between">
-                  {user.userId}
+                <ListGroup.Item className="d-flex justify-content-between bg-primary text-secondary border-secondary">
+                  User id: <br /> {user.userId}
                   <Button>Update</Button>
                 </ListGroup.Item>
               </div>

@@ -7,15 +7,13 @@ import Col from "react-bootstrap/Col"
 import Form from "react-bootstrap/Form"
 import InputGroup from "react-bootstrap/InputGroup"
 import Row from "react-bootstrap/Row"
+import { useNavigate } from "react-router-dom"
 
 const Registration = () => {
+  // const
   const [cities, setCities] = useState([])
-  useEffect(() => {
-    fetch("http://localhost:3023/cities")
-      .then((res) => res.json())
-      .then((data) => setCities(data))
-  }, [])
-
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [validated, setValidated] = useState(false)
   const [formData, setFormData] = useState({
@@ -27,23 +25,34 @@ const Registration = () => {
     cityId: "",
   })
 
+  useEffect(() => {
+    fetch("http://localhost:3023/cities")
+      .then((res) => res.json())
+      .then((data) => setCities(data))
+  }, [])
+  //handle
   const handleChange = (event) => {
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
     })
   }
-
   const handleSubmit = (event) => {
     event.preventDefault()
-
     const form = event.currentTarget
     if (form.checkValidity() === false) {
-      event.preventDefault()
       event.stopPropagation()
-    } else {
-      dispatch(addUser(formData))
+      setValidated(true)
+      return
     }
+    dispatch(addUser(formData)).then((res) => {
+      if (res.success) {
+        setError("")
+        navigate("auth/login")
+      } else {
+        setError(res.message)
+      }
+    })
     setValidated(true)
   }
   return (
@@ -130,7 +139,9 @@ const Registration = () => {
             value={formData.password}
             onChange={handleChange}
             required
+            isInvalid={!!error}
           />
+          <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group as={Col} md="6">

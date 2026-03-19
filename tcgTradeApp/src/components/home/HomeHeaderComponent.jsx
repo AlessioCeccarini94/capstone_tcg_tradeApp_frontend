@@ -8,7 +8,7 @@ import { getCarousel, imagePatch } from "../../redux/actions/adminActions"
 
 const HomeHeader = () => {
   const [index, setIndex] = useState(0)
-
+  const [show, setShow] = useState(false)
   const [files, setFiles] = useState({})
 
   const dispatch = useDispatch()
@@ -30,10 +30,19 @@ const HomeHeader = () => {
 
   return (
     <Container>
+      {user && user.role === "ADMIN" && (
+        <Button
+          className="mb-3 w-25 mx-auto"
+          variant="secondary"
+          onClick={() => setShow((prev) => !prev)}
+        >
+          {show ? "Hide" : "Show Carousel Panel"}
+        </Button>
+      )}
       <Row>
         <Col>
-          {user && user.role === "ADMIN" && (
-            <div className="mb-4 d-flex justify-content-center">
+          {user && user.role === "ADMIN" && show && (
+            <div className="mb-4 d-md-flex justify-content-center">
               {images?.map((img) => (
                 <div
                   key={img.id}
@@ -72,9 +81,8 @@ const HomeHeader = () => {
               <Carousel.Item key={img.id}>
                 <img
                   src={img.image ? img.image : "https://placecats.com/200/300"}
-                  className="d-block w-100"
+                  className="carouselImg"
                   alt="carousel"
-                  style={{ height: "500px", objectFit: "cover" }}
                 />
               </Carousel.Item>
             ))}
