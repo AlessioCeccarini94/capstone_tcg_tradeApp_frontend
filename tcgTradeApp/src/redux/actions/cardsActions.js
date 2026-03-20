@@ -9,6 +9,7 @@ export const CARDS_BY_EXPANSION = "CARDS_BY_EXPANSION"
 export const SET_CARDS = "SET_CARDS"
 export const SET_TOP_CARDS = "SET_TOP_CARDS"
 export const SET_LOADING = "SET_LOADING"
+export const GET_USER_COLLECTION = "GET_USER_COLLECTION"
 
 //---------------------> ADDING CARD LIST FOR GAME PAGE <------------------------------
 
@@ -260,5 +261,28 @@ export const orderCardByPrice = () => {
       .catch((err) => {
         console.log(err)
       })
+  }
+}
+
+//-------------------------------> GET USER COLLECTION <----------------------------------------------
+
+export const getUserCollection = (userId) => {
+  return (dispatch) => {
+    fetch(`http://localhost:3023/cards/collection/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Errore fetch collection")
+        return res.json()
+      })
+      .then((data) => {
+        dispatch({
+          type: GET_USER_COLLECTION,
+          payload: data,
+        })
+      })
+      .catch((err) => console.log(err))
   }
 }

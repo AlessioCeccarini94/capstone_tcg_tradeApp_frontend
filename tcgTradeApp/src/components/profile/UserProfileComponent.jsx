@@ -1,26 +1,84 @@
-import React, { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { getUserById } from "../../redux/actions/userActions"
 import { useParams } from "react-router"
-import { Container, Row, Col } from "react-bootstrap"
+import { Container, Row, Col, Card, Button } from "react-bootstrap"
+import { getUserCollection } from "../../redux/actions/cardsActions"
+import { getUserById } from "../../redux/actions/userActions"
+import { FaLayerGroup, FaExchangeAlt, FaClock } from "react-icons/fa"
 
 const UserProfileComponent = () => {
-  const dispatch = useDispatch()
   const { id } = useParams()
   const user = useSelector((state) => state.user.profileUser)
+  const collection = useSelector((state) => state.card.collection)
+  const dispatch = useDispatch()
+  const cards = useSelector((state) => state.card.cardsByGame) || []
+  const loading = useSelector((state) => state.card.loading)
+
   useEffect(() => {
-    dispatch(getUserById(id))
+    ;(dispatch(getUserById(id)), dispatch(getUserCollection(id)))
   }, [dispatch, id])
+
   return (
-    <Container fluid>
-      <Row className="d-flex justify-content-center w-50 mx-auto">
-        <Col className="d-flex flex-column justify-content-center align-items-center">
-          <img className="rounded-circle w-25" src={user?.image} alt="" />
-          <p className="mt-3">{user?.username}</p>
-          <p>{user?.email}</p>
-          <p>{user?.city}</p>
+    <Container fluid className="d-flex flex-column align-items-center">
+      <Row className="w-100 border border-5 border-secondary h-75">
+        <Col md={6} className="p-0">
+          <Card className="stat-card">
+            <Card.Body className="d-flex flex-column justify-content-center">
+              <FaLayerGroup size={28} className="stat-icon mx-auto" />
+              <h3 className="mt-3 text-secondary">{collection.length}</h3>
+              <p className="text-secondary">Total Cards</p>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={6} className="p-0 bg-primary profile-img">
+          <Card className="stat-card">
+            <Card.Body>
+              <img src={user?.image} alt="" />
+              <h3 className="text-secondary">{user?.username}</h3>
+              <h3 className="text-secondary">
+                {user?.firstName} {user?.lastName}
+              </h3>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
+      {loading && (
+        <div className="text-center">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      )}
+      {!loading && (
+        <Row>
+          {collection.map((item) => {
+            const card = item.card
+            return (
+              <Col className="my-3" key={card.blueprintId} xs={6} md={4} lg={3}>
+                <Card className="m-2 stat-card">
+                  <Card.Img src={card.image ? card.image : "/no-image.png"} />
+                  <Card.Body>
+                    <Card.Title>{card.cardName}</Card.Title>
+                    <Card.Text>Quantity: {item.quantity}</Card.Text>
+                    <Card.Text>
+                      {card.avgPrice
+                        ? `lowest sell price: €${card.avgPrice}`
+                        : "-"}
+                    </Card.Text>
+                  </Card.Body>
+                  <div className="mb-3">
+                    <Button
+                      className="w-50"
+                      href={`mailto:${user?.email}?subject=Trade Request&body=Hi! ${user?.username}.I would like to trade ${item.quantity} ${card.cardName} for you.`}
+                      variant="secondary"
+                    >
+                      Contact
+                    </Button>
+                  </div>
+                </Card>
+              </Col>
+            )
+          })}
+        </Row>
+      )}
     </Container>
   )
 }

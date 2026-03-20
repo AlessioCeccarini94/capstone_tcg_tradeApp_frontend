@@ -33,3 +33,10 @@
   height: 35px;
   object-fit: cover;
 }
+
+.search-input {
+  border-start-start-radius: 0.2rem;
+  border-end-start-radius: 0.2rem;
+  border-start-end-radius: 0.5rem;
+  border-end-end-radius: 0.5rem;
+}

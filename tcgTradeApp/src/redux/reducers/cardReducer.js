@@ -10,6 +10,7 @@ export const SET_TOP_CARDS = "SET_TOP_CARDS"
 export const SET_LOADING = "SET_LOADING"
 export const REMOVE_FAVORITE = "REMOVE_FAVORITE"
 export const GET_FAVORITES = "GET_FAVORITES"
+export const GET_USER_COLLECTION = "GET_USER_COLLECTION"
 
 const initialState = {
   cardsByGame: [],
@@ -69,6 +70,11 @@ export const cardReducer = (state = initialState, action) => {
       return {
         ...state,
         cardsByGame: action.payload,
+      }
+    case GET_USER_COLLECTION:
+      return {
+        ...state,
+        collection: action.payload,
       }
     case SET_CARDS:
       return {

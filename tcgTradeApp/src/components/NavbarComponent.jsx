@@ -35,7 +35,10 @@ const NavbarComponent = () => {
 
   return (
     <Navbar expand="lg" className=" custom-navbar mb-3">
-      <Container fluid>
+      <Container
+        fluid
+        className="d-flex justify-content-between align-items-center"
+      >
         <Navbar.Brand as={Link} to="/" className="navbar-brand">
           <img
             src={logo}
@@ -81,9 +84,9 @@ const NavbarComponent = () => {
           </Offcanvas.Body>
         </Navbar.Offcanvas>
         <Form className="d-flex w-100 mt-2">
-          <Dropdown className="border-0 radius-0">
+          <Dropdown className="border-0">
             <Dropdown.Toggle id="dropdown-basic">
-              <i className="bi bi-filter-left"></i>
+              <i className=" bi bi-filter-left">TCG</i>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {games?.map((game) => (

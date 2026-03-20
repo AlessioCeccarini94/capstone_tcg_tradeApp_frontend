@@ -27,7 +27,7 @@ const SearchCard = () => {
       <Form.Control
         type="search"
         placeholder="Search"
-        className="me-2"
+        className="me-2 search-input"
         aria-label="Search"
         value={query}
         onChange={handleChange}
