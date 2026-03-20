@@ -24,7 +24,7 @@ const HomeBody = () => {
     "intro pack",
     "battle set",
     "tin",
-    "vivid potrayals set",
+    "vivid potrayals",
   ]
   const filteredCards = cards.filter((card) => {
     const name = card.cardName.toLowerCase()

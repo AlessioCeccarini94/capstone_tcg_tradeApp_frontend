@@ -154,21 +154,26 @@ export const editUser = (userData, userId) => {
 //------------------------------> IMAGE PATCH USER <-----------------------------------
 
 export const imagePatch = (image, userId) => {
-  const formData = new FormData()
-  formData.append("image", image)
+  return (dispatch) => {
+    const formData = new FormData()
+    formData.append("image", image)
 
-  fetch(`http://localhost:3023/users/${userId}/image`, {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-    body: formData,
-  })
-    .then((res) => res.json())
-    .then(() => {
-      dispatch(getUser())
+    fetch(`http://localhost:3023/users/${userId}/image`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: formData,
     })
-    .catch((err) => {
-      console.log(err)
-    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Errore upload")
+        return res.json()
+      })
+      .then(() => {
+        dispatch(getUser())
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 }

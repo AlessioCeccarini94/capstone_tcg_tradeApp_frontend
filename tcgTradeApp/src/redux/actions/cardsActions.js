@@ -12,10 +12,10 @@ export const SET_LOADING = "SET_LOADING"
 
 //---------------------> ADDING CARD LIST FOR GAME PAGE <------------------------------
 
-export const addCardList = (id) => {
+export const addCardList = (userId) => {
   return (dispatch) => {
     const randomPage = Math.floor(Math.random() * 100)
-    const URL = `http://localhost:3023/games/${id}/cards?page=${randomPage}&size=12`
+    const URL = `http://localhost:3023/games/${userId}/cards?page=${randomPage}&size=12`
     fetch(URL, {
       method: "GET",
     })

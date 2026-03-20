@@ -28,6 +28,10 @@ const PageOfCards = () => {
     "gift box",
     "art series",
     "intro pack",
+    "Vivid Potrayals",
+    "storage box",
+    "tournament pack",
+    "championship pack",
   ]
 
   const filteredCards = cards.filter((card) => {
@@ -95,22 +99,23 @@ const PageOfCards = () => {
                       {card.expansion.name}
                     </Card.Text>
                     <Row className="d-flex justify-content-center mt-2">
-                      <Col xs={9}>
+                      <Col xs={12} md={9}>
                         <Button
                           variant={isInCollection ? "secondary" : "primary"}
                           disabled={isInCollection}
                           onClick={() =>
                             dispatch(addToCollection(card.blueprintId))
                           }
-                          className="d-flex justify-content-center align-items-center w-100"
+                          className="d-flex justify-content-center align-items-center w-100 mt-1"
                         >
                           {isInCollection
                             ? "In Collection"
                             : "Add to Collection"}
                         </Button>
                       </Col>
-                      <Col xs={2}>
+                      <Col xs={4} md={3}>
                         <Button
+                          className="mt-1"
                           variant={isInFavorites ? "secondary" : "primary"}
                           disabled={isInFavorites}
                           onClick={() =>

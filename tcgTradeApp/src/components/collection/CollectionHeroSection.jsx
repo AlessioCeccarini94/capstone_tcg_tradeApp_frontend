@@ -8,6 +8,7 @@ import { useEffect } from "react"
 import {
   removeFromCollection,
   userCardList,
+  userFavList,
 } from "../../redux/actions/cardsActions"
 import { useState } from "react"
 
@@ -29,6 +30,10 @@ const ProfileHero = () => {
 
   useEffect(() => {
     dispatch(userCardList())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(userFavList())
   }, [dispatch])
 
   return (

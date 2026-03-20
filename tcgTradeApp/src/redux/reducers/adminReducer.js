@@ -1,5 +1,7 @@
 export const GET_CAROUSEL = "GET_CAROUSEL"
 export const GET_ALL_USERS = "GET_USERS"
+export const DELETE_USER = "DELETE_USER"
+export const EDIT_USER = "EDIT_USER"
 const initialState = {
   carousel: [],
   users: [],
@@ -18,7 +20,18 @@ export const adminReducer = (state = initialState, action) => {
         ...state,
         users: action.payload,
       }
-
+    case EDIT_USER:
+      return {
+        ...state,
+        users: state.users.map((user) =>
+          user.userId === action.payload.userId ? action.payload : user,
+        ),
+      }
+    case DELETE_USER:
+      return {
+        ...state,
+        users: state.users.filter((user) => user.userId !== action.payload),
+      }
     default:
       return state
   }

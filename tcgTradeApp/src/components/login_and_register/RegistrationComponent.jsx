@@ -48,10 +48,10 @@ const Registration = () => {
     dispatch(addUser(formData)).then((res) => {
       if (res.success) {
         setError("")
-        navigate("auth/login")
       } else {
         setError(res.message)
       }
+      navigate("/auth/login")
     })
     setValidated(true)
   }

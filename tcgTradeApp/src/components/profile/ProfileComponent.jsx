@@ -1,5 +1,13 @@
 import { useRef, useEffect, useState } from "react"
-import { Container, Row, Col, Button, Badge, Form } from "react-bootstrap"
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Badge,
+  Form,
+  Modal,
+} from "react-bootstrap"
 import { useSelector, useDispatch } from "react-redux"
 import { GoPencil } from "react-icons/go"
 import { getUser, imagePatch, editUser } from "../../redux/actions/userActions"
@@ -10,6 +18,7 @@ const ProfileComponent = () => {
   const fileInputRef = useRef(null)
   const [cities, setCities] = useState([])
   const [isEditing, setIsEditing] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -18,12 +27,16 @@ const ProfileComponent = () => {
     cityId: "",
   })
 
+  //---------------- HANDLES ------------------
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
   }
+
+  const handleImg = (e) => {}
 
   const handleSave = () => {
     dispatch(editUser(formData, user.userId))
@@ -35,6 +48,8 @@ const ProfileComponent = () => {
   }
   const handleFileChange = (e) => {
     const file = e.target.files[0]
+
+    // -------------------------------------------
 
     if (file) {
       dispatch(imagePatch(file, user.userId))
@@ -171,7 +186,13 @@ const ProfileComponent = () => {
           <Col className="d-flex flex-column justify-content-evenly">Image</Col>
           <Col className="text-muted d-flex flex-column justify-content-evenly">
             <p className="profile-img d-flex justify-content-between align-items-center my-5 ">
-              <img src={user?.image} alt="" />
+              <img
+                onClick={() => {
+                  setShowModal(true)
+                }}
+                src={user?.image}
+                alt=""
+              />
               <Badge onClick={handleClick} as={Button} bg="secondary">
                 <GoPencil />
               </Badge>
@@ -199,6 +220,24 @@ const ProfileComponent = () => {
             {isEditing ? "Save" : "Edit"}
           </Button>
         </div>
+        <Modal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          centered
+          size="lg"
+        >
+          <Modal.Body className="text-center bg-dark p-0">
+            <img
+              src={user?.image}
+              alt=""
+              style={{
+                width: "100%",
+                maxHeight: "80vh",
+                objectFit: "contain",
+              }}
+            />
+          </Modal.Body>
+        </Modal>
       </Container>
     </>
   )

@@ -21,14 +21,14 @@ function App() {
       <div className="flex-grow-1">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/collection" element={<CollectionComponent />} />
+          <Route path="/collection/:id" element={<CollectionComponent />} />
           <Route path="/auth/login" element={<LoginComponent />} />
           <Route path="/auth/register" element={<RegistrationComponent />} />
           <Route path="/games/:id/cards" element={<PageOfCardsByGame />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/expansions/:id" element={<ExpansioCardsPage />} />
-          <Route path="/profile" element={<ProfileComponent />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/profile/:userId" element={<ProfileComponent />} />
+          <Route path="/favorites/:id" element={<FavoritesPage />} />
           <Route path="/admin" element={<AdminPage />} />
 
           <Route

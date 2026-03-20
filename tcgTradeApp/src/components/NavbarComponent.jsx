@@ -68,6 +68,7 @@ const NavbarComponent = () => {
                 <Nav.Link as={Link} to="/admin">
                   Admin
                 </Nav.Link>
+                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </Nav>
             )}
             {!token && (
@@ -110,13 +111,13 @@ const NavbarComponent = () => {
               className="custom-dropdown"
               title={<img src={user?.image} />}
             >
-              <NavDropdown.Item as={Link} to="/profile">
+              <NavDropdown.Item as={Link} to={`/profile/${user?.userId}`}>
                 Profile
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/favorites">
+              <NavDropdown.Item as={Link} to={`/favorites/${user?.userId}`}>
                 Favorites
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/collection">
+              <NavDropdown.Item as={Link} to={`/collection/${user?.userId}`}>
                 Collection
               </NavDropdown.Item>
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>

@@ -36,7 +36,7 @@ const ProfileHeader = () => {
             <Card className="stat-card">
               <Card.Body
                 style={{ cursor: "pointer" }}
-                onClick={() => navigate("/favorites")}
+                onClick={() => navigate(`/favorites/${user?.id}`)}
               >
                 <FaClock size={28} className="stat-icon" />
                 <h3 className="mt-3 text-secondary">{favorites.length}</h3>
