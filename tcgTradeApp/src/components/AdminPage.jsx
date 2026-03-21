@@ -132,7 +132,7 @@ const AdminPage = () => {
                       onChange={handleChange}
                     />
                   ) : (
-                    user.firstName
+                    user.email
                   )}
                 </ListGroup.Item>
                 <ListGroup.Item className="d-flex justify-content-between bg-primary text-secondary border-secondary">

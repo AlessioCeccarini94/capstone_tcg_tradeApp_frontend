@@ -35,6 +35,11 @@ const HomeBody = () => {
     "premium gold 2 display",
     "pack blister",
     "pocket binder",
+    "promo pack",
+    "d20 die",
+    "pack bundle",
+    "set a",
+    "pack vol.",
   ]
   const filteredCards = cards.filter((card) => {
     const name = card.cardName.toLowerCase()
