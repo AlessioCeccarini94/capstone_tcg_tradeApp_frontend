@@ -11,7 +11,7 @@ import logo from "../assets/images/logo.png"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { addGameList } from "../redux/actions/gameActions"
 import { logoutUser, getUser } from "../redux/actions/userActions"
 import SearchCard from "./cards/SearchCardComponent"
@@ -19,8 +19,12 @@ import SearchCard from "./cards/SearchCardComponent"
 const NavbarComponent = () => {
   const user = useSelector((state) => state.user.users)
   const games = useSelector((state) => state.game.games)
+  const token = localStorage.getItem("token")
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [show, setShow] = useState(false)
+  const handleclose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
   const handleLogout = () => {
     dispatch(logoutUser())
@@ -30,8 +34,6 @@ const NavbarComponent = () => {
   useEffect(() => {
     dispatch(addGameList(), dispatch(getUser()))
   }, [dispatch])
-
-  const token = localStorage.getItem("token")
 
   return (
     <Navbar expand="lg" className=" custom-navbar mb-3">
@@ -51,32 +53,37 @@ const NavbarComponent = () => {
         <Navbar.Toggle
           aria-controls="offcanvasNavbar"
           className="bg-primary border-0"
+          onClick={handleShow}
         />
         <Navbar.Offcanvas
           id="offcanvasNavbar"
           aria-labelledby="offcanvasNavbarLabel"
           placement="end"
+          show={show}
+          onHide={handleclose}
         >
           <Offcanvas.Header closeButton className="custom-offcanvas">
             <Offcanvas.Title id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body className="custom-offcanvas">
             <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link as={Link} to="/">
+              <Nav.Link onClick={handleclose} as={Link} to="/">
                 Home
               </Nav.Link>
             </Nav>
             {user?.role === "ADMIN" && (
               <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link as={Link} to="/admin">
+                <Nav.Link onClick={handleclose} as={Link} to="/admin">
                   Admin
                 </Nav.Link>
-                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                <Nav.Link onClick={handleLogout} className="d-md-none">
+                  Logout
+                </Nav.Link>
               </Nav>
             )}
             {!token && (
               <Nav className="justify-content-end flex-grow-1 pe-3 d-md-none">
-                <Nav.Link as={Link} to="/auth/login">
+                <Nav.Link onClick={handleclose} as={Link} to="/auth/login">
                   Login
                 </Nav.Link>
               </Nav>

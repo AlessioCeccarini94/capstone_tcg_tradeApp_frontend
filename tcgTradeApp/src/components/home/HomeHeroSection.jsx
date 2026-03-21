@@ -25,6 +25,16 @@ const HomeBody = () => {
     "battle set",
     "tin",
     "vivid potrayals",
+    "anniversary set",
+    "illustration box",
+    "expansion set",
+    "legacy of the valiant: deluxe edition",
+    "promo set",
+    "master collection volume",
+    "case",
+    "premium gold 2 display",
+    "pack blister",
+    "pocket binder",
   ]
   const filteredCards = cards.filter((card) => {
     const name = card.cardName.toLowerCase()
