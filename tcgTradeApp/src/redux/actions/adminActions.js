@@ -6,7 +6,7 @@ export const EDIT_USER = "EDIT_USER"
 //------------------------------> GET CAROUSEL <-----------------------------------
 export const getCarousel = () => {
   return (dispatch) => {
-    fetch("http://localhost:3023/carousels")
+    fetch("https://tgc-tradeapp-be.onrender.com/carousels")
       .then((res) => res.json())
       .then((data) => {
         dispatch({
@@ -23,7 +23,7 @@ export const imagePatch = (file, id) => {
     const formData = new FormData()
     formData.append("file", file)
 
-    fetch(`http://localhost:3023/carousels/${id}`, {
+    fetch(`https://tgc-tradeapp-be.onrender.com/carousels/${id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -44,7 +44,7 @@ export const imagePatch = (file, id) => {
 //---------------------------------> GET ALL USERS <-------------------------------------
 export const getAllUsers = () => {
   return (dispatch) => {
-    fetch("http://localhost:3023/users", {
+    fetch("https://tgc-tradeapp-be.onrender.com/users", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -68,7 +68,7 @@ export const getAllUsers = () => {
 
 export const getUserById = (id) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/users/${id}`
+    const URL = `https://tgc-tradeapp-be.onrender.com/users/${id}`
     fetch(URL, {
       method: "GET",
     })
@@ -89,7 +89,7 @@ export const getUserById = (id) => {
 //----------------------------------> EDIT USER <--------------------------------------
 export const editUserAdmin = (userData, userId) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/users/${userId}`
+    const URL = `https://tgc-tradeapp-be.onrender.com/users/${userId}`
     fetch(URL, {
       method: "PUT",
       headers: {
@@ -115,7 +115,7 @@ export const editUserAdmin = (userData, userId) => {
 
 export const deleteUser = (userId) => {
   return (dispatch) => {
-    fetch(`http://localhost:3023/users/${userId}`, {
+    fetch(`https://tgc-tradeapp-be.onrender.com/users/${userId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

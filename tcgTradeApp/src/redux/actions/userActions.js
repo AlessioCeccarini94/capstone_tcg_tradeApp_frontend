@@ -9,7 +9,7 @@ export const GET_USER = "GET_USER"
 
 export const addUser = (userData) => {
   return (dispatch) => {
-    const URL = "http://localhost:3023/auth/register"
+    const URL = "https://tgc-tradeapp-be.onrender.com/auth/register"
     return fetch(URL, {
       method: "POST",
       headers: {
@@ -48,7 +48,7 @@ export const addUser = (userData) => {
 
 export const getUser = () => {
   return (dispatch) => {
-    fetch("http://localhost:3023/users/me", {
+    fetch("https://tgc-tradeapp-be.onrender.com/users/me", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -71,7 +71,7 @@ export const getUser = () => {
 
 export const getUserById = (id) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/users/${id}`
+    const URL = `https://tgc-tradeapp-be.onrender.com/users/${id}`
     fetch(URL, {
       method: "GET",
     })
@@ -93,7 +93,7 @@ export const getUserById = (id) => {
 
 export const loginUser = (userData) => {
   return (dispatch, getState) => {
-    const URL = "http://localhost:3023/auth/login"
+    const URL = "https://tgc-tradeapp-be.onrender.com/auth/login"
     fetch(URL, {
       method: "POST",
       headers: {
@@ -132,7 +132,7 @@ export const logoutUser = () => {
 
 export const editUser = (userData, userId) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/users/${userId}`
+    const URL = `https://tgc-tradeapp-be.onrender.com/users/${userId}`
     fetch(URL, {
       method: "PUT",
       headers: {
@@ -158,7 +158,7 @@ export const imagePatch = (image, userId) => {
     const formData = new FormData()
     formData.append("image", image)
 
-    fetch(`http://localhost:3023/users/${userId}/image`, {
+    fetch(`https://tgc-tradeapp-be.onrender.com/users/${userId}/image`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

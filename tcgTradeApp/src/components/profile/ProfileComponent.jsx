@@ -71,7 +71,7 @@ const ProfileComponent = () => {
     }
   }, [user, cities])
   useEffect(() => {
-    fetch("http://localhost:3023/cities")
+    fetch("https://tgc-tradeapp-be.onrender.com/cities")
       .then((res) => res.json())
       .then((data) => {
         console.log(data)

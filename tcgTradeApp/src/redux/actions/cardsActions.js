@@ -16,7 +16,7 @@ export const GET_USER_COLLECTION = "GET_USER_COLLECTION"
 export const addCardList = (userId) => {
   return (dispatch) => {
     const randomPage = Math.floor(Math.random() * 100)
-    const URL = `http://localhost:3023/games/${userId}/cards?page=${randomPage}&size=12`
+    const URL = `https://tgc-tradeapp-be.onrender.com/games/${userId}/cards?page=${randomPage}&size=12`
     fetch(URL, {
       method: "GET",
     })
@@ -41,7 +41,7 @@ export const addCardList = (userId) => {
 
 export const addToFavorites = (id) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/cards/favorites/${id}`
+    const URL = `https://tgc-tradeapp-be.onrender.com/cards/favorites/${id}`
     fetch(URL, {
       method: "POST",
       headers: {
@@ -65,7 +65,7 @@ export const addToFavorites = (id) => {
 
 export const addToCollection = (id) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/cards/collection/${id}`
+    const URL = `https://tgc-tradeapp-be.onrender.com/cards/collection/${id}`
     fetch(URL, {
       method: "POST",
       headers: {
@@ -91,7 +91,7 @@ export const addToCollection = (id) => {
 
 export const userCardList = () => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/cards/collection`
+    const URL = `https://tgc-tradeapp-be.onrender.com/cards/collection`
     fetch(URL, {
       method: "GET",
       headers: {
@@ -121,7 +121,7 @@ export const userCardList = () => {
 
 export const userFavList = () => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/cards/favorites`
+    const URL = `https://tgc-tradeapp-be.onrender.com/cards/favorites`
     fetch(URL, {
       method: "GET",
       headers: {
@@ -151,7 +151,7 @@ export const userFavList = () => {
 
 export const removeFromCollection = (id) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/cards/collection/${id}`
+    const URL = `https://tgc-tradeapp-be.onrender.com/cards/collection/${id}`
     fetch(URL, {
       method: "DELETE",
       headers: {
@@ -180,7 +180,7 @@ export const REMOVE_FAVORITE = "REMOVE_FAVORITE"
 
 export const removeFavorite = (id) => {
   return (dispatch) => {
-    fetch(`http://localhost:3023/cards/favorites/${id}`, {
+    fetch(`https://tgc-tradeapp-be.onrender.com/cards/favorites/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -198,7 +198,7 @@ export const removeFavorite = (id) => {
 
 export const searchCard = (query) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/cards/search?name=${query}`
+    const URL = `https://tgc-tradeapp-be.onrender.com/cards/search?name=${query}`
     fetch(URL, {
       method: "GET",
     })
@@ -220,7 +220,7 @@ export const searchCard = (query) => {
 
 export const getCardsByExpansion = (id) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/cards/expansions/${id}`
+    const URL = `https://tgc-tradeapp-be.onrender.com/cards/expansions/${id}`
     fetch(URL, {
       method: "GET",
     })
@@ -243,7 +243,7 @@ export const getCardsByExpansion = (id) => {
 export const orderCardByPrice = () => {
   return (dispatch) => {
     dispatch({ type: SET_LOADING })
-    const URL = "http://localhost:3023/cards/top"
+    const URL = "https://tgc-tradeapp-be.onrender.com/cards/top"
     fetch(URL, {
       method: "GET",
     })
@@ -268,11 +268,14 @@ export const orderCardByPrice = () => {
 
 export const getUserCollection = (userId) => {
   return (dispatch) => {
-    fetch(`http://localhost:3023/cards/collection/user/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+    fetch(
+      `https://tgc-tradeapp-be.onrender.com/cards/collection/user/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       },
-    })
+    )
       .then((res) => {
         if (!res.ok) throw new Error("Errore fetch collection")
         return res.json()

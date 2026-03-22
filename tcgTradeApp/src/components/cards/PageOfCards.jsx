@@ -45,11 +45,14 @@ const PageOfCards = () => {
   }, [dispatch])
   useEffect(() => {
     if (!clickedCard?.blueprintId) return
-    fetch(`http://localhost:3023/cards/${clickedCard.blueprintId}/owners`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+    fetch(
+      `https://tgc-tradeapp-be.onrender.com/cards/${clickedCard.blueprintId}/owners`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       },
-    })
+    )
       .then((res) => {
         if (!res.ok) throw new Error(res.status)
         return res.json()
