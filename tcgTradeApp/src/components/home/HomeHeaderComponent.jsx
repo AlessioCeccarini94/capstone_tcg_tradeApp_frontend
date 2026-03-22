@@ -26,7 +26,7 @@ const HomeHeader = () => {
     dispatch(getUser())
     console.log(images)
     console.log(user)
-  }, [dispatch])
+  }, [dispatch, user, images])
 
   return (
     <Container>
