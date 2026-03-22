@@ -21,11 +21,11 @@ const Footer = () => {
         <Row className="mt-5">
           <Col>
             <p className="text-center">
-              © 2023 TCG Trade App. All rights reserved. Questo progetto è a
-              scopo puramente didattico. Tutti i contenuti (immagini, marchi,
-              carte) appartengono ai rispettivi proprietari. Non è affiliato né
-              supportato da Wizards of the Coast, Bandai o altri. Nessun dato
-              reale viene utilizzato.
+              © 2023 TCG Trade App. All rights reserved.
+              <br /> Questo progetto è a scopo puramente didattico. Tutti i
+              contenuti (immagini, marchi, carte) appartengono ai rispettivi
+              proprietari. Non è affiliato né supportato da Wizards of the
+              Coast, Bandai o altri. Nessun dato reale viene utilizzato.
             </p>
           </Col>
         </Row>
