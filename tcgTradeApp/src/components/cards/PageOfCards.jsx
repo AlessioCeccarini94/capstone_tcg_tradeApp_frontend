@@ -33,6 +33,9 @@ const PageOfCards = () => {
     "storage box",
     "tournament pack",
     "championship pack",
+    "binder",
+    "tin",
+    "pin",
   ]
 
   const filteredCards = cards.filter((card) => {
