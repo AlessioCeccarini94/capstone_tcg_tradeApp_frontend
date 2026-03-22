@@ -12,6 +12,7 @@ import {
 import { FaRegHeart } from "react-icons/fa"
 
 const PageOfCards = () => {
+  const baseURL = import.meta.env.VITE_API_URL
   const dispatch = useDispatch()
   const cards = useSelector((state) => state.card.cardsByGame) || []
   const [owners, setOwners] = useState([])
@@ -45,14 +46,11 @@ const PageOfCards = () => {
   }, [dispatch])
   useEffect(() => {
     if (!clickedCard?.blueprintId) return
-    fetch(
-      `https://tgc-tradeapp-be.onrender.com/cards/${clickedCard.blueprintId}/owners`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+    fetch(`${baseURL}/cards/${clickedCard.blueprintId}/owners`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    )
+    })
       .then((res) => {
         if (!res.ok) throw new Error(res.status)
         return res.json()

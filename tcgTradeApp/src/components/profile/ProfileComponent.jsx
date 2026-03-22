@@ -13,6 +13,7 @@ import { GoPencil } from "react-icons/go"
 import { getUser, imagePatch, editUser } from "../../redux/actions/userActions"
 
 const ProfileComponent = () => {
+  const baseURL = import.meta.env.VITE_API_URL
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user.users)
   const fileInputRef = useRef(null)
@@ -36,8 +37,6 @@ const ProfileComponent = () => {
     })
   }
 
-  const handleImg = (e) => {}
-
   const handleSave = () => {
     dispatch(editUser(formData, user.userId))
     setIsEditing(false)
@@ -57,21 +56,26 @@ const ProfileComponent = () => {
   }
   useEffect(() => {
     dispatch(getUser())
-  }, [])
+  }, [dispatch])
+
   useEffect(() => {
-    if (user && cities.length > 0) {
-      const selectedCity = cities.find((city) => city.cityName === user.city)
-      setFormData({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        email: user.email,
-        cityId: selectedCity?.id || "",
-      })
-    }
+    if (!user || cities.length === 0) return
+
+    const selectedCity = cities.find((city) => city.cityName === user.city)
+
+    //eslint-disable-next-line
+    setFormData((prev) => ({
+      ...prev,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+      cityId: selectedCity?.id || "",
+    }))
   }, [user, cities])
+
   useEffect(() => {
-    fetch("https://tgc-tradeapp-be.onrender.com/cities")
+    fetch(`${baseURL}/cities`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data)

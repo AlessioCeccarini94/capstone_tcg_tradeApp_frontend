@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { editUserAdmin, getAllUsers } from "../redux/actions/adminActions"
 import { ListGroup, Button, Form } from "react-bootstrap"
 import { deleteUser } from "../redux/actions/adminActions"
-import { useNavigate } from "react-router-dom"
 
 const AdminPage = () => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const baseURL = import.meta.env.VITE_API_URL
+
   const users = useSelector((state) => state.admin.users)
   const [editingUserId, setEditingUserId] = useState(null)
   const [formData, setFormData] = useState({})
@@ -19,12 +19,8 @@ const AdminPage = () => {
       [e.target.name]: e.target.value,
     })
   }
-  const handleSave = () => {
-    dispatch(editUser(formData, user.userId))
-    setIsEditing(false)
-  }
   useEffect(() => {
-    fetch("https://tgc-tradeapp-be.onrender.com/cities")
+    fetch(`${baseURL}/cities`)
       .then((res) => res.json())
       .then((data) => setCities(data))
   }, [])

@@ -14,7 +14,7 @@ import { Link } from "react-router-dom"
 
 const FavoritesPage = () => {
   //--------- CONST ------------
-
+  const baseURL = import.meta.env.VITE_API_URL
   const dispatch = useDispatch()
   const favorites = useSelector((state) => state.card.favorites)
   const loading = useSelector((state) => state.card.loading)
@@ -37,14 +37,11 @@ const FavoritesPage = () => {
   }, [dispatch])
   useEffect(() => {
     if (!clickedCard?.blueprintId) return
-    fetch(
-      `https://tgc-tradeapp-be.onrender.com/cards/${clickedCard.blueprintId}/owners`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+    fetch(`${baseURL}/cards/${clickedCard.blueprintId}/owners`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    )
+    })
       .then((res) => {
         if (!res.ok) throw new Error(res.status)
         return res.json()

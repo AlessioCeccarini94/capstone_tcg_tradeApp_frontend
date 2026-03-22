@@ -10,13 +10,14 @@ export const SET_CARDS = "SET_CARDS"
 export const SET_TOP_CARDS = "SET_TOP_CARDS"
 export const SET_LOADING = "SET_LOADING"
 export const GET_USER_COLLECTION = "GET_USER_COLLECTION"
+export const baseURL = import.meta.env.VITE_API_URL
 
 //---------------------> ADDING CARD LIST FOR GAME PAGE <------------------------------
 
 export const addCardList = (userId) => {
   return (dispatch) => {
     const randomPage = Math.floor(Math.random() * 100)
-    const URL = `https://tgc-tradeapp-be.onrender.com/games/${userId}/cards?page=${randomPage}&size=12`
+    const URL = `${baseURL}/games/${userId}/cards?page=${randomPage}&size=12`
     fetch(URL, {
       method: "GET",
     })
@@ -41,7 +42,7 @@ export const addCardList = (userId) => {
 
 export const addToFavorites = (id) => {
   return (dispatch) => {
-    const URL = `https://tgc-tradeapp-be.onrender.com/cards/favorites/${id}`
+    const URL = `${baseURL}/cards/favorites/${id}`
     fetch(URL, {
       method: "POST",
       headers: {
@@ -65,7 +66,7 @@ export const addToFavorites = (id) => {
 
 export const addToCollection = (id) => {
   return (dispatch) => {
-    const URL = `https://tgc-tradeapp-be.onrender.com/cards/collection/${id}`
+    const URL = `${baseURL}/cards/collection/${id}`
     fetch(URL, {
       method: "POST",
       headers: {
@@ -91,7 +92,7 @@ export const addToCollection = (id) => {
 
 export const userCardList = () => {
   return (dispatch) => {
-    const URL = `https://tgc-tradeapp-be.onrender.com/cards/collection`
+    const URL = `${baseURL}/cards/collection`
     fetch(URL, {
       method: "GET",
       headers: {
@@ -121,7 +122,7 @@ export const userCardList = () => {
 
 export const userFavList = () => {
   return (dispatch) => {
-    const URL = `https://tgc-tradeapp-be.onrender.com/cards/favorites`
+    const URL = `${baseURL}/cards/favorites`
     fetch(URL, {
       method: "GET",
       headers: {
@@ -151,7 +152,7 @@ export const userFavList = () => {
 
 export const removeFromCollection = (id) => {
   return (dispatch) => {
-    const URL = `https://tgc-tradeapp-be.onrender.com/cards/collection/${id}`
+    const URL = `${baseURL}/cards/collection/${id}`
     fetch(URL, {
       method: "DELETE",
       headers: {
@@ -180,7 +181,7 @@ export const REMOVE_FAVORITE = "REMOVE_FAVORITE"
 
 export const removeFavorite = (id) => {
   return (dispatch) => {
-    fetch(`https://tgc-tradeapp-be.onrender.com/cards/favorites/${id}`, {
+    fetch(`${baseURL}/cards/favorites/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -198,7 +199,7 @@ export const removeFavorite = (id) => {
 
 export const searchCard = (query) => {
   return (dispatch) => {
-    const URL = `https://tgc-tradeapp-be.onrender.com/cards/search?name=${query}`
+    const URL = `${baseURL}/cards/search?name=${query}`
     fetch(URL, {
       method: "GET",
     })
@@ -220,7 +221,7 @@ export const searchCard = (query) => {
 
 export const getCardsByExpansion = (id) => {
   return (dispatch) => {
-    const URL = `https://tgc-tradeapp-be.onrender.com/cards/expansions/${id}`
+    const URL = `${baseURL}/cards/expansions/${id}`
     fetch(URL, {
       method: "GET",
     })
@@ -243,7 +244,7 @@ export const getCardsByExpansion = (id) => {
 export const orderCardByPrice = () => {
   return (dispatch) => {
     dispatch({ type: SET_LOADING })
-    const URL = "https://tgc-tradeapp-be.onrender.com/cards/top"
+    const URL = `${baseURL}/cards/top`
     fetch(URL, {
       method: "GET",
     })
@@ -268,14 +269,11 @@ export const orderCardByPrice = () => {
 
 export const getUserCollection = (userId) => {
   return (dispatch) => {
-    fetch(
-      `https://tgc-tradeapp-be.onrender.com/cards/collection/user/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+    fetch(`${baseURL}/collection/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    )
+    })
       .then((res) => {
         if (!res.ok) throw new Error("Errore fetch collection")
         return res.json()

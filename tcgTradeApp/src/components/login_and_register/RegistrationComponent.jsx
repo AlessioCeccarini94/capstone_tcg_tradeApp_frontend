@@ -10,7 +10,7 @@ import Row from "react-bootstrap/Row"
 import { useNavigate } from "react-router-dom"
 
 const Registration = () => {
-  // const
+  const baseURL = import.meta.env.VITE_API_URL
   const [cities, setCities] = useState([])
   const [error, setError] = useState("")
   const navigate = useNavigate()
@@ -26,7 +26,7 @@ const Registration = () => {
   })
 
   useEffect(() => {
-    fetch("https://tgc-tradeapp-be.onrender.com/cities")
+    fetch(`${baseURL}/cities`)
       .then((res) => res.json())
       .then((data) => setCities(data))
   }, [])
