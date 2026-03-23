@@ -79,7 +79,9 @@ const PageOfCards = () => {
                 <Card className="stat-card m-2 w-100">
                   <Card.Img
                     variant="top"
-                    src={card.image ? card.image : "/no-image.png"}
+                    src={card.image}
+                    onError={(e) => (e.target.src = "/noImage.png")}
+                    loading="lazy"
                     onClick={() => setClickedCard(card)}
                   />
 
