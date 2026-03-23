@@ -40,6 +40,8 @@ const HomeBody = () => {
     "pack bundle",
     "set a",
     "pack vol.",
+    "coin",
+    "tin",
   ]
   const filteredCards = cards.filter((card) => {
     const name = card.cardName.toLowerCase()

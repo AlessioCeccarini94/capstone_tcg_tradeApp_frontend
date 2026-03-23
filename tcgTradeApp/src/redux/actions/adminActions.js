@@ -2,6 +2,7 @@ export const GET_CAROUSEL = "GET_CAROUSEL"
 export const GET_ALL_USERS = "GET_USERS"
 export const DELETE_USER = "DELETE_USER"
 export const EDIT_USER = "EDIT_USER"
+export const SET_POFILE_USER = "SET_POFILE_USER"
 
 //------------------------------> GET CAROUSEL <-----------------------------------
 export const getCarousel = () => {

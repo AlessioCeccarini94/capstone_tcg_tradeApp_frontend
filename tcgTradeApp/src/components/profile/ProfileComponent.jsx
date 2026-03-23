@@ -36,8 +36,6 @@ const ProfileComponent = () => {
     })
   }
 
-  const handleImg = (e) => {}
-
   const handleSave = () => {
     dispatch(editUser(formData, user.userId))
     setIsEditing(false)
@@ -57,10 +55,11 @@ const ProfileComponent = () => {
   }
   useEffect(() => {
     dispatch(getUser())
-  }, [])
+  }, [dispatch])
   useEffect(() => {
     if (user && cities.length > 0) {
       const selectedCity = cities.find((city) => city.cityName === user.city)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         firstName: user.firstName,
         lastName: user.lastName,

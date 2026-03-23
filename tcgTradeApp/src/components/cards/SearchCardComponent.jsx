@@ -1,14 +1,27 @@
 import { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { searchCards } from "../../redux/actions/cardsActions"
 
 const SearchCard = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const [query, setQuery] = useState("")
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (!query || query.trim().length < 3) return
+
+    dispatch(searchCards(query))
+    navigate(`/search?query=${query}`)
+  }
 
   const handleChange = (e) => {
     const value = e.target.value
     setQuery(value)
+
     if (value.length >= 3) {
       navigate(`/search?query=${value}`)
     }
@@ -16,14 +29,13 @@ const SearchCard = () => {
 
   useEffect(() => {
     const isSearchPage = location.pathname === "/search"
-
     if (!isSearchPage) {
       setQuery("")
     }
   }, [location.pathname])
 
   return (
-    <div className="d-flex w-100">
+    <Form onSubmit={handleSearch} className="d-flex w-100">
       <Form.Control
         type="search"
         placeholder="Search"
@@ -32,7 +44,7 @@ const SearchCard = () => {
         value={query}
         onChange={handleChange}
       />
-    </div>
+    </Form>
   )
 }
 
