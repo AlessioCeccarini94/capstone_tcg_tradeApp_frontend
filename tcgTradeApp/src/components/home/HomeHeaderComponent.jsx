@@ -24,9 +24,13 @@ const HomeHeader = () => {
     dispatch(addGameList())
     dispatch(getCarousel())
     dispatch(getUser())
+<<<<<<< Updated upstream
     console.log(images)
     console.log(user)
   }, [dispatch, images, user])
+=======
+  }, [dispatch, images])
+>>>>>>> Stashed changes
 
   return (
     <Container>

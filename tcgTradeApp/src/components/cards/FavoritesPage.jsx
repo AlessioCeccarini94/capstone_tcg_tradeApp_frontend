@@ -80,7 +80,7 @@ const FavoritesPage = () => {
 
                 <Row>
                   {visibleCards.map((fav) => (
-                    <Col key={fav.id} xs={6} md={4} lg={3}>
+                    <Col key={fav.id} xs={6} md={4} lg={3} className="my-4">
                       <Card className="stat-card">
                         <Card.Img
                           variant="top"
