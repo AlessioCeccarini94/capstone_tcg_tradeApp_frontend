@@ -32,7 +32,8 @@ const NavbarComponent = () => {
   }
 
   useEffect(() => {
-    dispatch(addGameList(), dispatch(getUser()))
+    dispatch(addGameList())
+    dispatch(getUser())
   }, [dispatch])
 
   return (
