@@ -53,7 +53,7 @@ const AdminPage = () => {
                         onClick={() => {
                           dispatch(editUserAdmin(formData, user.userId))
                           setEditingUserId(null)
-                          window.location.reload()
+                          dispatch(getAllUsers())
                         }}
                       >
                         Save

@@ -16,7 +16,6 @@ export const addGameList = () => {
           type: ADD_GAME_LIST,
           payload: data,
         })
-        console.log(data)
       })
       .catch((err) => {
         console.log("FETCH GAMES ERROR:", err)

@@ -24,6 +24,8 @@ const HomeBody = () => {
     "intro pack",
     "battle set",
     "tin",
+    "pin",
+    "binder",
     "vivid potrayals",
     "anniversary set",
     "illustration box",
@@ -40,6 +42,10 @@ const HomeBody = () => {
     "pack bundle",
     "set a",
     "pack vol.",
+    "complete set",
+    "championship pack",
+    "tournament pack",
+    "storage box",
   ]
   const filteredCards = cards.filter((card) => {
     const name = card.cardName.toLowerCase()

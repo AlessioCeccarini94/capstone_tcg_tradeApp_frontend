@@ -56,7 +56,6 @@ export const getUser = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         dispatch({
           type: GET_USER,
           payload: data,
