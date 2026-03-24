@@ -81,7 +81,7 @@ const ProfileComponent = () => {
         console.log(data)
         setCities(data)
       })
-  }, [])
+  }, [baseURL])
   return (
     <>
       <h1 className="text-center">Profile</h1>

@@ -60,7 +60,7 @@ const PageOfCards = () => {
       })
       .then((data) => setOwners(data))
       .catch((err) => console.log(err))
-  }, [clickedCard])
+  }, [clickedCard, baseURL])
   return (
     <Container>
       {loading && (
