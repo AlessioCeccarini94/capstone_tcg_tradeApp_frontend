@@ -11,7 +11,6 @@ const HomeBody = () => {
   const cards = useSelector((state) => state.card.topCards) || []
   const loading = useSelector((state) => state.card.loading)
   const [show, setShow] = useState({})
-  const game = useSelector((state) => state.card.game)
 
   const excludeWords = [
     "booster box",

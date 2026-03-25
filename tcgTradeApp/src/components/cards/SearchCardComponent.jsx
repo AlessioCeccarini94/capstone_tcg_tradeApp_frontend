@@ -1,42 +1,40 @@
 import { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { searchCard } from "../../redux/actions/cardsActions"
 
 const SearchCard = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const location = useLocation()
   const [query, setQuery] = useState("")
-
-  const handleSearch = (e) => {
-    e.preventDefault()
-    if (!query || query.trim().length < 3) return
-
-    dispatch(searchCard(query))
-    navigate(`/search?query=${query}`)
-  }
+  const [selectedGame, setSelectedGame] = useState(null)
+  const gameId = selectedGame ? Number(selectedGame) : null
 
   const handleChange = (e) => {
-    const value = e.target.value
-    setQuery(value)
-
-    if (value.length >= 3) {
-      navigate(`/search?query=${value}`)
-    }
+    setQuery(e.targetvalue)
   }
-
   useEffect(() => {
-    const isSearchPage = location.pathname === "/search"
-    if (!isSearchPage) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setQuery("")
-    }
-  }, [location.pathname])
+    const delay = setTimeout(() => {
+      const trimmed = query.trim()
 
-  return (
-    <Form onSubmit={handleSearch} className="d-flex w-100">
+    if (trimmed === "") {
+  dispatch({ type: "SEARCH_CARD", payload: [] })
+  return
+}
+    <Form onSubmit={(e) => e.preventDefault()} className="d-flex w-100">
+      <select
+        className="me-2"
+        onChange={(e) => setSelectedGame(e.target.value)}
+      >
+        <option value="">All games</option>
+        <option value="1">Magic The Gathering</option>
+        <option value="5">Pokémon</option>
+        <option value="15">One Piece</option>
+        <option value="9">Dragon Ball Super</option>
+        <option value="4">Yu-Gi-Oh!</option>
+        <option value="18">Lorcana</option>
+      </select>
       <Form.Control
         type="search"
         placeholder="Search"
@@ -45,8 +43,7 @@ const SearchCard = () => {
         value={query}
         onChange={handleChange}
       />
-    </Form>
-  )
-}
-
+    </Form>)
+  
+}}
 export default SearchCard
