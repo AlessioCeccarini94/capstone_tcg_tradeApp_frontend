@@ -10,7 +10,7 @@ import Row from "react-bootstrap/Row"
 import { useNavigate } from "react-router-dom"
 
 const Registration = () => {
-  // const
+  const baseURL = import.meta.env.VITE_API_URL
   const [cities, setCities] = useState([])
   const [error, setError] = useState("")
   const navigate = useNavigate()
@@ -26,7 +26,7 @@ const Registration = () => {
   })
 
   useEffect(() => {
-    fetch("http://localhost:3023/cities")
+    fetch(`${baseURL}/cities`)
       .then((res) => res.json())
       .then((data) => setCities(data))
   }, [])

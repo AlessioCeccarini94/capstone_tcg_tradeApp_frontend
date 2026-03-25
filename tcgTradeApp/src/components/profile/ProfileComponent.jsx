@@ -13,6 +13,7 @@ import { GoPencil } from "react-icons/go"
 import { getUser, imagePatch, editUser } from "../../redux/actions/userActions"
 
 const ProfileComponent = () => {
+  const baseURL = import.meta.env.VITE_API_URL
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user.users)
   const fileInputRef = useRef(null)
@@ -56,27 +57,31 @@ const ProfileComponent = () => {
   useEffect(() => {
     dispatch(getUser())
   }, [dispatch])
+
   useEffect(() => {
-    if (user && cities.length > 0) {
-      const selectedCity = cities.find((city) => city.cityName === user.city)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setFormData({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        email: user.email,
-        cityId: selectedCity?.id || "",
-      })
-    }
+    if (!user || cities.length === 0) return
+
+    const selectedCity = cities.find((city) => city.cityName === user.city)
+
+    //eslint-disable-next-line
+    setFormData((prev) => ({
+      ...prev,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+      cityId: selectedCity?.id || "",
+    }))
   }, [user, cities])
+
   useEffect(() => {
-    fetch("http://localhost:3023/cities")
+    fetch(`${baseURL}/cities`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
         setCities(data)
       })
-  }, [])
+  }, [baseURL])
   return (
     <>
       <h1 className="text-center">Profile</h1>

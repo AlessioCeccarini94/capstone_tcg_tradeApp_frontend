@@ -4,12 +4,13 @@ export const SET_USER = "SET_USER"
 export const LOGOUT_USER = "LOGOUT_USER"
 export const SET_POFILE_USER = "SET_POFILE_USER"
 export const GET_USER = "GET_USER"
+export const baseURL = import.meta.env.VITE_API_URL
 
 //---------------------> ADDING NEW USER <------------------------------
 
 export const addUser = (userData) => {
   return (dispatch) => {
-    const URL = "http://localhost:3023/auth/register"
+    const URL = `${baseURL}/auth/register`
     return fetch(URL, {
       method: "POST",
       headers: {
@@ -48,14 +49,13 @@ export const addUser = (userData) => {
 
 export const getUser = () => {
   return (dispatch) => {
-    fetch("http://localhost:3023/users/me", {
+    fetch(`${baseURL}/users/me`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         dispatch({
           type: GET_USER,
           payload: data,
@@ -71,11 +71,14 @@ export const getUser = () => {
 
 export const getUserById = (id) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/users/${id}`
+    const URL = `${baseURL}/users/${id}`
     fetch(URL, {
       method: "GET",
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Request failed")
+        return res.json()
+      })
       .then((data) => {
         console.log(data)
         dispatch({
@@ -92,8 +95,8 @@ export const getUserById = (id) => {
 //-----------------------------------> LOGIN USER <--------------------------------------
 
 export const loginUser = (userData) => {
-  return (dispatch, getState) => {
-    const URL = "http://localhost:3023/auth/login"
+  return (dispatch) => {
+    const URL = `${baseURL}/auth/login`
     fetch(URL, {
       method: "POST",
       headers: {
@@ -101,7 +104,10 @@ export const loginUser = (userData) => {
       },
       body: JSON.stringify(userData),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Request failed")
+        return res.json()
+      })
       .then((data) => {
         localStorage.setItem("token", data.accessToken.trim())
         console.log(data)
@@ -132,7 +138,7 @@ export const logoutUser = () => {
 
 export const editUser = (userData, userId) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/users/${userId}`
+    const URL = `${baseURL}/users/${userId}`
     fetch(URL, {
       method: "PUT",
       headers: {
@@ -141,7 +147,10 @@ export const editUser = (userData, userId) => {
       },
       body: JSON.stringify(userData),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Request failed")
+        return res.json()
+      })
       .then(() => {
         dispatch(getUser())
       })
@@ -158,7 +167,7 @@ export const imagePatch = (image, userId) => {
     const formData = new FormData()
     formData.append("image", image)
 
-    fetch(`http://localhost:3023/users/${userId}/image`, {
+    fetch(`${baseURL}/users/${userId}/image`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -171,6 +180,7 @@ export const imagePatch = (image, userId) => {
       })
       .then(() => {
         dispatch(getUser())
+        alert("Profilo aggiornato con successo")
       })
       .catch((err) => {
         console.log(err)

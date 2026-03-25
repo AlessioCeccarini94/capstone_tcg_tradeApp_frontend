@@ -1,11 +1,12 @@
 export const ADD_GAME_LIST = "ADD_GAME_LIST"
 export const ADD_CARD_LIST = "ADD_CARD_LIST"
+export const baseURL = import.meta.env.VITE_API_URL
 
 //---------------------> ADDING GAME LIST <------------------------------
 
 export const addGameList = () => {
   return (dispatch) => {
-    fetch("http://localhost:3023/games")
+    fetch(`${baseURL}/games`)
       .then((res) => {
         if (!res.ok) throw new Error(res.status)
         return res.json()

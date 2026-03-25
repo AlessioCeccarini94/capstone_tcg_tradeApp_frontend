@@ -14,7 +14,7 @@ import { Link } from "react-router-dom"
 
 const FavoritesPage = () => {
   //--------- CONST ------------
-
+  const baseURL = import.meta.env.VITE_API_URL
   const dispatch = useDispatch()
   const favorites = useSelector((state) => state.card.favorites)
   const loading = useSelector((state) => state.card.loading)
@@ -37,7 +37,7 @@ const FavoritesPage = () => {
   }, [dispatch])
   useEffect(() => {
     if (!clickedCard?.blueprintId) return
-    fetch(`http://localhost:3023/cards/${clickedCard.blueprintId}/owners`, {
+    fetch(`${baseURL}/cards/${clickedCard.blueprintId}/owners`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

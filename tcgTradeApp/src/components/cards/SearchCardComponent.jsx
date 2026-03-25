@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 import { useNavigate, useLocation } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { searchCards } from "../../redux/actions/cardsActions"
+import { searchCard } from "../../redux/actions/cardsActions"
 
 const SearchCard = () => {
   const dispatch = useDispatch()
@@ -14,7 +14,7 @@ const SearchCard = () => {
     e.preventDefault()
     if (!query || query.trim().length < 3) return
 
-    dispatch(searchCards(query))
+    dispatch(searchCard(query))
     navigate(`/search?query=${query}`)
   }
 
@@ -30,6 +30,7 @@ const SearchCard = () => {
   useEffect(() => {
     const isSearchPage = location.pathname === "/search"
     if (!isSearchPage) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setQuery("")
     }
   }, [location.pathname])

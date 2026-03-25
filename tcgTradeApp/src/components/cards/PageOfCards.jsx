@@ -12,6 +12,7 @@ import {
 import { FaRegHeart } from "react-icons/fa"
 
 const PageOfCards = () => {
+  const baseURL = import.meta.env.VITE_API_URL
   const dispatch = useDispatch()
   const cards = useSelector((state) => state.card.cardsByGame) || []
   const [owners, setOwners] = useState([])
@@ -28,10 +29,30 @@ const PageOfCards = () => {
     "gift box",
     "art series",
     "intro pack",
-    "Vivid Potrayals",
-    "storage box",
-    "tournament pack",
+    "battle set",
+    "tin",
+    "pin",
+    "binder",
+    "vivid potrayals",
+    "anniversary set",
+    "illustration box",
+    "expansion set",
+    "legacy of the valiant: deluxe edition",
+    "promo set",
+    "master collection volume",
+    "case",
+    "premium gold 2 display",
+    "pack blister",
+    "pocket binder",
+    "promo pack",
+    "d20 die",
+    "pack bundle",
+    "set a",
+    "pack vol.",
+    "complete set",
     "championship pack",
+    "tournament pack",
+    "storage box",
   ]
 
   const filteredCards = cards.filter((card) => {
@@ -45,7 +66,7 @@ const PageOfCards = () => {
   }, [dispatch])
   useEffect(() => {
     if (!clickedCard?.blueprintId) return
-    fetch(`http://localhost:3023/cards/${clickedCard.blueprintId}/owners`, {
+    fetch(`${baseURL}/cards/${clickedCard.blueprintId}/owners`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -56,7 +77,7 @@ const PageOfCards = () => {
       })
       .then((data) => setOwners(data))
       .catch((err) => console.log(err))
-  }, [clickedCard])
+  }, [clickedCard, baseURL])
   return (
     <Container>
       {loading && (

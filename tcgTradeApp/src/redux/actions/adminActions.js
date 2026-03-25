@@ -3,11 +3,11 @@ export const GET_ALL_USERS = "GET_USERS"
 export const DELETE_USER = "DELETE_USER"
 export const EDIT_USER = "EDIT_USER"
 export const SET_POFILE_USER = "SET_POFILE_USER"
-
+export const baseURL = import.meta.env.VITE_API_URL
 //------------------------------> GET CAROUSEL <-----------------------------------
 export const getCarousel = () => {
   return (dispatch) => {
-    fetch("http://localhost:3023/carousels")
+    fetch(`${baseURL}/carousels`)
       .then((res) => res.json())
       .then((data) => {
         dispatch({
@@ -24,7 +24,7 @@ export const imagePatch = (file, id) => {
     const formData = new FormData()
     formData.append("file", file)
 
-    fetch(`http://localhost:3023/carousels/${id}`, {
+    fetch(`${baseURL}/carousels/${id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -45,7 +45,7 @@ export const imagePatch = (file, id) => {
 //---------------------------------> GET ALL USERS <-------------------------------------
 export const getAllUsers = () => {
   return (dispatch) => {
-    fetch("http://localhost:3023/users", {
+    fetch(`${baseURL}/users`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -69,11 +69,14 @@ export const getAllUsers = () => {
 
 export const getUserById = (id) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/users/${id}`
+    const URL = `${baseURL}/users/${id}`
     fetch(URL, {
       method: "GET",
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Errore fetch utenti")
+        return res.json()
+      })
       .then((data) => {
         console.log(data)
         dispatch({
@@ -90,7 +93,7 @@ export const getUserById = (id) => {
 //----------------------------------> EDIT USER <--------------------------------------
 export const editUserAdmin = (userData, userId) => {
   return (dispatch) => {
-    const URL = `http://localhost:3023/users/${userId}`
+    const URL = `${baseURL}/users/${userId}`
     fetch(URL, {
       method: "PUT",
       headers: {
@@ -99,7 +102,10 @@ export const editUserAdmin = (userData, userId) => {
       },
       body: JSON.stringify(userData),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Errore fetch utenti")
+        return res.json()
+      })
       .then((data) => {
         dispatch({
           type: EDIT_USER,
@@ -116,7 +122,7 @@ export const editUserAdmin = (userData, userId) => {
 
 export const deleteUser = (userId) => {
   return (dispatch) => {
-    fetch(`http://localhost:3023/users/${userId}`, {
+    fetch(`${baseURL}/users/${userId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
