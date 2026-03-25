@@ -197,12 +197,20 @@ export const removeFavorite = (id) => {
 
 //----------------------------> SEARCH CARD BY NAME <-----------------------------------------
 
-export const searchCard = (query) => {
+export const searchCard = (query, gameId = null) => {
   return (dispatch) => {
-    const URL = `${baseURL}/cards/search?name=${query}`
-    fetch(URL, {
-      method: "GET",
-    })
+    if (!query || query.trim() === "") {
+      dispatch({ type: SEARCH_CARD, payload: [] })
+      return
+    }
+
+    let URL = `${baseURL}/cards/search?name=${query}&size=20`
+
+    if (gameId) {
+      URL += `&gameId=${gameId}`
+    }
+
+    fetch(URL)
       .then((res) => {
         if (!res.ok) throw new Error(res.status)
         return res.json()
@@ -216,7 +224,6 @@ export const searchCard = (query) => {
       .catch((err) => console.log(err))
   }
 }
-
 //----------------------------> SEARCH CARD BY EXPANSION <-----------------------------------------
 
 export const getCardsByExpansion = (id) => {
@@ -269,7 +276,7 @@ export const orderCardByPrice = () => {
 
 export const getUserCollection = (userId) => {
   return (dispatch) => {
-    fetch(`${baseURL}/collection/user/${userId}`, {
+    fetch(`${baseURL}/cards/collection/user/${userId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
