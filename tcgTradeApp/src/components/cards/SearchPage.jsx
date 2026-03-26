@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { Button, Container, Form } from "react-bootstrap"
+import { Button, Container, Form, Spinner } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { useSearchParams } from "react-router-dom"
 import { searchCard } from "../../redux/actions/cardsActions"
@@ -7,6 +7,7 @@ import PageOfCards from "./PageOfCards"
 
 const SearchPage = () => {
   const dispatch = useDispatch()
+  const loading = useSelector((state) => state.card.loading)
   const games = useSelector((state) => state.game.games) || []
   const [params, setParams] = useSearchParams()
   const query = params.get("query")
@@ -29,9 +30,14 @@ const SearchPage = () => {
     else next.set(key, value)
     setParams(next)
   }
-
   return (
     <Container>
+      {loading && (
+        <div className="d-flex justify-content-center">
+          <Spinner />
+        </div>
+      )}
+
       <div className="d-flex flex-wrap gap-2 align-items-end mb-3">
         <Form.Group style={{ minWidth: 220 }}>
           <Form.Label>Game</Form.Label>
@@ -86,8 +92,7 @@ const SearchPage = () => {
           Clear
         </Button>
       </div>
-
-      <PageOfCards />
+      {!loading && <PageOfCards />}
     </Container>
   )
 }
