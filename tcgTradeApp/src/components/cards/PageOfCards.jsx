@@ -1,7 +1,7 @@
 import { Container, Row, Col, Spinner, Button } from "react-bootstrap"
 import { useSelector, useDispatch } from "react-redux"
 import Card from "react-bootstrap/Card"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import Modal from "react-bootstrap/Modal"
 import {
@@ -14,7 +14,17 @@ import { FaRegHeart } from "react-icons/fa"
 const PageOfCards = () => {
   const baseURL = import.meta.env.VITE_API_URL
   const dispatch = useDispatch()
-  const cards = useSelector((state) => state.card.cardsByGame) || []
+  const cardsState = useSelector((state) => state.card.cardsByGame)
+  const cards = Array.isArray(cardsState)
+    ? cardsState
+    : (cardsState?.content ?? [])
+  const [params] = useSearchParams()
+  const minPriceParam = params.get("minPrice")
+  const maxPriceParam = params.get("maxPrice")
+  const minPrice = minPriceParam ? Number(minPriceParam) : undefined
+  const maxPrice = maxPriceParam ? Number(maxPriceParam) : undefined
+  const hasMinPrice = Number.isFinite(minPrice)
+  const hasMaxPrice = Number.isFinite(maxPrice)
   const [owners, setOwners] = useState([])
   const loading = useSelector((state) => state.card.loading)
   const collection = useSelector((state) => state.card.collection) || []
@@ -57,7 +67,20 @@ const PageOfCards = () => {
 
   const filteredCards = cards.filter((card) => {
     const name = card.cardName.toLowerCase()
-    return !excludeWords.some((word) => name.includes(word))
+    const nameMatches = !excludeWords.some((word) => name.includes(word))
+
+    // Price filtering is applied only when `/search` URL params contain `minPrice` and/or `maxPrice`.
+    const avg = card.avgPrice
+    const avgNum = typeof avg === "string" ? Number(avg) : avg
+    const avgIsValid = Number.isFinite(avgNum)
+
+    if (hasMinPrice || hasMaxPrice) {
+      if (!avgIsValid) return false
+      if (hasMinPrice && avgNum < minPrice) return false
+      if (hasMaxPrice && avgNum > maxPrice) return false
+    }
+
+    return nameMatches
   })
   const [clickedCard, setClickedCard] = useState(null)
 
@@ -81,8 +104,8 @@ const PageOfCards = () => {
   return (
     <Container>
       {loading && (
-        <div className="text-center">
-          <Spinner animation="border" variant="primary" />
+        <div className="d-flex justify-content-center">
+          <Spinner />
         </div>
       )}
       {!loading && (

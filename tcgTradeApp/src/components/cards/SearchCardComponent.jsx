@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 import { useNavigate, useLocation } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { searchCard } from "../../redux/actions/cardsActions"
 
 const SearchCard = () => {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
   const [query, setQuery] = useState("")
 
   const handleSearch = (e) => {
     e.preventDefault()
+    // Submitting (Enter) should not change page state.
+    // We already navigate on typing; keeping submit as a no-op avoids crashes/double navigations.
+    if (location.pathname === "/search") return
     if (!query || query.trim().length < 3) return
 
-    dispatch(searchCard(query))
-    navigate(`/search?query=${query}`)
+    const params = new URLSearchParams()
+    params.set("query", query)
+    navigate(`/search?${params.toString()}`)
   }
 
   const handleChange = (e) => {
@@ -23,7 +24,9 @@ const SearchCard = () => {
     setQuery(value)
 
     if (value.length >= 3) {
-      navigate(`/search?query=${value}`)
+      const params = new URLSearchParams()
+      params.set("query", value)
+      navigate(`/search?${params.toString()}`)
     }
   }
 

@@ -197,9 +197,12 @@ export const removeFavorite = (id) => {
 
 //----------------------------> SEARCH CARD BY NAME <-----------------------------------------
 
-export const searchCard = (query) => {
+export const searchCard = (query, gameId) => {
   return (dispatch) => {
-    const URL = `${baseURL}/cards/search?name=${query}`
+    const params = new URLSearchParams()
+    params.set("query", query)
+    if (gameId) params.set("gameId", String(gameId))
+    const URL = `${baseURL}/cards/search?${params.toString()}`
     fetch(URL, {
       method: "GET",
     })
@@ -210,7 +213,7 @@ export const searchCard = (query) => {
       .then((data) => {
         dispatch({
           type: SEARCH_CARD,
-          payload: data,
+          payload: data?.content ?? [],
         })
       })
       .catch((err) => console.log(err))

@@ -11,7 +11,6 @@ const HomeBody = () => {
   const cards = useSelector((state) => state.card.topCards) || []
   const loading = useSelector((state) => state.card.loading)
   const [show, setShow] = useState({})
-  const game = useSelector((state) => state.card.game)
 
   const excludeWords = [
     "booster box",
@@ -72,8 +71,8 @@ const HomeBody = () => {
         Most expensive cards in :
       </h3>
       {loading && (
-        <div className="text-center">
-          <Spinner animation="border" variant="primary" />
+        <div className="d-flex justify-content-center my-3">
+          <Spinner />
         </div>
       )}
 
