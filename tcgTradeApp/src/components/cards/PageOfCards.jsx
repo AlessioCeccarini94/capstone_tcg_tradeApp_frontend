@@ -1,9 +1,8 @@
-import { Container, Row, Col, Spinner, Button } from "react-bootstrap"
+import { Container, Row, Col, Spinner, Button, Modal } from "react-bootstrap"
 import { useSelector, useDispatch } from "react-redux"
 import Card from "react-bootstrap/Card"
 import { Link, useSearchParams } from "react-router-dom"
 import { useState, useEffect } from "react"
-import Modal from "react-bootstrap/Modal"
 import {
   addToCollection,
   addToFavorites,
@@ -68,8 +67,6 @@ const PageOfCards = () => {
   const filteredCards = cards.filter((card) => {
     const name = card.cardName.toLowerCase()
     const nameMatches = !excludeWords.some((word) => name.includes(word))
-
-    // Price filtering is applied only when `/search` URL params contain `minPrice` and/or `maxPrice`.
     const avg = card.avgPrice
     const avgNum = typeof avg === "string" ? Number(avg) : avg
     const avgIsValid = Number.isFinite(avgNum)

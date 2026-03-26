@@ -1,4 +1,4 @@
-import { Container, Row, Col, Spinner, Button } from "react-bootstrap"
+import { Container, Row, Col, Spinner, Button, Modal } from "react-bootstrap"
 import Card from "react-bootstrap/Card"
 import { useEffect, useState } from "react"
 import { orderCardByPrice } from "../../redux/actions/cardsActions"
@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
 const HomeBody = () => {
+  const baseURL = import.meta.env.VITE_API_URL
   const dispatch = useDispatch()
-
+  const [owners, setOwners] = useState([])
   const cards = useSelector((state) => state.card.topCards) || []
   const loading = useSelector((state) => state.card.loading)
   const [show, setShow] = useState({})
@@ -65,6 +66,22 @@ const HomeBody = () => {
     dispatch(orderCardByPrice())
   }, [dispatch])
 
+  const [clickedCard, setClickedCard] = useState(null)
+  useEffect(() => {
+    if (!clickedCard?.blueprintId) return
+    fetch(`${baseURL}/cards/${clickedCard.blueprintId}/owners`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status)
+        return res.json()
+      })
+      .then((data) => setOwners(data))
+      .catch((err) => console.log(err))
+  }, [clickedCard, baseURL])
+
   return (
     <Container fluid>
       <h3 className="border-bottom border-3 border-secondary mt-3 mb-5">
@@ -104,7 +121,10 @@ const HomeBody = () => {
                 {visibleCards.map((card) => (
                   <Col xs={6} md={3} className="my-3" key={card.blueprintId}>
                     <Card className="stat-card">
-                      <Card.Img src={card.image} />
+                      <Card.Img
+                        onClick={() => setClickedCard(card)}
+                        src={card.image ? card.image : "/no-image.png"}
+                      />
                       <Card.Body className="d-flex flex-column justify-content-end">
                         <Card.Title>{card.cardName}</Card.Title>
                         <Card.Text>
@@ -125,6 +145,51 @@ const HomeBody = () => {
             </div>
           )
         })}
+      <Modal
+        show={clickedCard !== null}
+        onHide={() => setClickedCard(null)}
+        animation={false}
+        className="text-secondary"
+      >
+        <Modal.Header className="bg-primary m-0 border-0" closeButton>
+          <Modal.Title className="text-secondary fw-bold text-center">
+            {clickedCard?.cardName}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="d-flex flex-column justify-content-center bg-primary m-0">
+          <img
+            src={clickedCard?.image ? clickedCard.image : "/no-image.png"}
+            alt={clickedCard?.name}
+            className="img-fluid mx-auto"
+          />
+          <h5 className="text-secondary fw-bold mt-3"> Owners:</h5>
+          {owners.map((owner) => (
+            <div
+              className="d-flex justify-content-between align-items-center"
+              key={owner.userId}
+            >
+              <Link
+                as={Link}
+                to={`/profile/${owner.userId}/user/collection`}
+                className="text-secondary text-decoration-none"
+              >
+                {owner.username}
+              </Link>
+              <Button
+                size="sm"
+                variant="secondary"
+                href={`mailto:${owner.email}?subject=${encodeURIComponent(
+                  `Trade for ${clickedCard.cardName}`,
+                )}&body=${encodeURIComponent(
+                  `Hi ${owner.username}, I'm interested in your ${clickedCard.cardName}.`,
+                )}`}
+              >
+                Contact
+              </Button>
+            </div>
+          ))}
+        </Modal.Body>
+      </Modal>
     </Container>
   )
 }
