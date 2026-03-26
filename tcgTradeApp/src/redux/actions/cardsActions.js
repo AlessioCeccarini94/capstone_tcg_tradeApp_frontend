@@ -272,7 +272,7 @@ export const orderCardByPrice = () => {
 
 export const getUserCollection = (userId) => {
   return (dispatch) => {
-    fetch(`${baseURL}/collection/user/${userId}`, {
+    fetch(`${baseURL}/cards/collection/user/${userId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

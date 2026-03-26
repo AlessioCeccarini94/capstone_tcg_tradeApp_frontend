@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useParams } from "react-router"
-import { Container, Row, Col, Card, Button } from "react-bootstrap"
+import { useParams } from "react-router-dom"
+import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap"
 import { getUserCollection } from "../../redux/actions/cardsActions"
 import { getUserById } from "../../redux/actions/userActions"
-import { FaLayerGroup, FaExchangeAlt, FaClock } from "react-icons/fa"
+import { FaLayerGroup } from "react-icons/fa"
 
 const UserProfileComponent = () => {
   const { id } = useParams()
   const user = useSelector((state) => state.user.profileUser)
   const collection = useSelector((state) => state.card.collection)
   const dispatch = useDispatch()
-  const cards = useSelector((state) => state.card.cardsByGame) || []
   const loading = useSelector((state) => state.card.loading)
 
   useEffect(() => {
-    ;(dispatch(getUserById(id)), dispatch(getUserCollection(id)))
+    dispatch(getUserById(id))
+    dispatch(getUserCollection(id))
   }, [dispatch, id])
 
   return (
@@ -38,6 +38,11 @@ const UserProfileComponent = () => {
               <h3 className="text-secondary">
                 {user?.firstName} {user?.lastName}
               </h3>
+              <p className="text-secondary">
+                {typeof user?.city === "string"
+                  ? user.city
+                  : (user?.city?.cityName ?? "-")}
+              </p>
             </Card.Body>
           </Card>
         </Col>

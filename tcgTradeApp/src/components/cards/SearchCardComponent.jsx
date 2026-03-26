@@ -9,8 +9,6 @@ const SearchCard = () => {
 
   const handleSearch = (e) => {
     e.preventDefault()
-    // Submitting (Enter) should not change page state.
-    // We already navigate on typing; keeping submit as a no-op avoids crashes/double navigations.
     if (location.pathname === "/search") return
     if (!query || query.trim().length < 3) return
 
