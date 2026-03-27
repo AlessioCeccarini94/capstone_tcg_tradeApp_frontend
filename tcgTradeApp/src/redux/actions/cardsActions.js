@@ -197,15 +197,20 @@ export const removeFavorite = (id) => {
 
 //----------------------------> SEARCH CARD BY NAME <-----------------------------------------
 
-export const searchCard = (query, gameId) => {
+export const searchCard = (query, gameId, page = 0) => {
   return (dispatch) => {
+    dispatch({ type: SET_LOADING })
+
     const params = new URLSearchParams()
     params.set("query", query)
+    params.set("page", page)
+    params.set("size", 16)
+
     if (gameId) params.set("gameId", String(gameId))
+
     const URL = `${baseURL}/cards/search?${params.toString()}`
-    fetch(URL, {
-      method: "GET",
-    })
+
+    fetch(URL)
       .then((res) => {
         if (!res.ok) throw new Error(res.status)
         return res.json()
@@ -213,10 +218,17 @@ export const searchCard = (query, gameId) => {
       .then((data) => {
         dispatch({
           type: SEARCH_CARD,
-          payload: data?.content ?? [],
+          payload: {
+            cards: data.content,
+            totalPages: data.totalPages,
+            currentPage: data.number,
+          },
         })
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+        dispatch({ type: SET_LOADING, payload: false })
+      })
   }
 }
 
@@ -310,7 +322,7 @@ export const updateCardCondition = (userCardId, condition) => {
 
       if (!res.ok) throw new Error("Errore aggiornamento")
 
-      dispatch(userCardList()) // 🔥 refresh lista
+      dispatch(userCardList())
     } catch (error) {
       console.log(error)
     }

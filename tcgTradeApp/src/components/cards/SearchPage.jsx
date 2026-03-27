@@ -19,10 +19,19 @@ const SearchPage = () => {
   const minPrice = minPriceParam ?? ""
   const maxPrice = maxPriceParam ?? ""
   const canSearch = Boolean(query && query.trim().length >= 3)
+  const pageParam = params.get("page")
+  const page = pageParam ? Number(pageParam) : 0
+  const changePage = (newPage) => {
+    const next = new URLSearchParams(params)
+    next.set("page", newPage)
+    setParams(next)
+  }
+  const totalPages = useSelector((state) => state.card.totalPages)
+  const currentPage = useSelector((state) => state.card.currentPage)
 
   useEffect(() => {
-    if (canSearch) dispatch(searchCard(query, gameId))
-  }, [dispatch, query, gameId, canSearch])
+    if (canSearch) dispatch(searchCard(query, gameId, page))
+  }, [dispatch, query, gameId, page, canSearch])
 
   const updateParam = (key, value) => {
     const next = new URLSearchParams(params)
@@ -37,7 +46,6 @@ const SearchPage = () => {
           <Spinner />
         </div>
       )}
-
       <div className="d-flex flex-wrap gap-2 align-items-end mb-3">
         <Form.Group style={{ minWidth: 220 }}>
           <Form.Label>Game</Form.Label>
@@ -54,7 +62,6 @@ const SearchPage = () => {
             ))}
           </Form.Select>
         </Form.Group>
-
         <Form.Group style={{ minWidth: 180 }}>
           <Form.Label>Min price</Form.Label>
           <Form.Control
@@ -66,7 +73,6 @@ const SearchPage = () => {
             placeholder="0"
           />
         </Form.Group>
-
         <Form.Group>
           <Form.Label>Max price</Form.Label>
           <Form.Control
@@ -78,7 +84,6 @@ const SearchPage = () => {
             placeholder="200"
           />
         </Form.Group>
-
         <Button
           variant="outline-secondary"
           onClick={() => {
@@ -93,6 +98,25 @@ const SearchPage = () => {
         </Button>
       </div>
       {!loading && <PageOfCards />}
+      {!loading && totalPages > 1 && (
+        <div className="d-flex justify-content-center align-items-center gap-3 my-4">
+          <Button
+            disabled={currentPage === 0}
+            onClick={() => changePage(currentPage - 1)}
+          >
+            Prev
+          </Button>
+          <span className="text-secondary">
+            Page {currentPage + 1} / {totalPages}
+          </span>
+          <Button
+            disabled={currentPage === totalPages - 1}
+            onClick={() => changePage(currentPage + 1)}
+          >
+            Next
+          </Button>
+        </div>
+      )}
     </Container>
   )
 }
