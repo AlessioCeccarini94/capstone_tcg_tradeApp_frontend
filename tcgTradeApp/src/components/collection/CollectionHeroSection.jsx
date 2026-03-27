@@ -115,8 +115,13 @@ const ProfileHero = () => {
                               >
                                 <option value="MINT">Mint</option>
                                 <option value="NEAR_MINT">Near Mint</option>
+                                <option value="EXCELENT">Excelent</option>
                                 <option value="GOOD">Good</option>
+                                <option value="LIGHT_PLAYED">
+                                  Light Played
+                                </option>
                                 <option value="PLAYED">Played</option>
+                                <option value="POOR">Poor</option>
                               </select>
                             ) : (
                               <>
