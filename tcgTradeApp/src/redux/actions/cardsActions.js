@@ -290,3 +290,29 @@ export const getUserCollection = (userId) => {
       .catch((err) => console.log(err))
   }
 }
+
+//---------------------------------> CHANGE CONDITION CARD <------------------------------------------------
+
+export const updateCardCondition = (userCardId, condition) => {
+  return async (dispatch) => {
+    try {
+      const res = await fetch(
+        `https://tgc-tradeapp-be.onrender.com/cards/collection/card/${userCardId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ condition }),
+        },
+      )
+
+      if (!res.ok) throw new Error("Errore aggiornamento")
+
+      dispatch(userCardList()) // 🔥 refresh lista
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}

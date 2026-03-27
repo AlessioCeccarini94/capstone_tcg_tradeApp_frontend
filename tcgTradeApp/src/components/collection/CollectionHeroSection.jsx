@@ -11,6 +11,8 @@ import {
   userFavList,
 } from "../../redux/actions/cardsActions"
 import { useState } from "react"
+import { updateCardCondition } from "../../redux/actions/cardsActions"
+import { FaEdit } from "react-icons/fa"
 
 const ProfileHero = () => {
   const dispatch = useDispatch()
@@ -18,6 +20,18 @@ const ProfileHero = () => {
   const loading = useSelector((state) => state.card.loading)
   const [clickedCard, setClickedCard] = useState(null)
   const [show, setShow] = useState({})
+  const [editingId, setEditingId] = useState(null)
+  const [newCondition, setNewCondition] = useState("")
+
+  const formatCondition = (condition) => {
+    if (!condition) return ""
+
+    return condition
+      .toLowerCase()
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")
+  }
 
   const groupedByGame = collection.reduce((acc, card) => {
     const game = card.card.expansion.game.name
@@ -90,6 +104,50 @@ const ProfileHero = () => {
                           >
                             {card.card.expansion.name}
                           </Card.Text>
+                          <Card.Text className="text-secondary d-flex align-items-center justify-content-center">
+                            {editingId === card.uuid ? (
+                              <select
+                                value={newCondition}
+                                onChange={(e) =>
+                                  setNewCondition(e.target.value)
+                                }
+                                className="form-select"
+                              >
+                                <option value="MINT">Mint</option>
+                                <option value="NEAR_MINT">Near Mint</option>
+                                <option value="GOOD">Good</option>
+                                <option value="PLAYED">Played</option>
+                              </select>
+                            ) : (
+                              <>
+                                {formatCondition(card.condition)}
+                                <FaEdit
+                                  style={{
+                                    cursor: "pointer",
+                                    marginLeft: "10px",
+                                  }}
+                                  onClick={() => {
+                                    setEditingId(card.uuid)
+                                    setNewCondition(card.condition)
+                                  }}
+                                />
+                              </>
+                            )}
+                          </Card.Text>
+                          {editingId === card.uuid && (
+                            <Button
+                              size="sm"
+                              className="mt-2"
+                              onClick={() => {
+                                dispatch(
+                                  updateCardCondition(card.uuid, newCondition),
+                                )
+                                setEditingId(null)
+                              }}
+                            >
+                              Save
+                            </Button>
+                          )}
                           <Button
                             className="text-center my-2"
                             onClick={() =>
