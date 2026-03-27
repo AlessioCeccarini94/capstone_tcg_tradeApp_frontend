@@ -83,7 +83,7 @@ const ProfileHero = () => {
                       key={card.card.blueprintId}
                       className="d-flex mb-3"
                     >
-                      <Card className="stat-card">
+                      <Card className="stat-card w-100">
                         <Card.Img
                           variant="top"
                           src={card.card.image}
