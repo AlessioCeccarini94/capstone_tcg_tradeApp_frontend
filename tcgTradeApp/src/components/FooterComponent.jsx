@@ -21,11 +21,12 @@ const Footer = () => {
         <Row className="mt-5">
           <Col>
             <p className="text-center">
-              © 2023 TCG Trade App. All rights reserved.
+              © {new Date().getFullYear()} TCG Trade App. All rights reserved.
               <br /> Questo progetto è a scopo puramente didattico. Tutti i
               contenuti (immagini, marchi, carte) appartengono ai rispettivi
               proprietari. Non è affiliato né supportato da Wizards of the
-              Coast, Bandai o altri. Nessun dato reale viene utilizzato.
+              Coast, Bandai o altri. Nessun dato reale viene utilizzato. Non
+              iserire dati personali.
             </p>
           </Col>
         </Row>

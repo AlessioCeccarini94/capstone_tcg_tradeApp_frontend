@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
-import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { searchCard } from "../../redux/actions/cardsActions"
+import { useNavigate, useLocation } from "react-router-dom"
 
 const SearchCard = () => {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [query, setQuery] = useState("")
-  const [selectedGame, setSelectedGame] = useState(null)
-  const gameId = selectedGame ? Number(selectedGame) : null
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (location.pathname === "/search") return
+    if (!query || query.trim().length < 3) return
+
+    const params = new URLSearchParams()
+    params.set("query", query)
+    navigate(`/search?${params.toString()}`)
+  }
 
   const handleChange = (e) => {
-    setQuery(e.targetvalue)
+    const value = e.target.value
+    setQuery(value)
+
+    if (value.length >= 3) {
+      const params = new URLSearchParams()
+      params.set("query", value)
+      navigate(`/search?${params.toString()}`)
+    }
   }
   useEffect(() => {
     const delay = setTimeout(() => {
