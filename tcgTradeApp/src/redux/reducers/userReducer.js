@@ -30,7 +30,6 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         loggedUser: action.payload,
       }
-
     case SET_POFILE_USER:
       return {
         ...state,

@@ -128,7 +128,7 @@ export const loginUser = (userData) => {
       })
       .then((user) => {
         dispatch({
-          type: GET_USER,
+          type: LOG_USER,
           payload: user,
         })
         return { success: true }
