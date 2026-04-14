@@ -35,6 +35,9 @@ const ChatComponent = () => {
     const client = new Client({
       brokerURL: `${baseURL.replace("http", "ws")}/ws`,
       reconnectDelay: 5000,
+      connectHeaders: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     })
 
     client.onConnect = () => {
