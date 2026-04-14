@@ -64,7 +64,10 @@ export const cardReducer = (state = initialState, action) => {
     case SEARCH_CARD:
       return {
         ...state,
-        cardsByGame: action.payload,
+        cardsByGame: action.payload.cards,
+        totalPages: action.payload.totalPages,
+        currentPage: action.payload.currentPage,
+        loading: false,
       }
     case CARDS_BY_EXPANSION:
       return {

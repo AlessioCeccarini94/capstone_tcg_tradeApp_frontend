@@ -197,18 +197,18 @@ export const removeFavorite = (id) => {
 
 //----------------------------> SEARCH CARD BY NAME <-----------------------------------------
 
-export const searchCard = (query, gameId = null) => {
+export const searchCard = (query, gameId, page = 0) => {
   return (dispatch) => {
-    if (!query || query.trim() === "") {
-      dispatch({ type: SEARCH_CARD, payload: [] })
-      return
-    }
+    dispatch({ type: SET_LOADING })
 
-    let URL = `${baseURL}/cards/search?name=${query}&size=20`
+    const params = new URLSearchParams()
+    params.set("query", query)
+    params.set("page", page)
+    params.set("size", 16)
 
-    if (gameId) {
-      URL += `&gameId=${gameId}`
-    }
+    if (gameId) params.set("gameId", String(gameId))
+
+    const URL = `${baseURL}/cards/search?${params.toString()}`
 
     fetch(URL)
       .then((res) => {
@@ -218,10 +218,17 @@ export const searchCard = (query, gameId = null) => {
       .then((data) => {
         dispatch({
           type: SEARCH_CARD,
-          payload: data,
+          payload: {
+            cards: data.content,
+            totalPages: data.totalPages,
+            currentPage: data.number,
+          },
         })
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+        dispatch({ type: SET_LOADING, payload: false })
+      })
   }
 }
 //----------------------------> SEARCH CARD BY EXPANSION <-----------------------------------------
@@ -292,5 +299,31 @@ export const getUserCollection = (userId) => {
         })
       })
       .catch((err) => console.log(err))
+  }
+}
+
+//---------------------------------> CHANGE CONDITION CARD <------------------------------------------------
+
+export const updateCardCondition = (userCardId, condition) => {
+  return async (dispatch) => {
+    try {
+      const res = await fetch(
+        `https://tgc-tradeapp-be.onrender.com/cards/collection/card/${userCardId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ condition }),
+        },
+      )
+
+      if (!res.ok) throw new Error("Errore aggiornamento")
+
+      dispatch(userCardList())
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

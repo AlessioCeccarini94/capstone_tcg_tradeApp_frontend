@@ -72,8 +72,14 @@ export const getUser = () => {
 export const getUserById = (id) => {
   return (dispatch) => {
     const URL = `${baseURL}/users/${id}`
+    const token = localStorage.getItem("token")
     fetch(URL, {
       method: "GET",
+      headers: token
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : undefined,
     })
       .then((res) => {
         if (!res.ok) throw new Error("Request failed")
@@ -97,7 +103,7 @@ export const getUserById = (id) => {
 export const loginUser = (userData) => {
   return (dispatch) => {
     const URL = `${baseURL}/auth/login`
-    fetch(URL, {
+    return fetch(URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -105,19 +111,31 @@ export const loginUser = (userData) => {
       body: JSON.stringify(userData),
     })
       .then((res) => {
-        if (!res.ok) throw new Error("Request failed")
+        if (!res.ok) throw new Error("Invalid email or password")
         return res.json()
       })
       .then((data) => {
         localStorage.setItem("token", data.accessToken.trim())
-        console.log(data)
-        dispatch({
-          type: LOG_USER,
-          payload: data,
+        return fetch(`${baseURL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
+      })
+      .then((res) => {
+        if (!res.ok) throw new Error("Unable to load user profile")
+        return res.json()
+      })
+      .then((user) => {
+        dispatch({
+          type: GET_USER,
+          payload: user,
+        })
+        return { success: true }
       })
       .catch((err) => {
         console.log(err)
+        return { success: false, message: err.message }
       })
   }
 }

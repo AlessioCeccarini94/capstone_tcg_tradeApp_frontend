@@ -21,19 +21,22 @@ $dropdown-link-hover-color: $accent-primary;
 @import "./footer";
 @import "./profile";
 @import "./carouselImg";
+@import "./chat";
+
+html,
+body {
+  height: auto;
+  overflow-x: hidden;
+  position: relative;
+}
 
 body {
   background-color: $bg-primary;
   color: $text-primary;
-  margin: 0;
   font-family: "Inter", sans-serif;
+}
 
-  #root {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  html {
-    height: 100%;
-  }
+#root {
+  min-height: 100vh;
+  display: block;
 }

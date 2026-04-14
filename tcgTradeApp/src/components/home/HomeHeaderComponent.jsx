@@ -13,7 +13,7 @@ const HomeHeader = () => {
 
   const dispatch = useDispatch()
 
-  const user = useSelector((state) => state.user.users)
+  const user = useSelector((state) => state.user.loggedUser)
   const images = useSelector((state) => state.admin.carousel)
 
   const handleSelect = (selectedIndex) => {
@@ -24,13 +24,7 @@ const HomeHeader = () => {
     dispatch(addGameList())
     dispatch(getCarousel())
     dispatch(getUser())
-<<<<<<< Updated upstream
-    console.log(images)
-    console.log(user)
-  }, [dispatch, images, user])
-=======
   }, [dispatch, images])
->>>>>>> Stashed changes
 
   return (
     <Container>

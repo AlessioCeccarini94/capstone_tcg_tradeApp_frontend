@@ -12,7 +12,7 @@ const ProfileHeader = () => {
   const dispatch = useDispatch()
   const collection = useSelector((state) => state.card.collection)
   const favorites = useSelector((state) => state.card.favorites)
-  const user = useSelector((state) => state.user.users)
+  const user = useSelector((state) => state.user.loggedUser)
 
   useEffect(() => {
     dispatch(userCardList(), userFavList(), dispatch(getUser()))

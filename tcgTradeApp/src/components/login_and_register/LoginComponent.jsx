@@ -23,8 +23,13 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    dispatch(loginUser(user))
-    navigate("/")
+    dispatch(loginUser(user)).then((result) => {
+      if (result?.success) {
+        navigate("/")
+      } else {
+        alert(result?.message || "Login failed")
+      }
+    })
   }
 
   return (

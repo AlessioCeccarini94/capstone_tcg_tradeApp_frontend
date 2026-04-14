@@ -13,8 +13,17 @@ import ExpansioCardsPage from "./components/cards/ExpansionCardsPage"
 import UserProfileComponent from "./components/profile/UserProfileComponent"
 import FavoritesPage from "./components/cards/FavoritesPage"
 import AdminPage from "./components/AdminPage"
+import ChatComponent from "./components/chat/ChatComponent"
+import ChatWidget from "./components/chat/ChatWidget"
+import ChatList from "./components/chat/ChatList"
+import { useSelector } from "react-redux"
+import { useState } from "react"
 
 function App() {
+  const [openList, setOpenList] = useState(false)
+  const activeChat = useSelector((state) => state.chat.activeChat)
+  const currentUser = useSelector((state) => state.user.loggedUser)
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <NavbarComponent />
@@ -30,7 +39,6 @@ function App() {
           <Route path="/profile/:userId" element={<ProfileComponent />} />
           <Route path="/favorites/:id" element={<FavoritesPage />} />
           <Route path="/admin" element={<AdminPage />} />
-
           <Route
             path="/profile/:id/user/collection"
             element={<UserProfileComponent />}
@@ -38,6 +46,11 @@ function App() {
         </Routes>
       </div>
       <Footer />
+      {currentUser && (
+        <ChatWidget onClick={() => setOpenList((prev) => !prev)} />
+      )}
+      {openList && !activeChat && <ChatList />}
+      {currentUser && <ChatComponent />}
     </div>
   )
 }

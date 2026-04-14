@@ -1,40 +1,43 @@
 import { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
-import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { searchCard } from "../../redux/actions/cardsActions"
+import { useNavigate, useLocation } from "react-router-dom"
 
 const SearchCard = () => {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const [query, setQuery] = useState("")
-  const [selectedGame, setSelectedGame] = useState(null)
-  const gameId = selectedGame ? Number(selectedGame) : null
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (location.pathname === "/search") return
+    if (!query || query.trim().length < 3) return
+
+    const params = new URLSearchParams()
+    params.set("query", query)
+    navigate(`/search?${params.toString()}`)
+  }
 
   const handleChange = (e) => {
-    setQuery(e.targetvalue)
-  }
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      const trimmed = query.trim()
+    const value = e.target.value
+    setQuery(value)
 
-    if (trimmed === "") {
-  dispatch({ type: "SEARCH_CARD", payload: [] })
-  return
-}
-    <Form onSubmit={(e) => e.preventDefault()} className="d-flex w-100">
-      <select
-        className="me-2"
-        onChange={(e) => setSelectedGame(e.target.value)}
-      >
-        <option value="">All games</option>
-        <option value="1">Magic The Gathering</option>
-        <option value="5">Pokémon</option>
-        <option value="15">One Piece</option>
-        <option value="9">Dragon Ball Super</option>
-        <option value="4">Yu-Gi-Oh!</option>
-        <option value="18">Lorcana</option>
-      </select>
+    if (value.length >= 3) {
+      const params = new URLSearchParams()
+      params.set("query", value)
+      navigate(`/search?${params.toString()}`)
+    }
+  }
+
+  useEffect(() => {
+    const isSearchPage = location.pathname === "/search"
+    if (!isSearchPage) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setQuery("")
+    }
+  }, [location.pathname])
+
+  return (
+    <Form onSubmit={handleSearch} className="d-flex w-100">
       <Form.Control
         type="search"
         placeholder="Search"
@@ -43,7 +46,8 @@ const SearchCard = () => {
         value={query}
         onChange={handleChange}
       />
-    </Form>)
-  
-}}
+    </Form>
+  )
+}
+
 export default SearchCard

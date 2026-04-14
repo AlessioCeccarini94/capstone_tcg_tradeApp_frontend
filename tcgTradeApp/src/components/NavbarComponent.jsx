@@ -3,7 +3,6 @@ import {
   Nav,
   Navbar,
   NavDropdown,
-  Form,
   Dropdown,
 } from "react-bootstrap"
 import Offcanvas from "react-bootstrap/Offcanvas"
@@ -91,7 +90,7 @@ const NavbarComponent = () => {
             )}
           </Offcanvas.Body>
         </Navbar.Offcanvas>
-        <Form className="d-flex w-100 mt-2">
+        <div className="d-flex w-100 mt-2">
           <Dropdown className="border-0">
             <Dropdown.Toggle id="dropdown-basic">
               <i className=" bi bi-filter-left">TCG</i>
@@ -134,7 +133,7 @@ const NavbarComponent = () => {
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           )}
-        </Form>
+        </div>
       </Container>
     </Navbar>
   )

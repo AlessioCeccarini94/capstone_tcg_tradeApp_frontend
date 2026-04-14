@@ -18,7 +18,7 @@ export const userReducer = (state = initialState, action) => {
     case GET_USER:
       return {
         ...state,
-        users: action.payload,
+        loggedUser: action.payload,
       }
     case SET_USER:
       return {
@@ -28,8 +28,9 @@ export const userReducer = (state = initialState, action) => {
     case LOG_USER:
       return {
         ...state,
-        users: action.payload,
+        loggedUser: action.payload,
       }
+
     case SET_POFILE_USER:
       return {
         ...state,
@@ -43,8 +44,8 @@ export const userReducer = (state = initialState, action) => {
     case LOGOUT_USER:
       return {
         ...state,
-        users: null,
-        collection: [],
+        loggedUser: null,
+        profileUser: null,
       }
 
     default:
