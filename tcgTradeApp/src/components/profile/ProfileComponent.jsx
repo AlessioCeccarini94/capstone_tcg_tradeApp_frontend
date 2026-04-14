@@ -15,7 +15,7 @@ import { getUser, imagePatch, editUser } from "../../redux/actions/userActions"
 const ProfileComponent = () => {
   const baseURL = import.meta.env.VITE_API_URL
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user.users)
+  const user = useSelector((state) => state.user.loggedUser)
   const fileInputRef = useRef(null)
   const [cities, setCities] = useState([])
   const [isEditing, setIsEditing] = useState(false)

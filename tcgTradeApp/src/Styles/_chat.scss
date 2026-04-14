@@ -1,0 +1,62 @@
+.bg-tertiary {
+  background-color: $bg-tertiary !important;
+}
+
+.chat-card {
+  position: fixed;
+  bottom: 50px;
+  right: 100px;
+  width: 250px;
+  z-index: 9999999;
+}
+
+.chat-list-item {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.chat-list-item img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.unread-count {
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 7px;
+  font-size: 12px;
+}
+
+.chat-body {
+  background-color: #1e293b;
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 6px 10px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.chat-widget-unread {
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 7px;
+  font-size: 12px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+.chat-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999999;
+  cursor: pointer;
+}

@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom"
 
 const SearchCard = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [query, setQuery] = useState("")
 
   const handleSearch = (e) => {
@@ -26,27 +27,17 @@ const SearchCard = () => {
       navigate(`/search?${params.toString()}`)
     }
   }
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      const trimmed = query.trim()
 
-    if (trimmed === "") {
-  dispatch({ type: "SEARCH_CARD", payload: [] })
-  return
-}
-    <Form onSubmit={(e) => e.preventDefault()} className="d-flex w-100">
-      <select
-        className="me-2"
-        onChange={(e) => setSelectedGame(e.target.value)}
-      >
-        <option value="">All games</option>
-        <option value="1">Magic The Gathering</option>
-        <option value="5">Pokémon</option>
-        <option value="15">One Piece</option>
-        <option value="9">Dragon Ball Super</option>
-        <option value="4">Yu-Gi-Oh!</option>
-        <option value="18">Lorcana</option>
-      </select>
+  useEffect(() => {
+    const isSearchPage = location.pathname === "/search"
+    if (!isSearchPage) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setQuery("")
+    }
+  }, [location.pathname])
+
+  return (
+    <Form onSubmit={handleSearch} className="d-flex w-100">
       <Form.Control
         type="search"
         placeholder="Search"
@@ -55,7 +46,8 @@ const SearchCard = () => {
         value={query}
         onChange={handleChange}
       />
-    </Form>)
-  
-}}
+    </Form>
+  )
+}
+
 export default SearchCard

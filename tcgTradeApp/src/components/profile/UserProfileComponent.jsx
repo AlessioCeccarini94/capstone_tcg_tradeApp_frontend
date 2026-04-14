@@ -4,42 +4,43 @@ import { useParams } from "react-router-dom"
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap"
 import { getUserCollection } from "../../redux/actions/cardsActions"
 import { getUserById } from "../../redux/actions/userActions"
+import { setActiveChat } from "../../redux/actions/chatActions"
 import { FaLayerGroup } from "react-icons/fa"
 
 const UserProfileComponent = () => {
   const { id } = useParams()
-  const user = useSelector((state) => state.user.profileUser)
-  const collection = useSelector((state) => state.card.collection)
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.profileUser)
+  const currentUser = useSelector((state) => state.user.loggedUser?.username)
+  const collection = useSelector((state) => state.card.collection)
   const loading = useSelector((state) => state.card.loading)
-
-  const formatCondition = (condition) => {
-    if (!condition) return ""
-
-    return condition
-      .toLowerCase()
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ")
-  }
 
   useEffect(() => {
     dispatch(getUserById(id))
     dispatch(getUserCollection(id))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, id])
 
+  const formatCondition = (condition) => {
+    if (!condition) return ""
+    return condition
+      .toLowerCase()
+      .split("_")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ")
+  }
+  const handleContact = (cardName) => {
+    if (!currentUser || !user?.username) return
+
+    const chatKey = [currentUser, user.username].sort().join("||")
+
+    dispatch(setActiveChat(chatKey, user.username, cardName))
+  }
   const groupedByGame = collection.reduce((acc, item) => {
     const game = item.card.expansion.game.name
-
-    if (!acc[game]) {
-      acc[game] = []
-    }
-
+    if (!acc[game]) acc[game] = []
     acc[game].push(item)
     return acc
   }, {})
-
   return (
     <Container fluid className="d-flex flex-column align-items-center">
       <Row className="w-100 border border-5 border-secondary h-75">
@@ -78,7 +79,6 @@ const UserProfileComponent = () => {
         <>
           {Object.entries(groupedByGame).map(([game, items]) => (
             <div key={game} className="w-100">
-              {/* HEADER GAME */}
               <div className="d-flex justify-content-between border-bottom border-3 border-secondary mb-3 w-100">
                 <h5 className="mt-3 text-secondary">{game}</h5>
               </div>
@@ -94,9 +94,7 @@ const UserProfileComponent = () => {
                       className="my-3"
                     >
                       <Card className="m-2 stat-card">
-                        <Card.Img
-                          src={card.image ? card.image : "/no-image.png"}
-                        />
+                        <Card.Img src={card.image || "/no-image.png"} />
                         <Card.Body>
                           <Card.Title>{card.cardName}</Card.Title>
                           <Card.Text>Quantity: {item.quantity}</Card.Text>
@@ -111,8 +109,8 @@ const UserProfileComponent = () => {
                         </Card.Body>
                         <div className="mb-3 text-center">
                           <Button
+                            onClick={() => handleContact(card.cardName)}
                             className="w-75"
-                            href={`mailto:${user?.email}?subject=Trade Request&body=Hi! ${user?.username}. I would like to trade ${item.quantity} ${card.cardName} with you.`}
                             variant="secondary"
                           >
                             Contact

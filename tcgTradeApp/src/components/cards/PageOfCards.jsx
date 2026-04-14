@@ -8,6 +8,7 @@ import {
   addToFavorites,
   userFavList,
 } from "../../redux/actions/cardsActions"
+import { setActiveChat } from "../../redux/actions/chatActions"
 import { FaRegHeart } from "react-icons/fa"
 
 const PageOfCards = () => {
@@ -17,17 +18,23 @@ const PageOfCards = () => {
   const cards = Array.isArray(cardsState)
     ? cardsState
     : (cardsState?.content ?? [])
-  const [params] = useSearchParams()
-  const minPriceParam = params.get("minPrice")
-  const maxPriceParam = params.get("maxPrice")
-  const minPrice = minPriceParam ? Number(minPriceParam) : undefined
-  const maxPrice = maxPriceParam ? Number(maxPriceParam) : undefined
-  const hasMinPrice = Number.isFinite(minPrice)
-  const hasMaxPrice = Number.isFinite(maxPrice)
-  const [owners, setOwners] = useState([])
-  const loading = useSelector((state) => state.card.loading)
+  const currentUser = useSelector((state) => state.user.loggedUser?.username)
   const collection = useSelector((state) => state.card.collection) || []
   const favorites = useSelector((state) => state.card.favorites) || []
+  const loading = useSelector((state) => state.card.loading)
+
+  const [params] = useSearchParams()
+  const [owners, setOwners] = useState([])
+  const [clickedCard, setClickedCard] = useState(null)
+
+  const minPrice = params.get("minPrice")
+    ? Number(params.get("minPrice"))
+    : undefined
+  const maxPrice = params.get("maxPrice")
+    ? Number(params.get("maxPrice"))
+    : undefined
+  const hasMinPrice = Number.isFinite(minPrice)
+  const hasMaxPrice = Number.isFinite(maxPrice)
 
   const excludeWords = [
     "booster box",
@@ -66,30 +73,26 @@ const PageOfCards = () => {
 
   const filteredCards = cards.filter((card) => {
     const name = card.cardName.toLowerCase()
-    const nameMatches = !excludeWords.some((word) => name.includes(word))
-    const avg = card.avgPrice
-    const avgNum = typeof avg === "string" ? Number(avg) : avg
+    const nameMatches = !excludeWords.some((w) => name.includes(w))
+    const avgNum =
+      typeof card.avgPrice === "string" ? Number(card.avgPrice) : card.avgPrice
     const avgIsValid = Number.isFinite(avgNum)
-
     if (hasMinPrice || hasMaxPrice) {
       if (!avgIsValid) return false
       if (hasMinPrice && avgNum < minPrice) return false
       if (hasMaxPrice && avgNum > maxPrice) return false
     }
-
     return nameMatches
   })
-  const [clickedCard, setClickedCard] = useState(null)
 
   useEffect(() => {
     dispatch(userFavList())
   }, [dispatch])
+
   useEffect(() => {
     if (!clickedCard?.blueprintId) return
     fetch(`${baseURL}/cards/${clickedCard.blueprintId}/owners`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
       .then((res) => {
         if (!res.ok) throw new Error(res.status)
@@ -98,6 +101,17 @@ const PageOfCards = () => {
       .then((data) => setOwners(data))
       .catch((err) => console.log(err))
   }, [clickedCard, baseURL])
+
+  const handleContact = (ownerUsername, cardName) => {
+    if (!currentUser || !ownerUsername) return
+
+    const chatKey = [currentUser, ownerUsername].sort().join("||")
+
+    dispatch(setActiveChat(chatKey, ownerUsername, cardName))
+
+    setClickedCard(null)
+  }
+
   return (
     <Container>
       {loading && (
@@ -105,27 +119,26 @@ const PageOfCards = () => {
           <Spinner />
         </div>
       )}
+
       {!loading && (
         <Row>
           {filteredCards.map((card) => {
             const isInCollection = collection.some(
-              (item) => item.card.blueprintId === card.blueprintId,
+              (i) => i.card.blueprintId === card.blueprintId,
             )
             const isInFavorites = favorites.some(
-              (item) => item.card.blueprintId === card.blueprintId,
+              (i) => i.card.blueprintId === card.blueprintId,
             )
-
             return (
               <Col key={card.blueprintId} className="my-3" xs={6} md={4} lg={3}>
                 <Card className="stat-card m-2 w-100">
                   <Card.Img
                     variant="top"
                     src={card.image}
-                    onError={(e) => (e.target.src = "/noImage.png")}
                     loading="lazy"
+                    onError={(e) => (e.target.src = "/noImage.png")}
                     onClick={() => setClickedCard(card)}
                   />
-
                   <Card.Body className="d-flex flex-column justify-content-between">
                     <Card.Title className="text-secondary fw-bold card-title">
                       {card.cardName}
@@ -189,18 +202,17 @@ const PageOfCards = () => {
         </Modal.Header>
         <Modal.Body className="d-flex flex-column justify-content-center bg-primary m-0">
           <img
-            src={clickedCard?.image ? clickedCard.image : "/no-image.png"}
-            alt={clickedCard?.name}
+            src={clickedCard?.image || "/no-image.png"}
+            alt={clickedCard?.cardName}
             className="img-fluid mx-auto"
           />
-          <h5 className="text-secondary fw-bold mt-3"> Owners:</h5>
+          <h5 className="text-secondary fw-bold mt-3">Owners:</h5>
           {owners.map((owner) => (
             <div
               className="d-flex justify-content-between align-items-center"
               key={owner.userId}
             >
               <Link
-                as={Link}
                 to={`/profile/${owner.userId}/user/collection`}
                 className="text-secondary text-decoration-none"
               >
@@ -209,11 +221,13 @@ const PageOfCards = () => {
               <Button
                 size="sm"
                 variant="secondary"
-                href={`mailto:${owner.email}?subject=${encodeURIComponent(
-                  `Trade for ${clickedCard.cardName}`,
-                )}&body=${encodeURIComponent(
-                  `Hi ${owner.username}, I'm interested in your ${clickedCard.cardName}.`,
-                )}`}
+                onClick={() =>
+                  handleContact(
+                    owner.username,
+                    clickedCard?.cardName,
+                    console.log("CLICK CARD:", clickedCard?.cardName),
+                  )
+                }
               >
                 Contact
               </Button>
