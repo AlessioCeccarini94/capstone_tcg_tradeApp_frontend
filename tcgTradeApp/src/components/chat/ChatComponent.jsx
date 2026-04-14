@@ -40,9 +40,9 @@ const ChatComponent = () => {
     client.onConnect = () => {
       setConnected(true)
 
-      client.subscribe("/user/queue/messages", (msg) => {
-        const message = JSON.parse(msg.body)
-        dispatch(addMessage(message))
+      client.subscribe(`/topic/private/${username}`, (message) => {
+        const newMessage = JSON.parse(message.body)
+        dispatch(addMessage(newMessage))
       })
     }
 
