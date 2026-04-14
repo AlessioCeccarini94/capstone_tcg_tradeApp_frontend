@@ -1,10 +1,4 @@
-import {
-  Container,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Dropdown,
-} from "react-bootstrap"
+import { Container, Nav, Navbar, NavDropdown, Dropdown } from "react-bootstrap"
 import Offcanvas from "react-bootstrap/Offcanvas"
 import logo from "../assets/images/logo.png"
 import { Link } from "react-router-dom"
@@ -16,7 +10,7 @@ import { logoutUser, getUser } from "../redux/actions/userActions"
 import SearchCard from "./cards/SearchCardComponent"
 
 const NavbarComponent = () => {
-  const user = useSelector((state) => state.user.users)
+  const user = useSelector((state) => state.user.loggedUser)
   const games = useSelector((state) => state.game.games)
   const token = localStorage.getItem("token")
   const navigate = useNavigate()
