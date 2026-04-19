@@ -21,33 +21,43 @@ const ChatComponent = () => {
 
   useEffect(() => {
     if (!username) return
-
     const msg = cardName
       ? `Hi! I'm ${username} and I'm interested in this card: ${cardName}`
       : `Hi! I'm ${username}`
-
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setInput(msg)
   }, [username, receiver, cardName])
+
   useEffect(() => {
     if (!username || !receiver) return
 
+    const token = localStorage.getItem("token")
     const client = new Client({
       brokerURL: `${baseURL.replace("http", "ws")}/ws`,
       reconnectDelay: 5000,
       connectHeaders: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
+      debug: (str) => console.log("STOMP:", str),
     })
 
     client.onConnect = () => {
+      console.log("WebSocket connesso come:", username)
       setConnected(true)
 
-      client.subscribe(`/topic/private/${username}`, (message) => {
-        const newMessage = JSON.parse(message.body)
-        dispatch(addMessage(newMessage))
+      client.subscribe("/user/queue/messages", (msg) => {
+        const message = JSON.parse(msg.body)
+        console.log("Messaggio ricevuto:", message)
+        if (
+          (message.sender === username && message.receiver === receiver) ||
+          (message.sender === receiver && message.receiver === username)
+        ) {
+          dispatch(addMessage(message))
+        }
       })
     }
+
+    client.onStompError = (frame) => console.error("STOMP ERROR:", frame)
+    client.onWebSocketError = (err) => console.error("WS ERROR:", err)
 
     client.activate()
     clientRef.current = client
@@ -56,52 +66,59 @@ const ChatComponent = () => {
       client.deactivate()
       setConnected(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receiver, username])
 
   const sendMessage = () => {
     if (!input.trim() || !connected) return
-
     const newMessage = {
       sender: username,
-      receiver: receiver,
+      receiver,
       content: input,
       type: "MESSAGE",
     }
-
     dispatch(addMessage(newMessage))
-
     clientRef.current.publish({
       destination: "/app/chat.private",
       body: JSON.stringify(newMessage),
     })
-
     setInput("")
   }
 
   if (!chatKey || !receiver) return null
-
   return createPortal(
-    <div className="chat-card">
-      <Card className="chat-body" style={{ width: "320px" }}>
-        <Card.Body className="d-flex justify-content-between">
-          <span className="text-secondary">{receiver}</span>
+    <div
+      style={{
+        position: "fixed",
+        bottom: "20px",
+        right: "20px",
+        zIndex: 9999999,
+      }}
+    >
+      <Card className="shadow bg-tertiary" style={{ width: "320px" }}>
+        <Card.Body className="d-flex justify-content-between align-items-center pb-2">
+          <span>{receiver}</span>
           <Button size="sm" onClick={() => dispatch(setActiveChat(null))}>
             ✖
           </Button>
         </Card.Body>
 
         <Card.Body>
-          <div style={{ maxHeight: 200, overflowY: "auto" }}>
-            {messages.map((msg, i) => (
+          <div
+            style={{
+              maxHeight: "200px",
+              overflowY: "auto",
+              marginBottom: "10px",
+            }}
+          >
+            {messages.map((msg, index) => (
               <div
-                className="bg-secondary text-primary p-2 rounded mb-4 ms-3"
-                key={i}
+                key={index}
                 style={{
                   textAlign: msg.sender === username ? "right" : "left",
-                  marginBottom: "8px",
                 }}
               >
-                {msg.content}
+                <span className="chat-body">{msg.content}</span>
               </div>
             ))}
           </div>
@@ -110,8 +127,6 @@ const ChatComponent = () => {
             onSubmit={(e) => {
               e.preventDefault()
               sendMessage()
-              console.log("receiver", receiver)
-              console.log("CARDNAME", cardName)
             }}
           >
             <div className="d-flex gap-2">
@@ -120,7 +135,7 @@ const ChatComponent = () => {
                 onChange={(e) => setInput(e.target.value)}
               />
               <Button type="submit" disabled={!connected}>
-                Send
+                Invia
               </Button>
             </div>
           </Form>
