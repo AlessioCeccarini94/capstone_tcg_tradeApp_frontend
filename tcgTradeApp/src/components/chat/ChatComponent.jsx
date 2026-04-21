@@ -18,7 +18,6 @@ const ChatComponent = () => {
   const [connected, setConnected] = useState(false)
   const clientRef = useRef(null)
   const [input, setInput] = useState("")
-
   useEffect(() => {
     if (!username) return
     const msg = cardName
@@ -30,7 +29,15 @@ const ChatComponent = () => {
   useEffect(() => {
     if (!username || !receiver) return
 
+    console.log(
+      "WebSocket effect triggered, receiver:",
+      receiver,
+      "username:",
+      username,
+    )
+
     const token = localStorage.getItem("token")
+
     const client = new Client({
       brokerURL: `${baseURL.replace("http", "ws")}/ws`,
       reconnectDelay: 5000,
@@ -47,6 +54,7 @@ const ChatComponent = () => {
       client.subscribe("/user/queue/messages", (msg) => {
         const message = JSON.parse(msg.body)
         console.log("Messaggio ricevuto:", message)
+
         if (
           (message.sender === username && message.receiver === receiver) ||
           (message.sender === receiver && message.receiver === username)
@@ -63,6 +71,7 @@ const ChatComponent = () => {
     clientRef.current = client
 
     return () => {
+      console.log("WebSocket cleanup — disconnecting")
       client.deactivate()
       setConnected(false)
     }
@@ -77,15 +86,16 @@ const ChatComponent = () => {
       content: input,
       type: "MESSAGE",
     }
-    dispatch(addMessage(newMessage))
     clientRef.current.publish({
       destination: "/app/chat.private",
       body: JSON.stringify(newMessage),
     })
+    dispatch(addMessage(newMessage))
     setInput("")
   }
 
   if (!chatKey || !receiver) return null
+
   return createPortal(
     <div
       style={{
