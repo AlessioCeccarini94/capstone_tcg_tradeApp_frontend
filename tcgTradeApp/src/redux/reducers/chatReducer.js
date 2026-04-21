@@ -1,6 +1,7 @@
 export const SET_ACTIVE_CHAT = "SET_ACTIVE_CHAT"
 export const ADD_MESSAGE = "ADD_MESSAGE"
 export const SET_ACTIVE_CARD = "SET_ACTIVE_CARD"
+export const LOAD_MESSAGES = "LOAD_MESSAGES"
 export const buildChatKey = (user1, user2) => [user1, user2].sort().join("||")
 
 const initialState = {
@@ -57,6 +58,17 @@ const chatReducer = (state = initialState, action) => {
         ...state,
         activeCard: action.payload,
       }
+
+    case LOAD_MESSAGES: {
+      const { chatKey, messages } = action.payload
+      return {
+        ...state,
+        messages: {
+          ...state.messages,
+          [chatKey]: messages,
+        },
+      }
+    }
 
     default:
       return state

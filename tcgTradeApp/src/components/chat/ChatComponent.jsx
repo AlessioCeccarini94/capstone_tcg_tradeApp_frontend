@@ -3,7 +3,11 @@ import { Card, Form, Button } from "react-bootstrap"
 import { createPortal } from "react-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { Client } from "@stomp/stompjs"
-import { addMessage, setActiveChat } from "../../redux/actions/chatActions"
+import {
+  addMessage,
+  setActiveChat,
+  fetchMessages,
+} from "../../redux/actions/chatActions"
 
 const ChatComponent = () => {
   const dispatch = useDispatch()
@@ -20,13 +24,16 @@ const ChatComponent = () => {
   const [input, setInput] = useState("")
 
   useEffect(() => {
+    if (!username || !receiver) return
+    dispatch(fetchMessages(username, receiver))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatKey])
+  useEffect(() => {
     if (!username) return
 
     const msg = cardName
       ? `Hi! I'm ${username} and I'm interested in this card: ${cardName}`
       : `Hi! I'm ${username}`
-
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setInput(msg)
   }, [username, receiver, cardName])
   useEffect(() => {
@@ -53,6 +60,7 @@ const ChatComponent = () => {
       client.deactivate()
       setConnected(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receiver, username])
 
   const sendMessage = () => {
@@ -60,8 +68,8 @@ const ChatComponent = () => {
 
     const newMessage = {
       sender: username,
-      receiver: receiver,
-      content: input,
+      receiver,
+      message: input,
       type: "MESSAGE",
     }
 
@@ -98,11 +106,10 @@ const ChatComponent = () => {
                   marginBottom: "8px",
                 }}
               >
-                {msg.content}
+                <span className="chat-body">{msg.message}</span>
               </div>
             ))}
           </div>
-
           <Form
             onSubmit={(e) => {
               e.preventDefault()
