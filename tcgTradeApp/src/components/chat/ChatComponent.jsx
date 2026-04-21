@@ -3,7 +3,11 @@ import { Card, Form, Button } from "react-bootstrap"
 import { createPortal } from "react-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { Client } from "@stomp/stompjs"
-import { addMessage, setActiveChat } from "../../redux/actions/chatActions"
+import {
+  addMessage,
+  setActiveChat,
+  fetchMessages,
+} from "../../redux/actions/chatActions"
 
 const ChatComponent = () => {
   const dispatch = useDispatch()
@@ -18,6 +22,11 @@ const ChatComponent = () => {
   const [connected, setConnected] = useState(false)
   const clientRef = useRef(null)
   const [input, setInput] = useState("")
+  useEffect(() => {
+    if (!username || !receiver) return
+    dispatch(fetchMessages(username, receiver))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatKey])
   useEffect(() => {
     if (!username) return
     const msg = cardName
@@ -83,7 +92,7 @@ const ChatComponent = () => {
     const newMessage = {
       sender: username,
       receiver,
-      content: input,
+      message: input,
       type: "MESSAGE",
     }
     clientRef.current.publish({
@@ -128,11 +137,10 @@ const ChatComponent = () => {
                   textAlign: msg.sender === username ? "right" : "left",
                 }}
               >
-                <span className="chat-body">{msg.content}</span>
+                <span className="chat-body">{msg.message}</span>
               </div>
             ))}
           </div>
-
           <Form
             onSubmit={(e) => {
               e.preventDefault()
