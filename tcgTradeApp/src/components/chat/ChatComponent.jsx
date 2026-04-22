@@ -20,30 +20,11 @@ const ChatComponent = () => {
   const messages = useSelector((state) => state.chat.messages[chatKey] || [])
 
   const [connected, setConnected] = useState(false)
-  const clientRef = useRef(null)
   const [input, setInput] = useState("")
-  useEffect(() => {
-    if (!username || !receiver) return
-    dispatch(fetchMessages(username, receiver))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatKey])
+  const clientRef = useRef(null)
+
   useEffect(() => {
     if (!username) return
-    const msg = cardName
-      ? `Hi! I'm ${username} and I'm interested in this card: ${cardName}`
-      : `Hi! I'm ${username}`
-    setInput(msg)
-  }, [username, receiver, cardName])
-
-  useEffect(() => {
-    if (!username || !receiver) return
-
-    console.log(
-      "WebSocket effect triggered, receiver:",
-      receiver,
-      "username:",
-      username,
-    )
 
     const token = localStorage.getItem("token")
 
@@ -57,49 +38,67 @@ const ChatComponent = () => {
     })
 
     client.onConnect = () => {
-      console.log("WebSocket connesso come:", username)
+      console.log("WebSocket connected as:", username)
       setConnected(true)
 
       client.subscribe("/user/queue/messages", (msg) => {
         const message = JSON.parse(msg.body)
-        console.log("Messaggio ricevuto:", message)
-
-        if (
-          (message.sender === username && message.receiver === receiver) ||
-          (message.sender === receiver && message.receiver === username)
-        ) {
-          dispatch(addMessage(message))
-        }
+        console.log("Private message received:", message)
+        dispatch(addMessage(message))
       })
     }
 
-    client.onStompError = (frame) => console.error("STOMP ERROR:", frame)
-    client.onWebSocketError = (err) => console.error("WS ERROR:", err)
+    client.onStompError = (frame) => {
+      console.error("STOMP ERROR:", frame)
+    }
+
+    client.onWebSocketError = (err) => {
+      console.error("WS ERROR:", err)
+    }
 
     client.activate()
     clientRef.current = client
 
     return () => {
-      console.log("WebSocket cleanup — disconnecting")
+      console.log("WebSocket cleanup - disconnecting")
       client.deactivate()
+      clientRef.current = null
       setConnected(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [receiver, username])
+  }, [username, baseURL, dispatch])
+
+  useEffect(() => {
+    if (!username || !receiver) return
+    dispatch(fetchMessages(username, receiver))
+  }, [username, receiver, chatKey, dispatch])
+
+  useEffect(() => {
+    if (!username || !receiver) return
+
+    const msg = cardName
+      ? `Hi! I'm ${username} and I'm interested in this card: ${cardName}`
+      : `Hi! I'm ${username}`
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setInput(msg)
+  }, [username, receiver, cardName])
 
   const sendMessage = () => {
-    if (!input.trim() || !connected) return
+    if (!input.trim() || !connected || !receiver || !clientRef.current) return
+
     const newMessage = {
       sender: username,
       receiver,
       message: input,
       type: "MESSAGE",
+      date: new Date().toISOString().slice(0, 10),
     }
+
     clientRef.current.publish({
       destination: "/app/chat.private",
       body: JSON.stringify(newMessage),
     })
-    dispatch(addMessage(newMessage))
+
     setInput("")
   }
 
@@ -141,6 +140,7 @@ const ChatComponent = () => {
               </div>
             ))}
           </div>
+
           <Form
             onSubmit={(e) => {
               e.preventDefault()

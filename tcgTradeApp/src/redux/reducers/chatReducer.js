@@ -2,6 +2,7 @@ export const SET_ACTIVE_CHAT = "SET_ACTIVE_CHAT"
 export const ADD_MESSAGE = "ADD_MESSAGE"
 export const SET_ACTIVE_CARD = "SET_ACTIVE_CARD"
 export const LOAD_MESSAGES = "LOAD_MESSAGES"
+
 export const buildChatKey = (user1, user2) => [user1, user2].sort().join("||")
 
 const initialState = {
@@ -20,12 +21,16 @@ const chatReducer = (state = initialState, action) => {
       const { message } = action.payload
       const chatKey = buildChatKey(message.sender, message.receiver)
       const existing = state.messages[chatKey] ?? []
+
       const isDuplicate = existing.some(
         (m) =>
           m.sender === message.sender &&
-          m.content === message.content &&
-          m.type === message.type,
+          m.receiver === message.receiver &&
+          m.message === message.message &&
+          m.type === message.type &&
+          m.date === message.date,
       )
+
       if (isDuplicate) return state
 
       return {
@@ -68,6 +73,9 @@ const chatReducer = (state = initialState, action) => {
       const { chatKey, messages } = action.payload
       return {
         ...state,
+        conversations: state.conversations.includes(chatKey)
+          ? state.conversations
+          : [...state.conversations, chatKey],
         messages: {
           ...state.messages,
           [chatKey]: messages,

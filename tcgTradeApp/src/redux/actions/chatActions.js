@@ -30,10 +30,16 @@ export const loadMessages = (chatKey, messages) => ({
 export const fetchMessages = (sender, receiver) => async (dispatch) => {
   const baseURL = import.meta.env.VITE_API_URL
   const token = localStorage.getItem("token")
+
   try {
     const res = await fetch(`${baseURL}/messages/${sender}/${receiver}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`)
+    }
+
     const data = await res.json()
     const chatKey = [sender, receiver].sort().join("||")
     dispatch(loadMessages(chatKey, data))

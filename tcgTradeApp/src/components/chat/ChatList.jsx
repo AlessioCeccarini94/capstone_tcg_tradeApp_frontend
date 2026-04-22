@@ -7,6 +7,7 @@ const ChatList = () => {
   const conversations = useSelector((state) => state.chat.conversations)
   const unread = useSelector((state) => state.chat.unread)
   const currentUser = useSelector((state) => state.user.loggedUser?.username)
+
   const getOtherUser = (chatKey) => {
     const [user1, user2] = chatKey.split("||")
     return user1 === currentUser ? user2 : user1
@@ -25,6 +26,7 @@ const ChatList = () => {
 
         {conversations.map((chatKey) => {
           const otherUser = getOtherUser(chatKey)
+
           return (
             <div
               className="chat-list-item"
