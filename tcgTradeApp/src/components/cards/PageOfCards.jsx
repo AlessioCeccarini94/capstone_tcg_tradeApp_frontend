@@ -22,7 +22,6 @@ const PageOfCards = () => {
   const collection = useSelector((state) => state.card.collection) || []
   const favorites = useSelector((state) => state.card.favorites) || []
   const loading = useSelector((state) => state.card.loading)
-
   const [params] = useSearchParams()
   const [owners, setOwners] = useState([])
   const [clickedCard, setClickedCard] = useState(null)

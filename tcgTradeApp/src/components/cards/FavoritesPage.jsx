@@ -10,6 +10,7 @@ import {
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect, useState } from "react"
 import { userFavList, removeFavorite } from "../../redux/actions/cardsActions"
+import { setActiveChat } from "../../redux/actions/chatActions"
 import { Link } from "react-router-dom"
 
 const FavoritesPage = () => {
@@ -20,6 +21,7 @@ const FavoritesPage = () => {
   const loading = useSelector((state) => state.card.loading)
   const [show, setShow] = useState({})
   const [owners, setOwners] = useState([])
+  const currentUser = useSelector((state) => state.user.loggedUser?.username)
   const [clickedCard, setClickedCard] = useState(null)
   const groupedByGame = favorites.reduce((acc, card) => {
     const game = card.card.expansion.game.name
@@ -50,6 +52,15 @@ const FavoritesPage = () => {
       .catch((err) => console.log(err))
   }, [clickedCard])
   {
+    const handleContact = (ownerUsername, cardName) => {
+      if (!currentUser || !ownerUsername) return
+
+      const chatKey = [currentUser, ownerUsername].sort().join("||")
+
+      dispatch(setActiveChat(chatKey, ownerUsername, cardName))
+
+      setClickedCard(null)
+    }
     return (
       <Container>
         <h1 className="text-center mb-4">Favorites</h1>
@@ -140,6 +151,19 @@ const FavoritesPage = () => {
                 >
                   {owner.username}
                 </Link>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() =>
+                    handleContact(
+                      owner.username,
+                      clickedCard?.cardName,
+                      console.log("CLICK CARD:", clickedCard?.cardName),
+                    )
+                  }
+                >
+                  Contact
+                </Button>
               </div>
             ))}
           </Modal.Body>
