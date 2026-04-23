@@ -2,6 +2,8 @@ export const SET_ACTIVE_CHAT = "SET_ACTIVE_CHAT"
 export const ADD_MESSAGE = "ADD_MESSAGE"
 export const SET_ACTIVE_CARD = "SET_ACTIVE_CARD"
 export const LOAD_MESSAGES = "LOAD_MESSAGES"
+export const LOAD_CONVERSATIONS = "LOAD_CONVERSATIONS"
+export const DELETE_CONVERSATION = "DELETE_CONVERSATION"
 
 export const buildChatKey = (user1, user2) => [user1, user2].sort().join("||")
 
@@ -27,8 +29,7 @@ const chatReducer = (state = initialState, action) => {
           m.sender === message.sender &&
           m.receiver === message.receiver &&
           m.message === message.message &&
-          m.type === message.type &&
-          m.date === message.date,
+          m.type === message.type,
       )
 
       if (isDuplicate) return state
@@ -71,6 +72,7 @@ const chatReducer = (state = initialState, action) => {
 
     case LOAD_MESSAGES: {
       const { chatKey, messages } = action.payload
+
       return {
         ...state,
         conversations: state.conversations.includes(chatKey)
@@ -80,6 +82,37 @@ const chatReducer = (state = initialState, action) => {
           ...state.messages,
           [chatKey]: messages,
         },
+      }
+    }
+
+    case LOAD_CONVERSATIONS: {
+      const { conversations } = action.payload
+      const chatKeys = conversations.map((conversation) => conversation.chatKey)
+
+      return {
+        ...state,
+        conversations: chatKeys,
+      }
+    }
+
+    case DELETE_CONVERSATION: {
+      const { chatKey } = action.payload
+      const updatedMessages = { ...state.messages }
+      const updatedUnread = { ...state.unread }
+
+      delete updatedMessages[chatKey]
+      delete updatedUnread[chatKey]
+
+      return {
+        ...state,
+        conversations: state.conversations.filter((key) => key !== chatKey),
+        messages: updatedMessages,
+        unread: updatedUnread,
+        activeChat: state.activeChat === chatKey ? null : state.activeChat,
+        activeReceiver:
+          state.activeChat === chatKey ? null : state.activeReceiver,
+        activeCardName:
+          state.activeChat === chatKey ? null : state.activeCardName,
       }
     }
 
