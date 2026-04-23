@@ -143,7 +143,10 @@ const FavoritesPage = () => {
             />
             <h5 className="text-secondary fw-bold mt-3"> Owners:</h5>
             {owners.map((owner) => (
-              <div key={owner.userId}>
+              <div
+                className="d-flex justify-content-between align-items-center"
+                key={owner.userId}
+              >
                 <Link
                   as={Link}
                   to={`/profile/${owner.userId}/user/collection`}
